@@ -1,0 +1,1890 @@
+<html lang="en">
+  <head>
+    <script>
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.promotekit_referral =
+            "1fd2949a-d22c-431b-92bf-02d4ad04ee24";
+          window.parent.document.cookie =
+            "promotekit_referral=1fd2949a-d22c-431b-92bf-02d4ad04ee24;path=/;domain=.aura.build;max-age=31536000";
+        }
+      } catch (e) {}
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qbit Labs | AI-First MVP Studio</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&amp;family=Inter:wght@200;300;400;500;600&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind & Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', "Inter", "sans-serif"],
+              display: ['"Plus Jakarta Sans"', "sans-serif"],
+              mono: ['"JetBrains Mono"', "monospace"],
+            },
+            colors: {
+              canvas: "#FAFAFA",
+              surface: "#FFFFFF",
+              obsidian: "#111111",
+              charcoal: "#333333",
+              subtle: "#737373",
+              border: "#E5E5E5",
+              accent: "#252525",
+              primary: "#000000",
+            },
+            letterSpacing: {
+              tight: "-0.02em",
+              tighter: "-0.04em",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background-color: #fafafa;
+        color: #111111;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      .technical-grid {
+        background-size: 40px 40px;
+        background-image:
+          linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+        mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+      }
+      .premium-card {
+        background: #ffffff;
+        border: 1px solid #eaeaea;
+        box-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.02),
+          0 8px 16px -4px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .premium-card:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 4px 8px rgba(0, 0, 0, 0.03),
+          0 12px 24px -6px rgba(0, 0, 0, 0.06);
+        border-color: #d4d4d4;
+      }
+      .node-line {
+        stroke-dasharray: 4;
+        animation: dash 30s linear infinite;
+      }
+      @keyframes dash {
+        to {
+          stroke-dashoffset: -100;
+        }
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-geist"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-geist">
+      .font-geist {
+        font-family: "Geist", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-roboto"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-roboto">
+      .font-roboto {
+        font-family: "Roboto", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-montserrat"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-montserrat">
+      .font-montserrat {
+        font-family: "Montserrat", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-poppins"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-poppins">
+      .font-poppins {
+        font-family: "Poppins", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-playfair"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-playfair">
+      .font-playfair {
+        font-family: "Playfair Display", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-instrument-serif"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-instrument-serif">
+      .font-instrument-serif {
+        font-family: "Instrument Serif", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-merriweather"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-merriweather">
+      .font-merriweather {
+        font-family: "Merriweather", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-bricolage"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-bricolage">
+      .font-bricolage {
+        font-family: "Bricolage Grotesque", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-jakarta"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-jakarta">
+      .font-jakarta {
+        font-family: "Plus Jakarta Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-manrope"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-manrope">
+      .font-manrope {
+        font-family: "Manrope", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-space-grotesk"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-space-grotesk">
+      .font-space-grotesk {
+        font-family: "Space Grotesk", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-work-sans"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-work-sans">
+      .font-work-sans {
+        font-family: "Work Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-pt-serif"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-pt-serif">
+      .font-pt-serif {
+        font-family: "PT Serif", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-geist-mono"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-geist-mono">
+      .font-geist-mono {
+        font-family: "Geist Mono", monospace !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-space-mono"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-space-mono">
+      .font-space-mono {
+        font-family: "Space Mono", monospace !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-quicksand"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-quicksand">
+      .font-quicksand {
+        font-family: "Quicksand", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-nunito"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-nunito">
+      .font-nunito {
+        font-family: "Nunito", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-newsreader"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-newsreader">
+      .font-newsreader {
+        font-family: "Newsreader", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-google-sans-flex"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-google-sans-flex">
+      .font-google-sans-flex {
+        font-family: "Google Sans Flex", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-oswald"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-oswald">
+      .font-oswald {
+        font-family: "Oswald", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-dm-sans"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-dm-sans">
+      .font-dm-sans {
+        font-family: "DM Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-cormorant"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-cormorant">
+      .font-cormorant {
+        font-family: "Cormorant Garamond", serif !important;
+      }
+    </style>
+    <style>
+      .pricing-transition {
+        transition:
+          transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+          border-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+          background-color 500ms cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform, opacity, box-shadow;
+      }
+    </style>
+    <style>
+      @keyframes shimmer {
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      .shimmer-layer {
+        transform: translateX(-100%);
+      }
+      .group:hover .shimmer-layer {
+        animation: shimmer 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+    </style>
+  </head>
+
+  <body class="w-full relative bg-canvas">
+    <!-- Fixed Backgrounds -->
+    <div class="fixed inset-0 z-0 technical-grid pointer-events-none"></div>
+    <div id="canvas-container" class="fixed inset-0 z-0 opacity-100"></div>
+
+    <!-- Navigation -->
+    <header
+      class="fixed top-0 left-0 right-0 z-50 w-full px-6 py-5 md:px-12 flex justify-between items-center bg-canvas/90 backdrop-blur-md border-b border-border/50 transition-all duration-300"
+    >
+      <div class="flex items-center gap-2">
+        <div
+          class="w-5 h-5 bg-obsidian text-white flex items-center justify-center rounded-sm"
+        >
+          <span class="text-white font-mono text-sm font-bold">&lt;&gt;</span>
+        </div>
+        <span class="font-sans text-sm font-bold tracking-tight text-obsidian">
+          QBIT.LABS
+        </span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8">
+        <a
+          href="#work"
+          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
+        >
+          Work
+        </a>
+        <a
+          href="#services"
+          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
+        >
+          Services
+        </a>
+        <a
+          href="#process"
+          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
+        >
+          Process
+        </a>
+        <a
+          href="#faq"
+          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
+        >
+          FAQ
+        </a>
+        <a
+          href="#contact"
+          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
+        >
+          Contact
+        </a>
+      </nav>
+
+      <div class="flex items-center gap-5">
+        <a
+          href="#contact"
+          class="group relative isolate overflow-hidden bg-obsidian text-white text-xs font-semibold px-6 py-2.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.08)] ring-1 ring-white/10 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.04] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.25)] hover:ring-white/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-obsidian/20 focus:ring-offset-1"
+        >
+          <div
+            class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent z-10"
+          ></div>
+          <span class="relative z-20">Email us</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Content Wrapper -->
+    <div class="z-10 flex flex-col w-full relative">
+      <!-- HERO SECTION -->
+      <section
+        class="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-32 pb-20 gap-16"
+      >
+        <div class="max-w-2xl space-y-10 relative z-10">
+          <div class="space-y-6">
+            <h1
+              class="font-sans text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tighter text-obsidian leading-[0.95]"
+            >
+              AI-first MVPs
+              <br />
+              <span class="text-subtle"
+                >for founders who need to move fast.</span
+              >
+            </h1>
+            <p
+              class="max-w-xl font-sans text-base md:text-lg text-subtle leading-relaxed"
+            >
+              We build AI-first B2B SaaS MVPs for early-stage founders, solo
+              founders, and small startups - from idea, to prototype, to
+              deployed product in weeks.
+            </p>
+            <div
+              class="flex flex-wrap gap-3 text-[11px] font-medium text-subtle"
+            >
+              <span
+                class="px-3 py-1.5 rounded-full border border-border/70 bg-white"
+                >MERN + AI</span
+              >
+              <span
+                class="px-3 py-1.5 rounded-full border border-border/70 bg-white"
+                >4-person studio</span
+              >
+              <span
+                class="px-3 py-1.5 rounded-full border border-border/70 bg-white"
+                >Available globally</span
+              >
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4">
+            <a
+              href="#contact"
+              class="group relative isolate overflow-hidden bg-obsidian text-white text-sm font-semibold px-8 py-3.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.08)] ring-1 ring-white/10 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.03] hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.3)] hover:ring-white/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-obsidian/20 focus:ring-offset-2 flex items-center gap-2"
+            >
+              <div
+                class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent z-0 pointer-events-none"
+              ></div>
+              <span class="relative z-10">Email us</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-right relative z-10 transition-transform duration-300 group-hover:translate-x-1"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
+            <a
+              href="#work"
+              class="px-8 py-3.5 bg-white text-obsidian border border-border text-sm font-medium rounded shadow-sm transition-all duration-300 ease-out hover:bg-gray-50 hover:border-obsidian/40 hover:text-black hover:shadow-md active:scale-[0.97] active:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-obsidian/10 focus:ring-offset-2"
+            >
+              See case studies
+            </a>
+          </div>
+        </div>
+
+        <!-- Visual -->
+        <div
+          class="relative w-full max-w-lg aspect-square lg:aspect-[4/3] flex items-center justify-center"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-canvas via-white to-canvas opacity-50 blur-3xl"
+          ></div>
+          <div
+            class="premium-card w-full h-full p-6 relative overflow-hidden rounded-xl"
+          >
+            <div
+              class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-obsidian to-transparent"
+            ></div>
+            <!-- Mock UI: Node Graph -->
+            <div class="h-full w-full flex flex-col">
+              <div
+                class="flex justify-between items-center mb-8 border-b border-border/50 pb-4"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-border"></div>
+                  <span
+                    class="text-[10px] uppercase tracking-wider font-semibold text-subtle"
+                  >
+                    Studio Build Flow
+                  </span>
+                </div>
+                <div class="flex gap-2">
+                  <span class="w-12 h-1.5 rounded-full bg-border/50"></span>
+                </div>
+              </div>
+              <div class="flex-1 relative">
+                <!-- SVG Graph -->
+                <svg class="w-full h-full" viewBox="0 0 400 300">
+                  <style>
+                    .signal-path {
+                      stroke-dasharray: 60 400;
+                      stroke-dashoffset: 60;
+                      animation: signal-flow 6s linear infinite;
+                    }
+                    @keyframes signal-flow {
+                      0% {
+                        stroke-dashoffset: 60;
+                        opacity: 0;
+                      }
+                      5% {
+                        opacity: 1;
+                      }
+                      90% {
+                        stroke-dashoffset: -360;
+                        opacity: 1;
+                      }
+                      95% {
+                        opacity: 0;
+                      }
+                      100% {
+                        stroke-dashoffset: -360;
+                        opacity: 0;
+                      }
+                    }
+
+                    .node-context {
+                      animation: pulse-context 6s infinite ease-out;
+                      transform-origin: 50px 150px;
+                    }
+                    @keyframes pulse-context {
+                      0% {
+                        transform: scale(1);
+                        fill: #111;
+                      }
+                      5% {
+                        transform: scale(1.4);
+                        fill: #000;
+                      }
+                      15% {
+                        transform: scale(1);
+                        fill: #111;
+                      }
+                    }
+
+                    .node-assumptions {
+                      animation: pulse-assumptions 6s infinite ease-out;
+                      transform-origin: 190px 80px;
+                    }
+                    @keyframes pulse-assumptions {
+                      25% {
+                        stroke-width: 1.5;
+                        transform: scale(1);
+                      }
+                      30% {
+                        stroke-width: 2.5;
+                        transform: scale(1.05);
+                        stroke: #000;
+                      }
+                      40% {
+                        stroke-width: 1.5;
+                        transform: scale(1);
+                        stroke: #111;
+                      }
+                    }
+
+                    .node-evidence {
+                      animation: pulse-evidence 6s infinite ease-out;
+                      transform-origin: 280px 120px;
+                    }
+                    @keyframes pulse-evidence {
+                      55% {
+                        stroke-width: 1.5;
+                        transform: scale(1);
+                      }
+                      60% {
+                        stroke-width: 2.5;
+                        transform: scale(1.05);
+                        stroke: #000;
+                      }
+                      70% {
+                        stroke-width: 1.5;
+                        transform: scale(1);
+                        stroke: #111;
+                      }
+                    }
+
+                    .node-outcome {
+                      animation: pulse-outcome 6s infinite ease-out;
+                      transform-origin: 320px 150px;
+                    }
+                    @keyframes pulse-outcome {
+                      85% {
+                        transform: scale(1);
+                        fill: #111;
+                      }
+                      90% {
+                        transform: scale(1.25);
+                        fill: #000;
+                      }
+                      100% {
+                        transform: scale(1);
+                        fill: #111;
+                      }
+                    }
+
+                    .outcome-check {
+                      stroke-dasharray: 12;
+                      stroke-dashoffset: 12;
+                      animation: check-draw 6s linear infinite;
+                    }
+                    @keyframes check-draw {
+                      0%,
+                      88% {
+                        stroke-dashoffset: 12;
+                        opacity: 0;
+                      }
+                      92% {
+                        stroke-dashoffset: 0;
+                        opacity: 1;
+                      }
+                      100% {
+                        stroke-dashoffset: 0;
+                        opacity: 0;
+                      }
+                    }
+                  </style>
+
+                  <!-- Static Base Paths -->
+                  <path
+                    d="M50,150 C100,150 100,80 150,80"
+                    fill="none"
+                    stroke="#E5E5E5"
+                    stroke-width="2"
+                  ></path>
+                  <path
+                    d="M50,150 C100,150 100,220 150,220"
+                    fill="none"
+                    stroke="#E5E5E5"
+                    stroke-width="2"
+                  ></path>
+                  <path
+                    d="M150,80 C200,80 200,120 250,120"
+                    fill="none"
+                    stroke="#E5E5E5"
+                    stroke-width="2"
+                  ></path>
+                  <path
+                    d="M150,220 C200,220 200,180 250,180"
+                    fill="none"
+                    stroke="#E5E5E5"
+                    stroke-width="2"
+                  ></path>
+                  <path
+                    d="M250,120 L320,150"
+                    fill="none"
+                    stroke="#E5E5E5"
+                    stroke-width="2"
+                  ></path>
+                  <path
+                    d="M250,180 L320,150"
+                    fill="none"
+                    stroke="#E5E5E5"
+                    stroke-width="2"
+                  ></path>
+
+                  <!-- Active Signal Path -->
+                  <path
+                    d="M50,150 C100,150 100,80 150,80 C200,80 200,120 250,120 L320,150"
+                    fill="none"
+                    stroke="#111"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    class="signal-path"
+                  ></path>
+
+                  <!-- Nodes & Text -->
+                  <circle
+                    cx="50"
+                    cy="150"
+                    r="6"
+                    fill="#111"
+                    class="node-context"
+                  ></circle>
+                  <text
+                    x="50"
+                    y="175"
+                    text-anchor="middle"
+                    font-family='"Plus Jakarta Sans", sans-serif'
+                    font-size="10"
+                    font-weight="600"
+                    fill="#111"
+                  >
+                    Discovery
+                  </text>
+
+                  <rect
+                    x="150"
+                    y="70"
+                    width="80"
+                    height="20"
+                    rx="4"
+                    fill="white"
+                    stroke="#111"
+                    stroke-width="1.5"
+                    class="node-assumptions"
+                  ></rect>
+                  <text
+                    x="190"
+                    y="83"
+                    text-anchor="middle"
+                    font-family='"Plus Jakarta Sans", sans-serif'
+                    font-size="9"
+                    font-weight="600"
+                    fill="#111"
+                    dy="1"
+                  >
+                    Prototype
+                  </text>
+
+                  <rect
+                    x="150"
+                    y="210"
+                    width="80"
+                    height="20"
+                    rx="4"
+                    fill="white"
+                    stroke="#E5E5E5"
+                  ></rect>
+                  <rect
+                    x="250"
+                    y="170"
+                    width="60"
+                    height="20"
+                    rx="4"
+                    fill="#F5F5F7"
+                  ></rect>
+
+                  <rect
+                    x="250"
+                    y="110"
+                    width="60"
+                    height="20"
+                    rx="4"
+                    fill="white"
+                    stroke="#111"
+                    stroke-width="1.5"
+                    class="node-evidence"
+                  ></rect>
+                  <text
+                    x="280"
+                    y="123"
+                    text-anchor="middle"
+                    font-family='"Plus Jakarta Sans", sans-serif'
+                    font-size="9"
+                    font-weight="600"
+                    fill="#111"
+                    dy="1"
+                  >
+                    Build
+                  </text>
+
+                  <circle
+                    cx="320"
+                    cy="150"
+                    r="12"
+                    fill="#111"
+                    class="node-outcome"
+                  ></circle>
+                  <path
+                    d="M316 150l3 3 5-5"
+                    stroke="white"
+                    stroke-width="2"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="outcome-check"
+                  ></path>
+                  <text
+                    x="320"
+                    y="178"
+                    text-anchor="middle"
+                    font-family='"Plus Jakarta Sans", sans-serif'
+                    font-size="10"
+                    font-weight="600"
+                    fill="#111"
+                  >
+                    Launch
+                  </text>
+                </svg>
+
+                <!-- Floating Label -->
+                <div
+                  class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-obsidian text-white text-[10px] font-medium px-3 py-1.5 rounded shadow-xl"
+                >
+                  Typical MVP: 4-8 weeks
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOGOS -->
+      <section
+        id="services"
+        class="py-24 px-6 md:px-12 lg:px-20 border-y border-border/60 bg-white"
+      >
+        <div class="max-w-7xl mx-auto">
+          <div class="max-w-2xl mb-16">
+            <span
+              class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
+              >Services</span
+            >
+            <h2
+              class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4 leading-[1.1]"
+            >
+              Three ways to take an AI MVP from idea to launch.
+            </h2>
+            <p class="text-subtle text-base leading-relaxed max-w-xl">
+              We help founders validate the problem, design the product, and
+              ship the first working version without unnecessary process
+              overhead.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="premium-card rounded-xl p-8 h-full flex flex-col">
+              <div class="mb-6">
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-semibold tracking-wide text-subtle uppercase"
+                  >MVP Discovery Sprint</span
+                >
+              </div>
+              <h3 class="text-xl font-semibold text-obsidian mb-3">
+                Validate the right product before you build it.
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed mb-6">
+                For founders who need clarity on scope, user flow, and technical
+                feasibility before committing build budget.
+              </p>
+              <div class="space-y-3 text-sm text-subtle mb-8 flex-1">
+                <p>
+                  Deliverables: problem framing, user journey, MVP scope, tech
+                  recommendations, and build plan.
+                </p>
+                <p>
+                  Outcome: a clear roadmap your team can execute or hand to us
+                  for implementation.
+                </p>
+              </div>
+              <div
+                class="text-xs font-semibold tracking-wide text-obsidian uppercase"
+              >
+                Best for pre-build validation
+              </div>
+            </div>
+
+            <div
+              class="premium-card rounded-xl p-8 h-full flex flex-col border-obsidian shadow-[0_20px_50px_rgba(0,0,0,0.06)]"
+            >
+              <div class="mb-6">
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-full border border-obsidian bg-obsidian text-white text-[11px] font-semibold tracking-wide uppercase"
+                  >Prototype MVP</span
+                >
+              </div>
+              <h3 class="text-xl font-semibold text-obsidian mb-3">
+                Turn the core workflow into something founders can test.
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed mb-6">
+                For teams that already know the problem and need a working
+                prototype to demo, validate, or pitch.
+              </p>
+              <div class="space-y-3 text-sm text-subtle mb-8 flex-1">
+                <p>
+                  Deliverables: clickable UX, core screens, authentication, AI
+                  workflow, and deployment setup.
+                </p>
+                <p>
+                  Outcome: a polished prototype that proves the product
+                  direction quickly.
+                </p>
+              </div>
+              <div
+                class="text-xs font-semibold tracking-wide text-obsidian uppercase"
+              >
+                Best for demos and investor conversations
+              </div>
+            </div>
+
+            <div class="premium-card rounded-xl p-8 h-full flex flex-col">
+              <div class="mb-6">
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-semibold tracking-wide text-subtle uppercase"
+                  >Launch MVP</span
+                >
+              </div>
+              <h3 class="text-xl font-semibold text-obsidian mb-3">
+                Ship the first production-ready version with confidence.
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed mb-6">
+                For startups ready to launch a real product with the right
+                stack, integrations, and deployment discipline.
+              </p>
+              <div class="space-y-3 text-sm text-subtle mb-8 flex-1">
+                <p>
+                  Deliverables: end-to-end build, API integrations, admin tools,
+                  analytics, QA, and handoff.
+                </p>
+                <p>
+                  Outcome: a deployed MVP your team can improve after launch
+                  without rework.
+                </p>
+              </div>
+              <div
+                class="text-xs font-semibold tracking-wide text-obsidian uppercase"
+              >
+                Best for launch-ready execution
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="process"
+        class="relative w-full bg-canvas border-b border-border/60 py-24 px-6 md:px-12 lg:px-20"
+      >
+        <div class="max-w-7xl mx-auto">
+          <div class="max-w-2xl mb-14">
+            <span
+              class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
+              >Process</span
+            >
+            <h2
+              class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4 leading-[1.1]"
+            >
+              A simple four-step studio process.
+            </h2>
+            <p class="text-subtle text-base leading-relaxed max-w-xl">
+              We keep the engagement tight, the build cycle visible, and the
+              handoff clean so founders can move quickly without losing control.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div class="premium-card rounded-xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <span
+                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
+                  >01</span
+                >
+                <span
+                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
+                  >1</span
+                >
+              </div>
+              <h3 class="text-lg font-semibold text-obsidian mb-3">
+                Discovery &amp; Scope
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed">
+                We clarify the problem, user, and MVP scope, then define what is
+                worth building first.
+              </p>
+            </div>
+            <div class="premium-card rounded-xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <span
+                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
+                  >02</span
+                >
+                <span
+                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
+                  >2</span
+                >
+              </div>
+              <h3 class="text-lg font-semibold text-obsidian mb-3">
+                Wireframes &amp; Architecture
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed">
+                We map the product flow, key screens, and system architecture
+                before any heavy development starts.
+              </p>
+            </div>
+            <div class="premium-card rounded-xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <span
+                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
+                  >03</span
+                >
+                <span
+                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
+                  >3</span
+                >
+              </div>
+              <h3 class="text-lg font-semibold text-obsidian mb-3">
+                Weekly MVP Builds
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed">
+                We ship in small, visible increments so you can review progress
+                and make decisions weekly.
+              </p>
+            </div>
+            <div class="premium-card rounded-xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <span
+                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
+                  >04</span
+                >
+                <span
+                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
+                  >4</span
+                >
+              </div>
+              <h3 class="text-lg font-semibold text-obsidian mb-3">
+                Launch &amp; Handoff
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed">
+                We deploy the product, document the system, and hand over the
+                source code and next steps cleanly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="work"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
+      >
+        <div class="max-w-7xl mx-auto">
+          <div
+            class="flex flex-col md:flex-row items-end justify-between mb-16 gap-8"
+          >
+            <div class="max-w-2xl">
+              <span
+                class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
+                >Selected Work</span
+              >
+              <h2
+                class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4"
+              >
+                Case studies from recent MVP builds.
+              </h2>
+              <p class="font-sans text-subtle text-base leading-relaxed">
+                Representative work across B2B SaaS, internal tools, and AI
+                workflows. Each engagement focused on speed, clarity, and
+                deployable outcomes.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div
+              class="md:col-span-7 group relative bg-white border border-border rounded-xl overflow-hidden hover:border-obsidian/30 transition-all duration-500"
+            >
+              <div
+                class="relative z-10 p-8 md:p-10 h-full flex flex-col justify-between"
+              >
+                <div>
+                  <div class="flex items-start justify-between gap-6 mb-6">
+                    <div class="max-w-md">
+                      <div
+                        class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-semibold tracking-wide uppercase text-subtle mb-3"
+                      >
+                        FEATURED PROJECT
+                      </div>
+                      <h3 class="text-2xl font-semibold text-obsidian mb-3">
+                        FairCouncil
+                      </h3>
+                      <p class="text-subtle leading-relaxed mb-4">
+                        Solved unchecked AI bias by building a council of LLMs
+                        that dynamically elects a fairness-adjusted chairperson
+                        — instead of trusting one model blindly. Final answer is
+                        selected by the least-biased, best-performing model.
+                      </p>
+                    </div>
+                    <div class="text-right">
+                      <div
+                        class="text-xs border border-border px-3 py-1 rounded-full uppercase tracking-wider text-subtle bg-canvas whitespace-nowrap max-w-max"
+                      >
+                        AI / Multi-LLM
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-subtle mb-6"
+                  >
+                    <div class="rounded-lg border border-border bg-canvas p-4">
+                      <div
+                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1"
+                      >
+                        Problem
+                      </div>
+                      <div>Single-model bias, no fairness layer.</div>
+                    </div>
+                    <div class="rounded-lg border border-border bg-canvas p-4">
+                      <div
+                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1"
+                      >
+                        Built
+                      </div>
+                      <div>
+                        Multi-LLM pipeline, bias scoring, adaptive chairperson.
+                      </div>
+                    </div>
+                    <div class="rounded-lg border border-border bg-canvas p-4">
+                      <div
+                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1"
+                      >
+                        Stack
+                      </div>
+                      <div>FastAPI, React, Gemini, Groq, LLaMA.</div>
+                    </div>
+                    <div class="rounded-lg border border-border bg-canvas p-4">
+                      <div
+                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1"
+                      >
+                        Scoring formula
+                      </div>
+                      <div>Perf score − λ × Bias score</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                  <a
+                    href="https://github.com/maryu0/fair-llm-council.git"
+                    target="_blank"
+                    rel="noopener"
+                    class="px-4 py-2 rounded-full bg-obsidian text-white text-xs font-semibold"
+                    >Repo</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5 grid gap-6">
+              <div
+                class="group relative bg-white border border-border rounded-xl overflow-hidden hover:border-obsidian/30 transition-all duration-500"
+              >
+                <div class="p-8">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div
+                      class="w-10 h-10 bg-canvas border border-border rounded flex items-center justify-center text-obsidian shadow-sm"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M21 12a9 9 0 1 1-9-9"></path>
+                        <path d="M12 7v5l3 3"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 class="text-lg font-semibold text-obsidian">
+                        LexiRisk
+                      </h4>
+                      <div
+                        class="text-xs uppercase tracking-[0.18em] text-subtle"
+                      >
+                        Legal workflow
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-sm text-subtle leading-relaxed mb-4">
+                    Solved slow manual contract review by turning legal PDFs
+                    into an AI-assisted clause-by-clause risk analysis — with
+                    plain-English summaries and exportable reports.
+                  </p>
+                  <div class="space-y-2 text-sm text-subtle mb-4">
+                    <p>
+                      <strong class="text-obsidian">Built:</strong> PDF upload,
+                      clause classifier, risk scorer, PDF report export.
+                    </p>
+                    <p>
+                      <strong class="text-obsidian">Stack:</strong> React,
+                      Express, FastAPI, BART, scikit-learn.
+                    </p>
+                    <p>
+                      <strong class="text-obsidian">Timeline:</strong> Approx. 4
+                      weeks.
+                    </p>
+                  </div>
+                  <div class="flex gap-3">
+                    <a
+                      href="https://github.com/maryu0/LexiRisk.git"
+                      target="_blank"
+                      rel="noopener"
+                      class="px-4 py-2 rounded-full bg-obsidian text-white text-xs font-semibold"
+                      >Repo</a
+                    >
+                    <a
+                      href="#"
+                      class="px-4 py-2 rounded-full border border-border text-xs font-semibold text-obsidian bg-white"
+                      >Use cases</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="group relative bg-white border border-border rounded-xl overflow-hidden hover:border-obsidian/30 transition-all duration-500"
+              >
+                <div class="p-8">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div
+                      class="w-10 h-10 bg-canvas border border-border rounded flex items-center justify-center text-obsidian shadow-sm"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M3 12h18"></path>
+                        <path d="M12 3v18"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 class="text-lg font-semibold text-obsidian">
+                        Clarivo
+                      </h4>
+                      <div
+                        class="text-xs uppercase tracking-[0.18em] text-subtle"
+                      >
+                        Speech therapy AI
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-sm text-subtle leading-relaxed mb-4">
+                    Solved inaccessible speech therapy by building an AI tool
+                    that listens, scores pronunciation in real time, and gives
+                    encouraging feedback — like a therapist in your pocket.
+                  </p>
+                  <div class="space-y-2 text-sm text-subtle mb-4">
+                    <p>
+                      <strong class="text-obsidian">Built:</strong> Whisper
+                      transcription, WER/CER/semantic scoring, TTS guidance.
+                    </p>
+                    <p>
+                      <strong class="text-obsidian">Stack:</strong> React,
+                      Node.js, Flask, OpenAI Whisper, BERT.
+                    </p>
+                    <p>
+                      <strong class="text-obsidian">Timeline:</strong> Ongoing.
+                    </p>
+                  </div>
+                  <div class="flex gap-3">
+                    <a
+                      href="https://github.com/maryu0/Clarivo_ML.git"
+                      target="_blank"
+                      rel="noopener"
+                      class="px-4 py-2 rounded-full bg-obsidian text-white text-xs font-semibold"
+                      >Repo</a
+                    >
+                    <a
+                      href="#"
+                      class="px-4 py-2 rounded-full border border-border text-xs font-semibold text-obsidian bg-white"
+                      >Differentiators</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="why-us"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-white"
+      >
+        <div class="max-w-7xl mx-auto">
+          <div class="max-w-2xl mb-12">
+            <span
+              class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
+              >Why Us</span
+            >
+            <h2
+              class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4"
+            >
+              Why founders choose Qbit Labs.
+            </h2>
+            <p class="text-subtle text-base leading-relaxed">
+              A small, focused studio is easier to trust when you need momentum,
+              clarity, and direct ownership of the build.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
+            <div class="premium-card rounded-xl p-6">
+              <h3 class="font-semibold text-obsidian mb-2">
+                AI + full-stack delivery
+              </h3>
+              <p class="text-sm text-subtle">
+                One team owns product, frontend, backend, and AI integration end
+                to end.
+              </p>
+            </div>
+            <div class="premium-card rounded-xl p-6">
+              <h3 class="font-semibold text-obsidian mb-2">
+                Fast iteration cycles
+              </h3>
+              <p class="text-sm text-subtle">
+                We work in short loops so you can review the product while it is
+                still moving.
+              </p>
+            </div>
+            <div class="premium-card rounded-xl p-6">
+              <h3 class="font-semibold text-obsidian mb-2">
+                End-to-end MVP execution
+              </h3>
+              <p class="text-sm text-subtle">
+                From scope to launch, we stay responsible for the whole outcome,
+                not just a slice.
+              </p>
+            </div>
+            <div class="premium-card rounded-xl p-6">
+              <h3 class="font-semibold text-obsidian mb-2">
+                Clean handoff, no lock-in
+              </h3>
+              <p class="text-sm text-subtle">
+                You get the source code, deployment notes, and a setup that your
+                team can own.
+              </p>
+            </div>
+            <div class="premium-card rounded-xl p-6">
+              <h3 class="font-semibold text-obsidian mb-2">
+                Small, focused team
+              </h3>
+              <p class="text-sm text-subtle">
+                You work directly with the people building the product, not a
+                layered agency structure.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="pricing"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border bg-white"
+      >
+        <div class="max-w-7xl mx-auto">
+          <div class="max-w-2xl mb-16">
+            <span
+              class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
+              >Engagement Models</span
+            >
+            <h2
+              class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4"
+            >
+              Pricing that matches studio work, not subscriptions.
+            </h2>
+            <p class="text-subtle text-base leading-relaxed max-w-xl">
+              Every project is scoped around the outcome you need. Choose the
+              format that best matches where you are right now.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="premium-card rounded-xl p-8 flex flex-col">
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-semibold tracking-wide text-subtle uppercase mb-6"
+                >Discovery Sprint</span
+              >
+              <h3 class="text-xl font-semibold text-obsidian mb-3">
+                Starting at $1,500
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed mb-6">
+                For founders who need scope, direction, and a clear build plan
+                before committing to development.
+              </p>
+              <ul class="space-y-3 text-sm text-subtle flex-1 mb-8">
+                <li>Problem framing and opportunity map</li>
+                <li>MVP scope and feature prioritization</li>
+                <li>Architecture recommendation</li>
+                <li>Delivery plan and timeline</li>
+              </ul>
+              <a
+                href="#contact"
+                class="px-4 py-3 rounded-lg bg-obsidian text-white text-center text-sm font-semibold"
+                >Email us</a
+              >
+            </div>
+
+            <div
+              class="premium-card rounded-xl p-8 flex flex-col border-obsidian shadow-[0_20px_50px_rgba(0,0,0,0.06)]"
+            >
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full border border-obsidian bg-obsidian text-white text-[11px] font-semibold tracking-wide uppercase mb-6"
+                >Prototype MVP</span
+              >
+              <h3 class="text-xl font-semibold text-obsidian mb-3">
+                Typical range $4,000-$8,000
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed mb-6">
+                For early-stage teams that need a polished prototype with the
+                core user journey and AI workflow working end to end.
+              </p>
+              <ul class="space-y-3 text-sm text-subtle flex-1 mb-8">
+                <li>Clickable product experience</li>
+                <li>Core backend and AI integration</li>
+                <li>Authentication and basic admin tools</li>
+                <li>Deployment-ready handoff</li>
+              </ul>
+              <a
+                href="#contact"
+                class="px-4 py-3 rounded-lg bg-white border border-border text-obsidian text-center text-sm font-semibold"
+                >Email us</a
+              >
+            </div>
+
+            <div class="premium-card rounded-xl p-8 flex flex-col">
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-semibold tracking-wide text-subtle uppercase mb-6"
+                >Custom MVP Build</span
+              >
+              <h3 class="text-xl font-semibold text-obsidian mb-3">
+                Custom quote
+              </h3>
+              <p class="text-sm text-subtle leading-relaxed mb-6">
+                For founders ready to launch a fuller product with integrations,
+                iterative development, and a clean transition to ownership.
+              </p>
+              <ul class="space-y-3 text-sm text-subtle flex-1 mb-8">
+                <li>End-to-end product build</li>
+                <li>Integrations and workflow automation</li>
+                <li>Analytics, QA, and release support</li>
+                <li>Source code, docs, and handoff</li>
+              </ul>
+              <a
+                href="#contact"
+                class="px-4 py-3 rounded-lg bg-obsidian text-white text-center text-sm font-semibold"
+                >Email us</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="faq"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
+      >
+        <div class="max-w-4xl mx-auto">
+          <div class="mb-12">
+            <span
+              class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
+              >FAQ</span
+            >
+            <h2
+              class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4"
+            >
+              Common questions from founders.
+            </h2>
+          </div>
+          <div class="space-y-4">
+            <details class="premium-card rounded-xl p-6 group">
+              <summary
+                class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian"
+              >
+                Who do you work with?<span
+                  class="text-subtle group-open:rotate-45 transition-transform"
+                  >+</span
+                >
+              </summary>
+              <p class="mt-4 text-sm text-subtle leading-relaxed">
+                We work with international early-stage founders, solo founders,
+                and small startups, especially teams building B2B SaaS products
+                with AI inside the workflow.
+              </p>
+            </details>
+            <details class="premium-card rounded-xl p-6 group">
+              <summary
+                class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian"
+              >
+                What does an MVP include?<span
+                  class="text-subtle group-open:rotate-45 transition-transform"
+                  >+</span
+                >
+              </summary>
+              <p class="mt-4 text-sm text-subtle leading-relaxed">
+                A typical MVP includes the core product flow, essential backend
+                logic, AI integration where needed, deployment setup, and a
+                clear handoff.
+              </p>
+            </details>
+            <details class="premium-card rounded-xl p-6 group">
+              <summary
+                class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian"
+              >
+                How long does it take?<span
+                  class="text-subtle group-open:rotate-45 transition-transform"
+                  >+</span
+                >
+              </summary>
+              <p class="mt-4 text-sm text-subtle leading-relaxed">
+                Discovery sprints can take a few days. Prototype and launch
+                builds usually land in the 4-8 week range depending on scope.
+              </p>
+            </details>
+            <details class="premium-card rounded-xl p-6 group">
+              <summary
+                class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian"
+              >
+                Do you work with non-technical founders?<span
+                  class="text-subtle group-open:rotate-45 transition-transform"
+                  >+</span
+                >
+              </summary>
+              <p class="mt-4 text-sm text-subtle leading-relaxed">
+                Yes. A large part of our work is helping non-technical founders
+                make the right product and architecture decisions early.
+              </p>
+            </details>
+            <details class="premium-card rounded-xl p-6 group">
+              <summary
+                class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian"
+              >
+                Do we get the source code?<span
+                  class="text-subtle group-open:rotate-45 transition-transform"
+                  >+</span
+                >
+              </summary>
+              <p class="mt-4 text-sm text-subtle leading-relaxed">
+                Yes. The codebase, deployment notes, and essential documentation
+                are handed over cleanly so your team can own the product.
+              </p>
+            </details>
+            <details class="premium-card rounded-xl p-6 group">
+              <summary
+                class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian"
+              >
+                Can you add AI features into an existing product?<span
+                  class="text-subtle group-open:rotate-45 transition-transform"
+                  >+</span
+                >
+              </summary>
+              <p class="mt-4 text-sm text-subtle leading-relaxed">
+                Yes. We can add AI workflows, automations, or copilots to an
+                existing product without reworking the whole stack.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        class="py-24 px-6 md:px-12 lg:px-20 bg-obsidian text-white relative overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 opacity-10"
+          style="
+            background-image: radial-gradient(#fff 1px, transparent 1px);
+            background-size: 32px 32px;
+          "
+        ></div>
+        <div class="max-w-5xl mx-auto relative z-10">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <span
+                class="text-[11px] font-semibold tracking-[0.2em] uppercase text-white/60 block mb-3"
+                >Final CTA</span
+              >
+              <h2
+                class="text-4xl md:text-5xl font-semibold tracking-tighter mb-6 leading-[1.05]"
+              >
+                Have an idea, prototype, or early product that needs an
+                AI-powered MVP?
+              </h2>
+              <p class="text-white/60 text-base leading-relaxed max-w-xl">
+                Email us and we’ll map the fastest path from idea to a
+                deployable product.
+              </p>
+            </div>
+            <div class="lg:text-right">
+              <a
+                href="mailto:hello@qbitlabs.in"
+                class="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white text-obsidian text-sm font-semibold shadow-lg shadow-black/20"
+                >Email us</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="bg-white py-20 px-6 md:px-12 lg:px-20">
+        <div
+          class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-12"
+        >
+          <div class="max-w-xs space-y-6">
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 bg-obsidian rounded-sm"></div>
+              <span class="font-bold text-sm tracking-tight text-obsidian"
+                >QBIT LABS</span
+              >
+            </div>
+            <p class="text-xs text-subtle leading-relaxed">
+              Boutique AI-first MVP studio based in Mumbai, India. Available
+              globally for early-stage founders and small startups.
+            </p>
+            <div class="text-[10px] text-border">© 2026 Qbit Labs</div>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+            <div class="space-y-4">
+              <h4 class="text-xs font-bold text-obsidian">Work</h4>
+              <ul class="space-y-2 text-xs text-subtle">
+                <li>
+                  <a href="#services" class="hover:text-obsidian">Services</a>
+                </li>
+                <li>
+                  <a href="#process" class="hover:text-obsidian">Process</a>
+                </li>
+                <li>
+                  <a href="#pricing" class="hover:text-obsidian">Pricing</a>
+                </li>
+              </ul>
+            </div>
+            <div class="space-y-4">
+              <h4 class="text-xs font-bold text-obsidian">Connect</h4>
+              <ul class="space-y-2 text-xs text-subtle">
+                <li>
+                  <a
+                    href="https://github.com/qbit-labs"
+                    class="hover:text-obsidian"
+                    >GitHub</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/qbit-labs"
+                    class="hover:text-obsidian"
+                    >LinkedIn</a
+                  >
+                </li>
+                <li>
+                  <a href="mailto:hello@qbitlabs.in" class="hover:text-obsidian"
+                    >Email</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="space-y-4">
+              <h4 class="text-xs font-bold text-obsidian">Contact</h4>
+              <ul class="space-y-2 text-xs text-subtle">
+                <li>
+                  <a href="#contact" class="hover:text-obsidian">Email us</a>
+                </li>
+                <li><a href="#faq" class="hover:text-obsidian">FAQ</a></li>
+                <li><span>Mumbai, India</span></li>
+              </ul>
+            </div>
+            <div class="space-y-4">
+              <h4 class="text-xs font-bold text-obsidian">Studio</h4>
+              <ul class="space-y-2 text-xs text-subtle">
+                <li><span>AI-first MVP development</span></li>
+                <li><span>MERN + AI</span></li>
+                <li><span>Available globally</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Shaders -->
+    <script type="x-shader/x-vertex" id="vertexShader">
+      uniform float uTime;
+      uniform float uDistortion;
+      uniform float uSize;
+      uniform vec2 uMouse;
+      varying float vNoise;
+
+      // Simplex Noise
+      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+      vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+      float snoise(vec3 v) {
+          const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+          const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+          vec3 i  = floor(v + dot(v, C.yyy) );
+          vec3 x0 = v - i + dot(i, C.xxx) ;
+          vec3 g = step(x0.yzx, x0.xyz);
+          vec3 l = 1.0 - g;
+          vec3 i1 = min( g.xyz, l.zxy );
+          vec3 i2 = max( g.xyz, l.zxy );
+          vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+          vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+          vec3 x3 = x0 - 1.0 + 3.0 * C.xxx;
+          i = mod289(i);
+          vec4 p = permute( permute( permute(
+                      i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+                  + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+                  + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+          float n_ = 1.0/7.0;
+          vec3  ns = n_ * D.wyz - D.xzx;
+          vec4 j = p - 49.0 * floor(p * ns.z *ns.z);
+          vec4 x_ = floor(j * ns.z);
+          vec4 y_ = floor(j - 7.0 * x_ );
+          vec4 x = x_ *ns.x + ns.yyyy;
+          vec4 y = y_ *ns.x + ns.yyyy;
+          vec4 h = 1.0 - abs(x) - abs(y);
+          vec4 b0 = vec4( x.xy, y.xy );
+          vec4 b1 = vec4( x.zw, y.zw );
+          vec4 s0 = floor(b0)*2.0 + 1.0;
+          vec4 s1 = floor(b1)*2.0 + 1.0;
+          vec4 sh = -step(h, vec4(0.0));
+          vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+          vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+          vec3 p0 = vec3(a0.xy,h.x);
+          vec3 p1 = vec3(a0.zw,h.y);
+          vec3 p2 = vec3(a1.xy,h.z);
+          vec3 p3 = vec3(a1.zw,h.w);
+          vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+          p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+          vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+          m = m * m;
+          return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
+      }
+
+      void main() {
+          vec3 pos = position;
+          float noise = snoise(vec3(pos.x * 0.5 + uTime * 0.15, pos.y * 0.5, pos.z * 0.5));
+          vNoise = noise;
+          vec3 newPos = pos + (normal * noise * uDistortion);
+          float dist = distance(uMouse * 10.0, newPos.xy);
+          float interaction = smoothstep(6.0, 0.0, dist);
+          newPos.z += interaction * 1.5;
+          vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
+          gl_Position = projectionMatrix * mvPosition;
+          gl_PointSize = uSize * (20.0 / -mvPosition.z);
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentShader">
+      uniform vec3 uColor;
+      varying float vNoise;
+      void main() {
+          vec2 center = gl_PointCoord - vec2(0.5);
+          float dist = length(center);
+          if (dist > 0.45) discard;
+          float alpha = 1.0;
+          vec3 color1 = uColor;
+          vec3 color2 = vec3(0.25, 0.35, 0.45);
+          vec3 finalColor = mix(color1, color2, vNoise * 0.5 + 0.5);
+          gl_FragColor = vec4(finalColor, alpha);
+      }
+    </script>
+
+    <script>
+      lucide.createIcons();
+
+      const container = document.getElementById("canvas-container");
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0xf5f5f7, 0.04);
+
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100,
+      );
+      camera.position.set(0, 0, 20);
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      const objectGroup = new THREE.Group();
+      scene.add(objectGroup);
+
+      const geometry = new THREE.BoxGeometry(9, 9, 9, 40, 40, 40);
+      const uniforms = {
+        uTime: { value: 0 },
+        uDistortion: { value: 0.0 },
+        uSize: { value: 1.8 },
+        uColor: { value: new THREE.Color("#0F172A") },
+        uMouse: { value: new THREE.Vector2(0, 0) },
+      };
+
+      const material = new THREE.ShaderMaterial({
+        vertexShader: document.getElementById("vertexShader").textContent,
+        fragmentShader: document.getElementById("fragmentShader").textContent,
+        uniforms,
+        transparent: true,
+        blending: THREE.NormalBlending,
+      });
+
+      objectGroup.add(new THREE.Points(geometry, material));
+
+      let time = 0;
+      let mouseX = 0;
+      let mouseY = 0;
+
+      function adjustLayout() {
+        if (window.innerWidth < 1024) {
+          objectGroup.position.set(4, 5, -8);
+          objectGroup.scale.set(0.65, 0.65, 0.65);
+        } else {
+          objectGroup.position.set(0, 2.5, 0);
+          objectGroup.scale.set(0.65, 0.65, 0.65);
+        }
+      }
+
+      document.addEventListener("mousemove", (e) => {
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        uniforms.uMouse.value.x += (mouseX - uniforms.uMouse.value.x) * 0.03;
+        uniforms.uMouse.value.y += (mouseY - uniforms.uMouse.value.y) * 0.03;
+      });
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        adjustLayout();
+      });
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          const scrollY = window.scrollY;
+          objectGroup.rotation.z = scrollY * 0.0005;
+          objectGroup.position.y =
+            (window.innerWidth < 1024 ? 5 : 2.5) + scrollY * 0.005;
+
+          const header = document.querySelector("header");
+          if (!header) return;
+          if (scrollY > 50) {
+            header.classList.add("shadow-sm");
+            header.classList.replace("bg-canvas/90", "bg-white/90");
+          } else {
+            header.classList.remove("shadow-sm");
+            header.classList.replace("bg-white/90", "bg-canvas/90");
+          }
+        },
+        { passive: true },
+      );
+
+      adjustLayout();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        time += 0.008;
+        objectGroup.rotation.y = time * 0.2;
+        uniforms.uTime.value = time;
+        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.02;
+        camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.02;
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+  </body>
+</html>
