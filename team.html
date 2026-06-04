@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qbit Labs | Our Team</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', "sans-serif"],
+              mono: ['"JetBrains Mono"', "monospace"],
+            },
+            colors: {
+              obsidian: "#111111",
+              cardBg: "#121212",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        margin: 0;
+        background-color: #050505;
+        color: #ffffff;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      .dark-technical-grid {
+        background-size: 40px 40px;
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      }
+      .card-3d {
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
+        transition: transform 550ms cubic-bezier(0.25, 1, 0.5, 1), opacity 550ms ease, border-color 300ms ease;
+      }
+      .card-dragging {
+        transition: none !important;
+        cursor: grabbing !important;
+      }
+    </style>
+  </head>
+  <body class="w-full min-h-screen relative flex flex-col justify-between items-center py-8 px-6 overflow-y-auto overflow-x-hidden">
+    <!-- Ambient glowing backgrounds -->
+    <div class="fixed inset-0 z-0 dark-technical-grid pointer-events-none"></div>
+    <div class="absolute top-[20%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-white/[0.01] rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+    <!-- Header Navigation -->
+    <header class="w-full max-w-6xl mx-auto flex justify-between items-center z-20 relative mb-4">
+      <a href="portfolio.html" class="flex items-center gap-2 group">
+        <div class="w-5 h-5 bg-white text-black flex items-center justify-center rounded-sm transition-transform group-hover:-translate-x-0.5">
+          <!-- Inline chevron left SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </div>
+        <span class="font-sans text-xs font-bold tracking-tight text-white/80 group-hover:text-white transition-colors">
+          Back to Studio
+        </span>
+      </a>
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 bg-white/10 text-white flex items-center justify-center rounded-sm">
+          <span class="text-white font-mono text-xs font-bold">&lt;&gt;</span>
+        </div>
+        <span class="font-sans text-xs font-bold tracking-tight text-white/90">
+          QBIT.LABS / TEAM
+        </span>
+      </div>
+    </header>
+
+    <!-- Main Stack UI -->
+    <main class="w-full flex-1 flex flex-col items-center justify-center z-10 relative my-4">
+      <div class="text-center max-w-lg mb-6">
+        <span class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase font-mono block mb-2">Meet the architects</span>
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tighter text-white mb-2 font-sans">Our Core Team</h1>
+        <p class="text-xs text-white/50 leading-relaxed font-sans">
+          The builders, designers, and engineers behind Qbit Labs. Swipe, drag, or use arrow keys to navigate the stack.
+        </p>
+      </div>
+
+      <!-- Card Container Area (Slightly adjusted padding and relative positioning to prevent cutoff) -->
+      <div id="card-stack-container" class="relative w-full max-w-[560px] flex items-center justify-center select-none outline-none py-12" style="height: 440px;" tabindex="0">
+        <!-- Cards are dynamically rendered here -->
+      </div>
+
+      <!-- Navigation Indicators & Controls -->
+      <div class="mt-4 flex flex-col items-center gap-4">
+        <!-- Dots indicators -->
+        <div id="dots-container" class="flex items-center gap-2.5">
+          <!-- Dots are rendered here -->
+        </div>
+        
+        <!-- Controls Help info -->
+        <div class="flex items-center gap-4 text-[9px] text-white/30 font-mono tracking-wider">
+          <span class="flex items-center gap-1">DRAG / SWIPE</span>
+          <span class="w-1 h-1 rounded-full bg-white/10"></span>
+          <span class="flex items-center gap-1">ARROW KEYS</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-6xl mx-auto text-center mt-6 z-20 relative">
+      <div class="text-[9px] text-white/20 font-mono">© 2026 Qbit Labs. Built for early-stage MVPs.</div>
+    </footer>
+
+    <!-- Script to run the CardStack interactive state -->
+    <script>
+      // Team Data matched directly with user data
+      const teamMembers = [
+        {
+          id: "ayush-kumar",
+          title: "Ayush Kumar",
+          designation: "Founder / AI Lead",
+          description: "Architects intelligent systems and leads AI strategy, turning research into scalable real-world products.",
+          initials: "AK",
+          socials: {
+            linkedin: "https://linkedin.com/in/ayush-kumar",
+            github: "https://github.com/ayush-kumar",
+            twitter: "https://twitter.com/ayush_kumar",
+            instagram: "https://instagram.com/ayush.kumar"
+          }
+        },
+        {
+          id: "bibek-gupta",
+          title: "Bibek Gupta",
+          designation: "Full Stack Engineer",
+          description: "Builds end-to-end web applications and AI-powered pipelines, bridging backend logic with polished UIs.",
+          initials: "BG",
+          socials: {
+            linkedin: "https://linkedin.com/in/bibekgupta14",
+            github: "https://github.com/Bibek-Gupta14",
+            twitter: "https://twitter.com/bibek_gupta14",
+            instagram: "https://instagram.com/bibek.gupta14"
+          }
+        },
+        {
+          id: "pratim-pramanik",
+          title: "Pratim Pramanik",
+          designation: "ML Engineer",
+          description: "Designs and trains machine learning models, specialising in NLP and quantum-classical hybrid architectures.",
+          initials: "PP",
+          socials: {
+            linkedin: "https://linkedin.com/in/pratim-pramanik",
+            github: "https://github.com/pratim-pramanik",
+            twitter: "https://twitter.com/pratim_pramanik",
+            instagram: "https://instagram.com/pratim.pramanik"
+          }
+        },
+        {
+          id: "aditya-jyoti",
+          title: "Aditya Jyoti",
+          designation: "Product Lead",
+          description: "Drives product vision and roadmap, translating user insights into features that ship and stick.",
+          initials: "AJ",
+          socials: {
+            linkedin: "https://linkedin.com/in/aditya-jyoti",
+            github: "https://github.com/aditya-jyoti",
+            twitter: "https://twitter.com/aditya_jyoti",
+            instagram: "https://instagram.com/aditya.jyoti"
+          }
+        },
+      ];
+
+      // Layout styling configs
+      const cardWidth = 350;
+      const cardHeight = 350;
+      const overlap = 0.52;
+      const spreadDeg = 14; 
+      const depthPx = 70;
+      const activeLiftPx = 45; // Shifted active card upward
+      const activeScale = 1.05;
+      const inactiveScale = 0.93;
+      const maxVisible = 7;
+
+      let activeIndex = 0;
+      let isHovering = false;
+      let isClicked = false;
+      
+      // Drag/Swipe state variables
+      let startX = 0;
+      let currentX = 0;
+      let isDragging = false;
+      let dragOffset = 0;
+
+      const container = document.getElementById("card-stack-container");
+      const dotsContainer = document.getElementById("dots-container");
+
+      function wrapIndex(n, len) {
+        return ((n % len) + len) % len;
+      }
+
+      function signedOffset(i, active, len) {
+        const raw = i - active;
+        const alt = raw > 0 ? raw - len : raw + len;
+        return Math.abs(alt) < Math.abs(raw) ? alt : raw;
+      }
+
+      // Generate the initial UI components
+      function render() {
+        container.innerHTML = "";
+        dotsContainer.innerHTML = "";
+
+        const len = teamMembers.length;
+        const maxOffset = Math.max(0, Math.floor(maxVisible / 2));
+        const effectiveSpreadDeg = isClicked ? spreadDeg * 2.0 : (isHovering ? spreadDeg * 1.5 : spreadDeg);
+        const cardSpacing = Math.max(20, Math.round(cardWidth * (1 - overlap)));
+        const stepDeg = maxOffset > 0 ? effectiveSpreadDeg / maxOffset : 0;
+
+        teamMembers.forEach((item, i) => {
+          const off = signedOffset(i, activeIndex, len);
+          const abs = Math.abs(off);
+          const visible = abs <= maxOffset;
+
+          if (!visible) return;
+
+          const isActive = off === 0;
+
+          // Compute transformations
+          const rotateZ = off * stepDeg;
+          const xBase = off * cardSpacing;
+          const x = isActive ? xBase + dragOffset : xBase;
+          
+          // Only active card goes UP. Inactive cards stay at baseline translateY(0).
+          const y = isActive ? -activeLiftPx : 0;
+          const scale = isActive ? activeScale : inactiveScale;
+          const zIndex = 100 - abs;
+          const zTranslate = -abs * depthPx;
+
+          // Create element
+          const cardEl = document.createElement("div");
+          cardEl.className = `absolute rounded-2xl border border-white/10 bg-cardBg shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] p-6 flex flex-col items-center justify-between card-3d ${
+            isActive ? "cursor-grab active:cursor-grabbing border-white/20" : "cursor-pointer opacity-30 hover:opacity-50 scale-95"
+          }`;
+          cardEl.style.width = `${cardWidth}px`;
+          cardEl.style.height = `${cardHeight}px`;
+          cardEl.style.zIndex = zIndex;
+          
+          // Apply transforms directly (using top-1/2 left-1/2 -translate-y-1/2 style to center the cards in container)
+          cardEl.style.transform = `translate3d(${x}px, ${y}px, ${zTranslate}px) rotateZ(${rotateZ}deg) scale(${scale})`;
+
+          // Content structure with social handles at the bottom
+          cardEl.innerHTML = `
+            <div class="w-full h-full flex flex-col items-center justify-between pointer-events-none select-none">
+              <!-- Top Profile Bar -->
+              <div class="w-full flex justify-between items-center text-[9px] font-mono tracking-[0.15em] text-white/30 border-b border-white/5 pb-3">
+                <span>MEMBER PROFILE</span>
+                <span>QBIT / 0${i + 1}</span>
+              </div>
+
+              <!-- Avatar & Bio Details -->
+              <div class="flex flex-col items-center gap-3 my-auto py-2">
+                <!-- Avatar circle -->
+                <div class="h-16 w-16 rounded-full overflow-hidden border-2 border-white/10 bg-white/5 flex items-center justify-center shrink-0 shadow-inner relative">
+                  <span class="text-white/70 text-lg font-bold tracking-wider font-mono">
+                    ${item.initials}
+                  </span>
+                </div>
+
+                <!-- Name & Title -->
+                <div class="text-center">
+                  <div class="text-lg font-semibold text-white tracking-tight leading-tight font-sans">${item.title}</div>
+                  <div class="mt-0.5 text-[9px] font-bold tracking-[0.18em] text-white/40 uppercase font-mono">
+                    ${item.designation}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-center text-xs text-white/50 leading-relaxed max-w-[270px] line-clamp-3 pb-3 font-sans">
+                ${item.description}
+              </p>
+
+              <!-- Social links (Interactive area enabled) -->
+              <div class="w-full flex items-center justify-center gap-5 border-t border-white/5 pt-3 pointer-events-auto">
+                <a href="${item.socials.linkedin}" target="_blank" rel="noreferrer" class="text-white/40 hover:text-white transition-colors duration-200" aria-label="LinkedIn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="2" y="2" width="20" height="20" rx="4" /><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7" /></svg>
+                </a>
+                <a href="${item.socials.github}" target="_blank" rel="noreferrer" class="text-white/40 hover:text-white transition-colors duration-200" aria-label="GitHub">
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.579.688.481C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z" /></svg>
+                </a>
+                <a href="${item.socials.twitter}" target="_blank" rel="noreferrer" class="text-white/40 hover:text-white transition-colors duration-200" aria-label="Twitter X">
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+                </a>
+                <a href="${item.socials.instagram}" target="_blank" rel="noreferrer" class="text-white/40 hover:text-white transition-colors duration-200" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" /></svg>
+                </a>
+              </div>
+            </div>
+          `;
+
+          // Card interaction events
+          if (isActive) {
+            // Setup dragging events for active card
+            cardEl.addEventListener("mousedown", dragStart);
+            cardEl.addEventListener("touchstart", dragStart, { passive: true });
+          } else {
+            // Click inactive cards to switch
+            cardEl.addEventListener("click", () => {
+              isClicked = true;
+              activeIndex = i;
+              render();
+              setTimeout(() => {
+                isClicked = false;
+                render();
+              }, 400);
+            });
+          }
+
+          container.appendChild(cardEl);
+
+          // Dot indicator creation
+          const dot = document.createElement("button");
+          dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${
+            isActive ? "bg-white w-4" : "bg-white/30 hover:bg-white/50"
+          }`;
+          dot.setAttribute("aria-label", `Go to ${item.title}`);
+          dot.addEventListener("click", () => {
+            activeIndex = i;
+            render();
+          });
+          dotsContainer.appendChild(dot);
+        });
+      }
+
+      // Drag event handlers
+      function dragStart(e) {
+        isDragging = true;
+        startX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+        
+        // Remove transitions immediately during drag to eliminate lag
+        const activeCard = container.querySelector(".cursor-grab");
+        if (activeCard) {
+          activeCard.classList.add("card-dragging");
+        }
+
+        document.addEventListener("mousemove", dragMove);
+        document.addEventListener("touchmove", dragMove, { passive: false });
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("touchend", dragEnd);
+      }
+
+      function dragMove(e) {
+        if (!isDragging) return;
+        
+        currentX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+        dragOffset = currentX - startX;
+
+        // Visual limits on drag distance
+        const maxDrag = cardWidth * 0.45;
+        if (dragOffset > maxDrag) dragOffset = maxDrag;
+        if (dragOffset < -maxDrag) dragOffset = -maxDrag;
+
+        // Apply instant translate3d transformations for hardware-accelerated rendering
+        const activeCard = container.querySelector(".cursor-grab");
+        if (activeCard) {
+          const rotation = dragOffset * 0.05;
+          activeCard.style.transform = `translate3d(${dragOffset}px, ${-activeLiftPx}px, 0px) rotateZ(${rotation}deg) scale(${activeScale})`;
+        }
+      }
+
+      function dragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+
+        const activeCard = container.querySelector(".cursor-grab");
+        if (activeCard) {
+          activeCard.classList.remove("card-dragging");
+        }
+
+        const threshold = cardWidth * 0.22;
+        if (dragOffset > threshold) {
+          activeIndex = wrapIndex(activeIndex - 1, teamMembers.length);
+        } else if (dragOffset < -threshold) {
+          activeIndex = wrapIndex(activeIndex + 1, teamMembers.length);
+        }
+
+        dragOffset = 0;
+        
+        document.removeEventListener("mousemove", dragMove);
+        document.removeEventListener("touchmove", dragMove);
+        document.removeEventListener("mouseup", dragEnd);
+        document.removeEventListener("touchend", dragEnd);
+        
+        render();
+      }
+
+      // Key controls
+      container.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") {
+          activeIndex = wrapIndex(activeIndex - 1, teamMembers.length);
+          render();
+        }
+        if (e.key === "ArrowRight") {
+          activeIndex = wrapIndex(activeIndex + 1, teamMembers.length);
+          render();
+        }
+      });
+
+      // Hover events
+      container.addEventListener("mouseenter", () => {
+        isHovering = true;
+        render();
+      });
+
+      container.addEventListener("mouseleave", () => {
+        isHovering = false;
+        render();
+      });
+
+      // Render on load
+      render();
+    </script>
+  </body>
+</html>
