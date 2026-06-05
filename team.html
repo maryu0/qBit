@@ -362,7 +362,7 @@
     <header
       class="w-full max-w-6xl mx-auto flex justify-between items-center z-20 relative mb-4 fade-up"
     >
-      <a href="portfolio.html" class="flex items-center gap-2 group">
+      <a href="index.html" class="flex items-center gap-2 group">
         <div
           class="w-5 h-5 bg-white text-black flex items-center justify-center rounded-sm transition-transform group-hover:-translate-x-0.5"
         >
@@ -642,7 +642,7 @@
           const avatarPulseClass = isActive ? "avatar-pulse" : "";
 
           // Avatar content - image or initials fallback
-          const avatarContent = item.image 
+          const avatarContent = item.image
             ? `<img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
                <span class="text-white/70 text-lg font-bold tracking-wider font-mono" style="display:none">${item.initials}</span>`
             : `<span class="text-white/70 text-lg font-bold tracking-wider font-mono">${item.initials}</span>`;
@@ -693,11 +693,13 @@
           if (isActive) {
             cardEl.addEventListener("mousedown", dragStart);
             cardEl.addEventListener("touchstart", dragStart, { passive: true });
-            
+
             // Prevent drag events from interfering with social link clicks
-            cardEl.querySelectorAll(".social-icon").forEach(icon => {
+            cardEl.querySelectorAll(".social-icon").forEach((icon) => {
               icon.addEventListener("mousedown", (e) => e.stopPropagation());
-              icon.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
+              icon.addEventListener("touchstart", (e) => e.stopPropagation(), {
+                passive: true,
+              });
             });
           } else {
             cardEl.addEventListener("click", () => {
