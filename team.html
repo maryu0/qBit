@@ -472,7 +472,7 @@
           description:
             "Architects intelligent systems and leads AI strategy, turning research into scalable real-world products.",
           initials: "AK",
-          image: "/images/ayush.jpg", // Add image path - leave empty or null to show initials
+          image: "images/ayush.jpg", // Add image path - leave empty or null to show initials
           socials: {
             linkedin: "https://www.linkedin.com/in/ayush-kumar-ab8a3a2ab/",
             github: "https://github.com/maryu0",
@@ -487,7 +487,7 @@
           description:
             "Builds end-to-end web applications and AI-powered pipelines, bridging backend logic with polished UIs.",
           initials: "BG",
-          image: "/images/bibek 2.png",
+          image: "images/bibek 2.png",
           socials: {
             linkedin: "https://linkedin.com/in/bibekgupta14",
             github: "https://github.com/Bibek-Gupta14",
@@ -502,7 +502,7 @@
           description:
             "Designs and trains machine learning models, specialising in NLP and quantum-classical hybrid architectures.",
           initials: "PP",
-          image: "pratim.jpg",
+          image: "images/pratim.jpg",
           socials: {
             linkedin: "https://linkedin.com/in/pratim-pramanik",
             github: "https://github.com/pratim-pramanik",
@@ -517,7 +517,7 @@
           description:
             "Drives product vision and roadmap, translating user insights into features that ship and stick.",
           initials: "AJ",
-          image: "/images/aditya.jpg",
+          image: "images/aditya.jpg",
           socials: {
             linkedin: "https://www.linkedin.com/in/aditya-jyoti-1b1578285",
             github: "https://github.com/1dity1",
@@ -693,6 +693,12 @@
           if (isActive) {
             cardEl.addEventListener("mousedown", dragStart);
             cardEl.addEventListener("touchstart", dragStart, { passive: true });
+            
+            // Prevent drag events from interfering with social link clicks
+            cardEl.querySelectorAll(".social-icon").forEach(icon => {
+              icon.addEventListener("mousedown", (e) => e.stopPropagation());
+              icon.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
+            });
           } else {
             cardEl.addEventListener("click", () => {
               isClicked = true;
