@@ -1085,7 +1085,7 @@
                   <div class="flex items-start justify-between gap-6 mb-6">
                     <div class="max-w-md">
                       <div
-                        class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-semibold tracking-wide uppercase text-subtle mb-3"
+                        class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-semibold tracking-wide uppercase text-subtle mb-3 bg-[#ffdb4d]"
                       >
                         FEATURED PROJECT
                       </div>
@@ -1101,9 +1101,8 @@
                     </div>
                     <div class="text-right">
                       <div
-                        class="text-xs border border-border px-3 py-1 rounded-full uppercase tracking-wider text-subtle bg-canvas whitespace-nowrap max-w-max"
-                      >
-                        AI / Multi-LLM
+                        <span class="text-xs border border-border px-4 py-2 rounded-full uppercase tracking-wider text-subtle font-bold text-[#000000] bg-canvas whitespace-nowrap max-w-max bg-[#80d4ff]">
+                        • AI / Multi-LLM
                       </div>
                     </div>
                   </div>
@@ -1620,9 +1619,9 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
         </div>
       </section>
 
-      <footer class="bg-white py-20 px-6 md:px-12 lg:px-20">
+      <footer class="bg-white py-10 px-6 md:px-12 lg:px-20">
         <div
-          class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-12"
+          class="max-w-6xl mx-auto flex flex-col lg:flex-row justify-evenly gap-12"
         >
           <div class="max-w-xs space-y-6">
             <div class="flex items-center gap-2">
@@ -1632,8 +1631,7 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
               >
             </div>
             <p class="text-xs text-subtle leading-relaxed">
-              Boutique AI-first MVP studio based in Mumbai, India. Available
-              globally for early-stage founders and small startups.
+              AI-first MVP studio based in India. Available globally for early-stage founders and small startups.
             </p>
             <div class="text-[10px] text-border">© 2026 Qbit Labs</div>
           </div>
@@ -1656,29 +1654,42 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
                 </li>
               </ul>
             </div>
-            <div class="space-y-4">
-              <h4 class="text-xs font-bold text-obsidian">Connect</h4>
-              <ul class="space-y-2 text-xs text-subtle">
-                <li>
-                  <a
-                    href="https://github.com/qbit-labs"
-                    class="hover:text-obsidian"
-                    >GitHub</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/company/qbit-labs"
-                    class="hover:text-obsidian"
-                    >LinkedIn</a
-                  >
-                </li>
-                <li>
-                  <a href="mailto:hello@qbitlabs.in" class="hover:text-obsidian"
-                    >Email</a
-                  >
-                </li>
-              </ul>
+<div class="space-y-2 ">
+  <h4 class="text-xs font-bold text-obsidian">Connect With Us</h4>
+  <ul class="space-y-2 text-xs text-subtle">
+    <li>
+      <!-- Twitter / X Link: Flexbox row layout with a small gap -->
+      <a 
+        href="https://x.com/buildqBit" 
+        target="_blank" 
+        rel="noreferrer" 
+        class="flex items-center gap-1.5 text-black hover:text-black/70 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-200" 
+        aria-label="Twitter X"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 shrink-0">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+        <span>Twitter</span>
+      </a>
+    </li>
+    <li>
+      <!-- Instagram Link: Flexbox row layout using the native pink hex code -->
+      <a 
+        href="https://instagram.com/buildqbit" 
+        target="_blank" 
+        rel="noreferrer" 
+        class="flex items-center gap-1.5 text-[#E1306C] hover:opacity-80 hover:drop-shadow-[0_0_8px_rgba(225,48,108,0.8)] transition-all duration-200" 
+        aria-label="Instagram"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 shrink-0">
+          <rect x="2" y="2" width="20" height="20" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="0.5" fill="pink" stroke="none" />
+        </svg>
+        <span>Instagram</span>
+      </a>
+    </li>
+  </ul>
             </div>
             <div class="space-y-4">
               <h4 class="text-xs font-bold text-obsidian">Contact</h4>
