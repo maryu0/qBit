@@ -147,6 +147,26 @@
         transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1);
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
       }
+
+      /* ============ SCROLL REVEAL ANIMATIONS ============ */
+      .reveal {
+        opacity: 0;
+        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .reveal.revealed {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) !important;
+      }
+      .reveal-up    { transform: translateY(40px); }
+      .reveal-left  { transform: translateX(-40px); }
+      .reveal-right { transform: translateX(40px); }
+      .reveal-scale { transform: scale(0.95); }
+
+      .reveal-delay-1 { transition-delay: 0.1s; }
+      .reveal-delay-2 { transition-delay: 0.2s; }
+      .reveal-delay-3 { transition-delay: 0.3s; }
+      .reveal-delay-4 { transition-delay: 0.4s; }
     </style>
     <link
       id="all-fonts-link-font-geist"
@@ -494,7 +514,7 @@
     <div class="z-10 flex flex-col w-full relative">
       <!-- HERO SECTION -->
       <section
-        class="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-32 pb-20 gap-16"
+        class="reveal reveal-up relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-32 pb-20 gap-16"
       >
         <div class="max-w-2xl space-y-10 relative z-10">
           <div class="space-y-6">
@@ -906,7 +926,7 @@
       <!-- LOGOS -->
       <section
         id="services"
-        class="py-24 px-6 md:px-12 lg:px-20 border-y border-border/60 bg-white"
+        class="reveal reveal-up py-24 px-6 md:px-12 lg:px-20 border-y border-border/60 bg-white"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-16">
@@ -1026,7 +1046,7 @@
       </section>
       <section
         id="process"
-        class="relative w-full bg-canvas border-b border-border/60 py-24 px-6 md:px-12 lg:px-20"
+        class="reveal reveal-left relative w-full bg-canvas border-b border-border/60 py-24 px-6 md:px-12 lg:px-20"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-14">
@@ -1127,7 +1147,7 @@
       </section>
       <section
         id="work"
-        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
+        class="reveal reveal-right py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
       >
         <div class="max-w-7xl mx-auto">
           <div
@@ -1187,7 +1207,7 @@
 
       <section
         id="why-us"
-        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-white"
+        class="reveal reveal-up py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-white"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-12">
@@ -1257,7 +1277,7 @@
       </section>
       <section
         id="pricing"
-        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border bg-white"
+        class="reveal reveal-scale py-24 px-6 md:px-12 lg:px-20 border-b border-border bg-white"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-16">
@@ -1355,7 +1375,7 @@
 
       <section
         id="faq"
-        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
+        class="reveal reveal-left py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
       >
         <div class="max-w-4xl mx-auto">
           <div class="mb-12">
@@ -1493,7 +1513,7 @@
 
       <section
         id="contact"
-        class="py-24 px-6 md:px-12 lg:px-20 bg-obsidian text-white relative overflow-hidden"
+        class="reveal reveal-up py-24 px-6 md:px-12 lg:px-20 bg-obsidian text-white relative overflow-hidden"
       >
         <div
           class="absolute inset-0 opacity-10"
@@ -1525,23 +1545,12 @@
                 Usually reply within 24–48 hours.
               </p>
             </div>
-            <div class="lg:text-right mt-6 lg:mt-0">
-              <a
-                href="mailto:qbitlabs.studio@gmail.com
-?subject=Free%205-minute%20MVP%20teardown%20request
-&body=Hey%20Qbit%20Labs%2C%0D%0A%0D%0A
-I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
-1)%20What%20I%27m%20building%3A%0D%0A
-2)%20Who%20it%27s%20for%3A%0D%0A
-3)%20Link%20to%20landing%20page%20or%20docs%3A%0D%0A
-4)%20What%20you%20want%20feedback%20on%20(MVP%20scope%2C%20onboarding%2C%20AI%20workflow%2C%20etc.)%3A%0D%0A%0D%0A"
-                class="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white text-obsidian text-sm font-semibold shadow-lg shadow-black/20 hover:bg-gray-100 hover:text-black transition-colors"
-              >
-                Free 5-minute MVP teardown
-              </a>
-              <p class="text-sm text-white/50 mt-3">
-                Send us your idea, landing page, or current flow.
-              </p>
+            <div class="mt-6 lg:mt-0">
+              <div
+                class="calendly-inline-widget"
+                data-url="https://calendly.com/d/ctzt-bdn-z58"
+                style="min-width: 300px; height: 600px"
+              ></div>
             </div>
           </div>
         </div>
@@ -2219,5 +2228,29 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
 
       animate();
     </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const reveals = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("revealed");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+        );
+        reveals.forEach((el) => observer.observe(el));
+      });
+    </script>
+
+    <script
+      type="text/javascript"
+      src="https://assets.calendly.com/assets/external/widget.js"
+      async
+    ></script>
   </body>
 </html>
