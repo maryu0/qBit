@@ -13,6 +13,7 @@
     />
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -30,12 +31,16 @@
       };
     </script>
     <style>
+      html,
       body {
+        overflow-x: hidden;
+        max-width: 100%;
         margin: 0;
+      }
+      body {
         background-color: #050505;
         color: #ffffff;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
       }
 
       /* ============ ANIMATED GRID BACKGROUND ============ */
@@ -386,17 +391,44 @@
           Back to Studio
         </span>
       </a>
-      <div class="flex items-center gap-2">
-        <div
-          class="w-5 h-5 bg-white/10 text-white flex items-center justify-center rounded-sm"
-        >
-          <span class="text-white font-mono text-xs font-bold">&lt;&gt;</span>
+      <div class="flex items-center gap-3">
+        <!-- Desktop Page Title -->
+        <div class="hidden md:flex items-center gap-2">
+          <div
+            class="w-5 h-5 bg-white/10 text-white flex items-center justify-center rounded-sm"
+          >
+            <span class="text-white font-mono text-xs font-bold">&lt;&gt;</span>
+          </div>
+          <span class="font-sans text-xs font-bold tracking-tight text-white/90">
+            QBIT.LABS / TEAM
+          </span>
         </div>
-        <span class="font-sans text-xs font-bold tracking-tight text-white/90">
-          QBIT.LABS / TEAM
-        </span>
+
+        <!-- Hamburger Menu Button -->
+        <button
+          id="menu-toggle"
+          class="md:hidden p-2 text-white focus:outline-none hover:bg-white/10 rounded transition-colors z-50"
+          aria-label="Toggle navigation menu"
+        >
+          <i data-lucide="menu" class="w-5 h-5 transition-transform duration-300"></i>
+        </button>
       </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+      id="mobile-menu"
+      class="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col justify-center items-center transition-all duration-300 opacity-0 pointer-events-none md:hidden"
+    >
+      <nav class="flex flex-col items-center gap-8 text-2xl font-semibold tracking-tight text-white animate-fade-in">
+        <a href="index.html#work" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Work</a>
+        <a href="index.html#services" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Services</a>
+        <a href="index.html#process" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Process</a>
+        <a href="team.html" class="mobile-nav-link text-white hover:text-white transition-colors">Team</a>
+        <a href="index.html#faq" class="mobile-nav-link text-white/60 hover:text-white transition-colors">FAQ</a>
+        <a href="index.html#contact" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Contact</a>
+      </nav>
+    </div>
 
     <!-- Main Stack UI -->
     <main
@@ -528,15 +560,15 @@
       ];
 
       // Layout config
-      const cardWidth = 350;
-      const cardHeight = 375;
+      let cardWidth = window.innerWidth < 450 ? (window.innerWidth < 360 ? 280 : 310) : 350;
+      let cardHeight = window.innerWidth < 450 ? 350 : 375;
       const overlap = 0.52;
       const spreadDeg = 14;
       const depthPx = 70;
       const activeLiftPx = 50;
       const activeScale = 1.05;
       const inactiveScale = 0.93;
-      const maxVisible = 7;
+      let maxVisible = window.innerWidth < 450 ? 3 : 7;
 
       let activeIndex = 0;
       let previousActiveIndex = -1;
@@ -838,6 +870,50 @@
       });
 
       render();
+
+      // Initialize Lucide icons
+      lucide.createIcons();
+
+      // Mobile Menu functionality
+      const menuToggle = document.getElementById("menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const menuIcon = menuToggle.querySelector("i");
+      const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+      let isMenuOpen = false;
+
+      function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+          mobileMenu.classList.remove("opacity-0", "pointer-events-none");
+          mobileMenu.classList.add("opacity-100");
+          menuIcon.setAttribute("data-lucide", "x");
+          menuIcon.style.transform = "rotate(90deg)";
+          document.body.style.overflow = "hidden"; // Prevent scrolling behind overlay
+        } else {
+          mobileMenu.classList.remove("opacity-100");
+          mobileMenu.classList.add("opacity-0", "pointer-events-none");
+          menuIcon.setAttribute("data-lucide", "menu");
+          menuIcon.style.transform = "rotate(0deg)";
+          document.body.style.overflow = "";
+        }
+        lucide.createIcons();
+      }
+
+      menuToggle.addEventListener("click", toggleMenu);
+
+      mobileNavLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          if (isMenuOpen) toggleMenu();
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        cardWidth = window.innerWidth < 450 ? (window.innerWidth < 360 ? 280 : 310) : 350;
+        cardHeight = window.innerWidth < 450 ? 350 : 375;
+        maxVisible = window.innerWidth < 450 ? 3 : 7;
+        render();
+      });
     </script>
   </body>
 </html>
