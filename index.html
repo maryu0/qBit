@@ -52,6 +52,11 @@
       };
     </script>
     <style>
+      html,
+      body {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
       html {
         scroll-behavior: smooth;
       }
@@ -60,7 +65,6 @@
         background-color: #fafafa;
         color: #111111;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
       }
       .technical-grid {
         background-size: 40px 40px;
@@ -92,6 +96,56 @@
         to {
           stroke-dashoffset: -100;
         }
+      }
+
+      /* ============ CARD 3D BASE ============ */
+      .card-3d {
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
+        transition:
+          transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 550ms ease,
+          border-color 300ms ease,
+          filter 550ms ease;
+      }
+      .card-dragging {
+        transition: none !important;
+        cursor: grabbing !important;
+      }
+
+      /* ============ DOTS ============ */
+      .dot {
+        height: 8px;
+        width: 8px;
+        border-radius: 9999px;
+        background-color: rgba(0, 0, 0, 0.15);
+        transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .dot:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+      .dot-active {
+        width: 24px;
+        background-color: #111111;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* ============ PROGRESS BAR ============ */
+      .progress-track {
+        width: 120px;
+        height: 2px;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 999px;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, rgba(17, 17, 17, 0.4), #111111);
+        border-radius: 999px;
+        transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
       }
     </style>
     <link
@@ -399,18 +453,42 @@
         </a>
       </nav>
 
-      <div class="flex items-center gap-5">
+      <div class="flex items-center gap-3">
         <a
           href="mailto:qbitlabs.studio@gmail.com?subject=AI-first%20MVP%20project%20inquiry"
-          class="group relative isolate overflow-hidden bg-obsidian text-white text-xs font-semibold px-6 py-2.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.08)] ring-1 ring-white/10 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.04] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.25)] hover:ring-white/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-obsidian/20 focus:ring-offset-1"
+          class="group relative isolate overflow-hidden bg-obsidian text-white text-xs font-semibold px-5 py-2.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.08)] ring-1 ring-white/10 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.04] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.25)] hover:ring-white/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-obsidian/20 focus:ring-offset-1"
         >
           <div
             class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent z-10"
           ></div>
           <span class="relative z-20">Email us</span>
         </a>
+        
+        <!-- Hamburger Menu Button -->
+        <button
+          id="menu-toggle"
+          class="md:hidden p-2 text-obsidian focus:outline-none hover:bg-black/5 rounded transition-colors z-50"
+          aria-label="Toggle navigation menu"
+        >
+          <i data-lucide="menu" class="w-5 h-5 transition-transform duration-300"></i>
+        </button>
       </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+      id="mobile-menu"
+      class="fixed inset-0 z-40 bg-canvas/98 backdrop-blur-xl flex flex-col justify-center items-center transition-all duration-300 opacity-0 pointer-events-none md:hidden"
+    >
+      <nav class="flex flex-col items-center gap-8 text-2xl font-semibold tracking-tight animate-fade-in">
+        <a href="#work" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Work</a>
+        <a href="#services" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Services</a>
+        <a href="#process" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Process</a>
+        <a href="team.html" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Team</a>
+        <a href="#faq" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">FAQ</a>
+        <a href="#contact" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Contact</a>
+      </nav>
+    </div>
 
     <!-- Content Wrapper -->
     <div class="z-10 flex flex-col w-full relative">
@@ -1073,215 +1151,34 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <!-- Card Container Area -->
+          <div class="w-full flex flex-col items-center justify-center relative my-4">
             <div
-              class="md:col-span-7 group relative bg-white border border-border rounded-xl overflow-hidden hover:border-obsidian/30 transition-all duration-500"
+              id="project-stack-container"
+              class="relative w-full max-w-[560px] flex items-center justify-center select-none outline-none py-12"
+              style="height: 480px; perspective: 1400px"
+              tabindex="0"
             >
-              <div
-                class="relative z-10 p-8 md:p-10 h-full flex flex-col justify-between"
-              >
-                <div>
-                  <div class="flex items-start justify-between gap-6 mb-6">
-                    <div class="max-w-md">
-                      <div
-                        class="inline-flex items-center px-3 py-1 rounded-full border border-border bg-canvas text-[11px] font-bold tracking-wide uppercase text-subtle mb-3 bg-[#ffe6e6] "
-                      >
-                        FEATURED PROJECT
-                      </div>
-                      <h3 class="text-2xl font-semibold text-obsidian mb-3">
-                        FairCouncil
-                      </h3>
-                      <p class="text-subtle leading-relaxed mb-4">
-                        Solved unchecked AI bias by building a council of LLMs
-                        that dynamically elects a fairness-adjusted chairperson
-                        — instead of trusting one model blindly. Final answer is
-                        selected by the least-biased, best-performing model.
-                      </p>
-                    </div>
-                    <div class="text-right">
-                      <div
-                        <span class="text-xs border border-border px-4 py-2 rounded-full uppercase tracking-wider text-subtle font-bold text-[#333333] bg-canvas whitespace-nowrap max-w-max bg-[#ebfaeb]">
-                        • AI / Multi-LLM
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-subtle mb-6 "
-                  >
-                    <div class="rounded-lg border border-border bg-canvas p-4 bg-grey-50">
-                      <div
-                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1 "
-                      >
-                        Problem
-                      </div>
-                      <div >Single-model bias, no fairness layer.</div>
-                    </div>
-                    <div class="rounded-lg border border-border bg-canvas p-4 bg-grey-50">
-                      <div
-                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1"
-                      >
-                        Built
-                      </div>
-                      <div>
-                        Multi-LLM pipeline, bias scoring, adaptive chairperson.
-                      </div>
-                    </div>
-                    <div class="rounded-lg border border-border bg-canvas p-4 bg-grey-50">
-                      <div
-                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1"
-                      >
-                        Stack
-                      </div>
-                      <div>FastAPI, React, Gemini, Groq, LLaMA.</div>
-                    </div>
-                    <div class="rounded-lg border border-border bg-canvas p-4 bg-grey-50">
-                      <div
-                        class="text-[10px] uppercase tracking-[0.18em] text-subtle mb-1"
-                      >
-                        Scoring formula
-                      </div>
-                      <div>Perf score − λ × Bias score</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex flex-wrap gap-3">
-                  <a
-                    href="https://github.com/maryu0/fair-llm-council.git"
-                    target="_blank"
-                    rel="noopener"
-                    class="px-4 py-2 rounded-full bg-obsidian text-white text-xs font-semibold"
-                    >Repo</a
-                  >
-                </div>
-              </div>
+              <!-- Cards are dynamically rendered here -->
             </div>
 
-            <div class="md:col-span-5 grid gap-6">
-              <div
-                class="group relative bg-white border border-border rounded-xl overflow-hidden hover:border-obsidian/30 transition-all duration-500"
-              >
-                <div class="p-8">
-                  <div class="flex items-center gap-3 mb-4">
-                    <div
-                      class="w-10 h-10 bg-canvas border border-border rounded flex items-center justify-center text-obsidian shadow-sm"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                      >
-                        <path d="M21 12a9 9 0 1 1-9-9"></path>
-                        <path d="M12 7v5l3 3"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 class="text-lg font-semibold text-obsidian">
-                        LexiRisk
-                      </h4>
-                      <div
-                        class="text-xs uppercase tracking-[0.18em] text-subtle"
-                      >
-                        Legal workflow
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-subtle leading-relaxed mb-4">
-                    Solved slow manual contract review by turning legal PDFs
-                    into an AI-assisted clause-by-clause risk analysis — with
-                    plain-English summaries and exportable reports.
-                  </p>
-                  <div class="space-y-2 text-sm text-subtle mb-4">
-                    <p>
-                      <strong class="text-obsidian">Built:</strong> PDF upload,
-                      clause classifier, risk scorer, PDF report export.
-                    </p>
-                    <p>
-                      <strong class="text-obsidian">Stack:</strong> React,
-                      Express, FastAPI, BART, scikit-learn.
-                    </p>
-                    <p>
-                      <strong class="text-obsidian">Timeline:</strong> Approx. 4
-                      weeks.
-                    </p>
-                  </div>
-                  <div class="flex gap-3">
-                    <a
-                      href="https://github.com/maryu0/LexiRisk.git"
-                      target="_blank"
-                      rel="noopener"
-                      class="px-4 py-2 rounded-full bg-obsidian text-white text-xs font-semibold"
-                      >Repo</a
-                    >
-                    
-                  </div>
-                </div>
+            <!-- Navigation Indicators & Controls -->
+            <div class="mt-4 flex flex-col items-center gap-4">
+              <div id="project-dots-container" class="flex items-center gap-2.5"></div>
+              <!-- Progress bar -->
+              <div class="progress-track mt-1">
+                <div
+                  id="project-progress-fill"
+                  class="progress-fill"
+                  style="width: 33%"
+                ></div>
               </div>
-
               <div
-                class="group relative bg-white border border-border rounded-xl overflow-hidden hover:border-obsidian/30 transition-all duration-500"
+                class="flex items-center gap-4 text-[9px] text-black/30 font-mono tracking-wider"
               >
-                <div class="p-8">
-                  <div class="flex items-center gap-3 mb-4">
-                    <div
-                      class="w-10 h-10 bg-canvas border border-border rounded flex items-center justify-center text-obsidian shadow-sm"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                      >
-                        <path d="M3 12h18"></path>
-                        <path d="M12 3v18"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 class="text-lg font-semibold text-obsidian">
-                        Clarivo
-                      </h4>
-                      <div
-                        class="text-xs uppercase tracking-[0.18em] text-subtle"
-                      >
-                        Speech therapy AI
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-subtle leading-relaxed mb-4">
-                    Solved inaccessible speech therapy by building an AI tool
-                    that listens, scores pronunciation in real time, and gives
-                    encouraging feedback — like a therapist in your pocket.
-                  </p>
-                  <div class="space-y-2 text-sm text-subtle mb-4">
-                    <p>
-                      <strong class="text-obsidian">Built:</strong> Whisper
-                      transcription, WER/CER/semantic scoring, TTS guidance.
-                    </p>
-                    <p>
-                      <strong class="text-obsidian">Stack:</strong> React,
-                      Node.js, Flask, OpenAI Whisper, BERT.
-                    </p>
-                    <p>
-                      <strong class="text-obsidian">Timeline:</strong> Ongoing.
-                    </p>
-                  </div>
-                  <div class="flex gap-3">
-                    <a
-                      href="https://github.com/maryu0/Clarivo_ML.git"
-                      target="_blank"
-                      rel="noopener"
-                      class="px-4 py-2 rounded-full bg-obsidian text-white text-xs font-semibold"
-                      >Repo</a
-                    >
-                  </div>
-                </div>
+                <span class="flex items-center gap-1">DRAG / SWIPE</span>
+                <span class="w-1 h-1 rounded-full bg-black/10"></span>
+                <span class="flex items-center gap-1">ARROW KEYS</span>
               </div>
             </div>
           </div>
@@ -1650,7 +1547,7 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
         </div>
       </section>
 
-      <footer class="bg-white py-10 px-6 md:px-12 lg:px-20">
+      <footer class="relative z-10 bg-white py-10 px-6 md:px-12 lg:px-20">
         <div
           class="max-w-6xl mx-auto flex flex-col lg:flex-row justify-evenly gap-12"
         >
@@ -1690,8 +1587,7 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
   <ul class="space-y-2 text-xs text-subtle">
     <li>
       <!-- Twitter / X Link: Flexbox row layout with a small gap -->
-      <a 
-        href="https://x.com/buildqBit" 
+      <a href="https://x.com/buildqBit" 
         target="_blank" 
         rel="noreferrer" 
         class="flex items-center gap-1.5 text-black hover:text-black/70 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-200" 
@@ -1701,6 +1597,21 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
         </svg>
         <span>Twitter</span>
+      </a>
+    </li>
+    <li>
+      <!-- LinkedIn Link: Flexbox row layout with a small gap -->
+      <a href="https://www.linkedin.com/company/qbit-labs-studio/" 
+        target="_blank" 
+        rel="noreferrer" 
+        class="flex items-center gap-1.5 text-black hover:text-black/70 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-200" 
+        aria-label="LinkedIn"
+      >
+        <svg viewBox="0 0 24 24" fill="#0A66C2" class="w-4 h-4 shrink-0" >
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/>
+        </svg>
+
+        <span >LinkedIn</span>
       </a>
     </li>
     <li>
@@ -1907,6 +1818,10 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
         adjustLayout();
+        
+        projCardWidth = window.innerWidth < 450 ? (window.innerWidth < 360 ? 285 : 320) : 380;
+        projCardHeight = window.innerWidth < 450 ? 410 : 440;
+        renderProjects();
       });
 
       window.addEventListener(
@@ -1931,6 +1846,365 @@ I%27d%20like%20a%20free%205-minute%20MVP%20teardown.%0D%0A%0D%0A
       );
 
       adjustLayout();
+
+      // Mobile Menu functionality
+      const menuToggle = document.getElementById("menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const menuIcon = menuToggle.querySelector("i");
+      const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+      let isMenuOpen = false;
+
+      function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+          mobileMenu.classList.remove("opacity-0", "pointer-events-none");
+          mobileMenu.classList.add("opacity-100");
+          menuIcon.setAttribute("data-lucide", "x");
+          menuIcon.style.transform = "rotate(90deg)";
+          document.body.style.overflow = "hidden"; // Prevent scrolling behind overlay
+        } else {
+          mobileMenu.classList.remove("opacity-100");
+          mobileMenu.classList.add("opacity-0", "pointer-events-none");
+          menuIcon.setAttribute("data-lucide", "menu");
+          menuIcon.style.transform = "rotate(0deg)";
+          document.body.style.overflow = "";
+        }
+        lucide.createIcons();
+      }
+
+      menuToggle.addEventListener("click", toggleMenu);
+
+      mobileNavLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          if (isMenuOpen) toggleMenu();
+        });
+      });
+
+      // Selected Work 3D Stack
+      const projects = [
+        {
+          id: "fair-council",
+          title: "FairCouncil",
+          category: "FEATURED PROJECT",
+          subCategory: "• AI / Multi-LLM",
+          description: "Solved unchecked AI bias by building a council of LLMs that dynamically elects a fairness-adjusted chairperson — instead of trusting one model blindly. Final answer is selected by the least-biased, best-performing model.",
+          problem: "Single-model bias, no fairness layer.",
+          built: "Multi-LLM pipeline, bias scoring, adaptive chairperson.",
+          stack: "FastAPI, React, Gemini, Groq, LLaMA.",
+          scoring: "Perf score − λ × Bias score",
+          repo: "https://github.com/maryu0/fair-llm-council.git"
+        },
+        {
+          id: "lexirisk",
+          title: "LexiRisk",
+          category: "Legal workflow",
+          subCategory: "• AI Risk Scorer",
+          description: "Solved slow manual contract review by turning legal PDFs into an AI-assisted clause-by-clause risk analysis — with plain-English summaries and exportable reports.",
+          problem: "Slow manual review, hidden liabilities.",
+          built: "PDF upload, clause classifier, risk scorer, PDF report export.",
+          stack: "React, Express, FastAPI, BART, scikit-learn.",
+          scoring: "Approx. 4 weeks",
+          repo: "https://github.com/maryu0/LexiRisk.git"
+        },
+        {
+          id: "clarivo",
+          title: "Clarivo",
+          category: "Speech therapy AI",
+          subCategory: "• Voice Analysis",
+          description: "Solved inaccessible speech therapy by building an AI tool that listens, scores pronunciation in real time, and gives encouraging feedback — like a therapist in your pocket.",
+          problem: "Inaccessible therapy, lack of instant feedback.",
+          built: "Whisper transcription, WER/CER/semantic scoring, TTS guidance.",
+          stack: "React, Node.js, Flask, OpenAI Whisper, BERT.",
+          scoring: "Ongoing",
+          repo: "https://github.com/maryu0/Clarivo_ML.git"
+        }
+      ];
+
+      let projCardWidth = window.innerWidth < 450 ? (window.innerWidth < 360 ? 285 : 320) : 380;
+      let projCardHeight = window.innerWidth < 450 ? 410 : 440;
+      const projOverlap = 0.52;
+      const projSpreadDeg = 14;
+      const projDepthPx = 70;
+      const projActiveLiftPx = 30;
+      const projActiveScale = 1.05;
+      const projInactiveScale = 0.93;
+      const projMaxVisible = 3;
+
+      let projActiveIndex = 0;
+      let projIsHovering = false;
+      let projIsClicked = false;
+
+      // Drag state
+      let projStartX = 0;
+      let projCurrentX = 0;
+      let projIsDragging = false;
+      let projDragOffset = 0;
+
+      const projContainer = document.getElementById("project-stack-container");
+      const projDotsContainer = document.getElementById("project-dots-container");
+      const projProgressFill = document.getElementById("project-progress-fill");
+
+      function wrapProjIndex(n, len) {
+        return ((n % len) + len) % len;
+      }
+      function signedProjOffset(i, active, len) {
+        const raw = i - active;
+        const alt = raw > 0 ? raw - len : raw + len;
+        return Math.abs(alt) < Math.abs(raw) ? alt : raw;
+      }
+
+      function renderProjects() {
+        projContainer.innerHTML = "";
+        projDotsContainer.innerHTML = "";
+
+        const len = projects.length;
+        const maxOffset = Math.max(0, Math.floor(projMaxVisible / 2));
+        const effectiveSpreadDeg = projIsClicked
+          ? projSpreadDeg * 2.0
+          : projIsHovering
+            ? projSpreadDeg * 1.5
+            : projSpreadDeg;
+        const cardSpacing = Math.max(20, Math.round(projCardWidth * (1 - projOverlap)));
+        const stepDeg = maxOffset > 0 ? effectiveSpreadDeg / maxOffset : 0;
+
+        projects.forEach((item, i) => {
+          const off = signedProjOffset(i, projActiveIndex, len);
+          const abs = Math.abs(off);
+          const visible = abs <= maxOffset;
+          if (!visible) return;
+
+          const isActive = off === 0;
+          const rotateZ = off * stepDeg;
+          const rotateY = off * -8; // 3D tilt
+          const xBase = off * cardSpacing;
+          const x = isActive ? xBase + projDragOffset : xBase;
+          const y = isActive ? -projActiveLiftPx : 0;
+          const scale = isActive ? projActiveScale : projInactiveScale;
+          const zIndex = 100 - abs;
+          const zTranslate = -abs * projDepthPx;
+          const blurPx = isActive ? 0 : Math.min(abs * 1.5, 4);
+
+          const cardEl = document.createElement("div");
+          cardEl.className = `absolute rounded-xl border bg-white shadow-[0_15px_45px_-10px_rgba(0,0,0,0.08)] p-6 md:p-8 flex flex-col justify-between card-3d ${
+            isActive
+              ? "cursor-grab active:cursor-grabbing border-obsidian/20 card-active"
+              : "cursor-pointer border-border/60"
+          }`;
+          cardEl.style.width = `${projCardWidth}px`;
+          cardEl.style.height = `${projCardHeight}px`;
+          cardEl.style.zIndex = zIndex;
+          cardEl.style.opacity = isActive ? "1" : "0.35";
+          cardEl.style.filter = `blur(${blurPx}px)`;
+          cardEl.style.transform = `translate3d(${x}px, ${y}px, ${zTranslate}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`;
+
+          // Setup details view inside card
+          let detailsHtml = '';
+          if (item.id === 'fair-council') {
+            detailsHtml = `
+              <div class="grid grid-cols-2 gap-3 text-xs text-subtle mb-4">
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[11px] leading-tight">
+                  <div class="text-[8px] uppercase tracking-[0.15em] text-subtle mb-0.5 font-bold">Problem</div>
+                  <div class="text-obsidian font-medium">${item.problem}</div>
+                </div>
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[11px] leading-tight">
+                  <div class="text-[8px] uppercase tracking-[0.15em] text-subtle mb-0.5 font-bold">Built</div>
+                  <div class="text-obsidian font-medium">${item.built}</div>
+                </div>
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[11px] leading-tight">
+                  <div class="text-[8px] uppercase tracking-[0.15em] text-subtle mb-0.5 font-bold">Stack</div>
+                  <div class="text-obsidian font-medium">${item.stack}</div>
+                </div>
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[11px] leading-tight">
+                  <div class="text-[8px] uppercase tracking-[0.15em] text-subtle mb-0.5 font-bold">Scoring formula</div>
+                  <div class="text-obsidian font-medium">${item.scoring}</div>
+                </div>
+              </div>
+            `;
+          } else {
+            detailsHtml = `
+              <div class="grid grid-cols-2 gap-3 text-xs text-subtle mb-4">
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[11px] leading-tight col-span-2">
+                  <div class="text-[8px] uppercase tracking-[0.15em] text-subtle mb-0.5 font-bold">Built</div>
+                  <div class="text-obsidian font-medium">${item.built}</div>
+                </div>
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[11px] leading-tight">
+                  <div class="text-[8px] uppercase tracking-[0.15em] text-subtle mb-0.5 font-bold">Stack</div>
+                  <div class="text-obsidian font-medium">${item.stack}</div>
+                </div>
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[11px] leading-tight">
+                  <div class="text-[8px] uppercase tracking-[0.15em] text-subtle mb-0.5 font-bold">Timeline</div>
+                  <div class="text-obsidian font-medium">${item.scoring}</div>
+                </div>
+              </div>
+            `;
+          }
+
+          cardEl.innerHTML = `
+            <div class="w-full h-full flex flex-col justify-between pointer-events-none select-none">
+              <div>
+                <div class="flex items-start justify-between gap-4 mb-4">
+                  <div>
+                    <div class="inline-flex items-center px-2 py-0.5 rounded-full border border-border text-[9px] font-bold tracking-wide uppercase text-subtle mb-2 bg-[#ffe6e6]">
+                      ${item.category}
+                    </div>
+                    <h3 class="text-xl font-bold text-obsidian tracking-tight leading-tight">${item.title}</h3>
+                  </div>
+                  <span class="text-[10px] border border-border px-3 py-1 rounded-full uppercase tracking-wider text-subtle font-bold bg-[#ebfaeb] whitespace-nowrap">
+                    ${item.subCategory}
+                  </span>
+                </div>
+                <p class="text-xs text-subtle leading-relaxed mb-4 line-clamp-3">
+                  ${item.description}
+                </p>
+              </div>
+              
+              <div>
+                ${detailsHtml}
+                <div class="w-full flex items-center justify-start border-t border-border/50 pt-3 pointer-events-auto">
+                  <a href="${item.repo}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 rounded-full bg-obsidian text-white text-[11px] font-semibold hover:bg-obsidian/80 transition-colors pointer-events-auto">
+                    Repo
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
+
+          if (isActive) {
+            cardEl.addEventListener("mousedown", projDragStart);
+            cardEl.addEventListener("touchstart", projDragStart, { passive: true });
+            
+            // Stop propagation on repo link
+            const repoLink = cardEl.querySelector("a");
+            if (repoLink) {
+              repoLink.addEventListener("mousedown", (e) => e.stopPropagation());
+              repoLink.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
+            }
+          } else {
+            cardEl.addEventListener("click", () => {
+              projIsClicked = true;
+              projActiveIndex = i;
+              renderProjects();
+              setTimeout(() => {
+                projIsClicked = false;
+                renderProjects();
+              }, 400);
+            });
+          }
+
+          projContainer.appendChild(cardEl);
+
+          // Dots
+          const dot = document.createElement("button");
+          dot.className = `dot ${isActive ? "dot-active" : ""}`;
+          dot.setAttribute("aria-label", `Go to ${item.title}`);
+          dot.addEventListener("click", () => {
+            projActiveIndex = i;
+            renderProjects();
+          });
+          projDotsContainer.appendChild(dot);
+        });
+
+        // Update progress bar
+        const progressPercent = ((projActiveIndex + 1) / projects.length) * 100;
+        projProgressFill.style.width = `${progressPercent}%`;
+      }
+
+      // Drag handling
+      let projLastMoveTime = 0;
+      let projLastMoveX = 0;
+      let projVelocity = 0;
+
+      function projDragStart(e) {
+        projIsDragging = true;
+        projStartX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+        projLastMoveX = projStartX;
+        projLastMoveTime = performance.now();
+        projVelocity = 0;
+
+        const activeCard = projContainer.querySelector(".card-active");
+        if (activeCard) activeCard.classList.add("card-dragging");
+
+        document.addEventListener("mousemove", projDragMove);
+        document.addEventListener("touchmove", projDragMove, { passive: false });
+        document.addEventListener("mouseup", projDragEnd);
+        document.addEventListener("touchend", projDragEnd);
+      }
+
+      function projDragMove(e) {
+        if (!projIsDragging) return;
+        projCurrentX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+        projDragOffset = projCurrentX - projStartX;
+
+        const now = performance.now();
+        const dt = now - projLastMoveTime;
+        if (dt > 0) {
+          projVelocity = (projCurrentX - projLastMoveX) / dt;
+        }
+        projLastMoveX = projCurrentX;
+        projLastMoveTime = now;
+
+        const maxDrag = projCardWidth * 0.45;
+        if (projDragOffset > maxDrag) projDragOffset = maxDrag;
+        if (projDragOffset < -maxDrag) projDragOffset = -maxDrag;
+
+        const activeCard = projContainer.querySelector(".card-active");
+        if (activeCard) {
+          const rotation = projDragOffset * 0.05;
+          activeCard.style.transform = `translate3d(${projDragOffset}px, ${-projActiveLiftPx}px, 0px) rotateZ(${rotation}deg) scale(${projActiveScale})`;
+        }
+      }
+
+      function projDragEnd() {
+        if (!projIsDragging) return;
+        projIsDragging = false;
+
+        const activeCard = projContainer.querySelector(".card-active");
+        if (activeCard) activeCard.classList.remove("card-dragging");
+
+        const inertiaBoost = projVelocity * 80;
+        const effectiveOffset = projDragOffset + inertiaBoost;
+        const threshold = projCardWidth * 0.22;
+
+        if (effectiveOffset > threshold) {
+          projActiveIndex = wrapProjIndex(projActiveIndex - 1, projects.length);
+        } else if (effectiveOffset < -threshold) {
+          projActiveIndex = wrapProjIndex(projActiveIndex + 1, projects.length);
+        }
+
+        projDragOffset = 0;
+        projVelocity = 0;
+
+        document.removeEventListener("mousemove", projDragMove);
+        document.removeEventListener("touchmove", projDragMove);
+        document.removeEventListener("mouseup", projDragEnd);
+        document.removeEventListener("touchend", projDragEnd);
+
+        renderProjects();
+      }
+
+      // Keyboard navigation for projects container
+      projContainer.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") {
+          projActiveIndex = wrapProjIndex(projActiveIndex - 1, projects.length);
+          renderProjects();
+        }
+        if (e.key === "ArrowRight") {
+          projActiveIndex = wrapProjIndex(projActiveIndex + 1, projects.length);
+          renderProjects();
+        }
+      });
+
+      projContainer.addEventListener("mouseenter", () => {
+        projIsHovering = true;
+        renderProjects();
+      });
+      projContainer.addEventListener("mouseleave", () => {
+        projIsHovering = false;
+        renderProjects();
+      });
+
+      renderProjects();
 
       function animate() {
         requestAnimationFrame(animate);

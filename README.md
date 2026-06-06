@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/qbit.jpg" alt="Qbit Labs Logo" width="120" height="120" style="border-radius: 12px;" />
+</p>
+
 # <div align="center">Qbit Labs</div>
 ### <div align="center">AI-First MVP Studio</div>
 
@@ -18,6 +22,10 @@
 </p>
 
 ---
+
+<p align="center">
+  <img src="images/banner.png" alt="Qbit Labs Banner" width="100%" />
+</p>
 
 ## <img src="https://cdn-icons-png.flaticon.com/512/2534/2534652.png" width="24" height="24" align="center" /> About
 
