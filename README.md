@@ -42,7 +42,7 @@ We specialize in shortening the path from concept to launched product — delive
 | Name | Role |
 |------|------|
 | <img src="images/ayush.jpg" width="60" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Ayush Kumar** — Founder / AI Lead |
-| <img src="images/bibek%202.png" width="65" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Bibek Gupta** — Full Stack Engineer |
+| <img src="images/bibek%202.png" width="65" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Bibek Gupta** — Technical Architect |
 | <img src="images/pratim.jpeg" width="60" height="60" style="border-radius:50%; object-fit:cover;" align="center" /> | **Pratim Pramanik** — ML Engineer |
 | <img src="images/aditya.jpg" width="60" height="60" style="border-radius:50%; object-fit:cover;" align="center" /> | **Aditya Jyoti** — Product Lead |
 
