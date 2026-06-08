@@ -1,10 +1,15 @@
 <p align="center">
-  <img src="images/qbit.jpg" alt="Qbit Labs Logo" width="120" height="120" style="border-radius: 12px;" />
+  <img src="images/qbit.jpeg" alt="Qbit Labs Logo" width="90" height="100" style="border-radius: 22px;" />
 </p>
 
 # <div align="center">Qbit Labs</div>
 ### <div align="center">AI-First MVP Studio</div>
 
+<p align="center">
+  <a href="https://qbitlabs.tech/" target="_blank">
+    <img src="https://img.shields.io/badge/🌐%20Visit%20Live%20Site-qbitlabs.tech-blueviolet?style=for-the-badge&logoColor=white" height="40" />
+  </a>
+</p>
 ---
 
 <p align="center">
@@ -14,10 +19,10 @@
 </p>
 
 <p align="center">
-  <a href="#-about">About</a> •
-  <a href="#-stack">Tech Stack</a> •
-  <a href="#-features">Features</a> •
-  <a href="#-team">Team</a> •
+  <a href="#-about">About</a> |
+  <a href="#-stack">Tech Stack</a> |
+  <a href="#-features">Features</a> |
+  <a href="#-team">Team</a> |
   <a href="#-contact">Contact</a>
 </p>
 
