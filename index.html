@@ -12,6 +12,7 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/jpg" sizes="32x32" href="images/favicon-32x32.jpg">
     <title>Qbit Labs | AI-First MVP Studio</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,6 +25,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -430,7 +433,7 @@
           <span class="text-white font-mono text-sm font-bold">&lt;&gt;</span>
         </div>
         <span class="font-sans text-sm font-bold tracking-tight text-obsidian">
-          QBIT.LABS
+          QBIT LABS
         </span>
       </div>
 
@@ -926,7 +929,7 @@
       <!-- LOGOS -->
       <section
         id="services"
-        class="reveal reveal-up py-24 px-6 md:px-12 lg:px-20 border-y border-border/60 bg-white"
+        class="py-24 px-6 md:px-12 lg:px-20 border-y border-border/60 bg-white"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-16">
@@ -1046,7 +1049,7 @@
       </section>
       <section
         id="process"
-        class="reveal reveal-left relative w-full bg-canvas border-b border-border/60 py-24 px-6 md:px-12 lg:px-20"
+        class="relative w-full bg-canvas border-b border-border/60 py-24 px-6 md:px-12 lg:px-20"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-14">
@@ -1066,7 +1069,7 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 ">
-            <div class="premium-card rounded-xl p-6 bg-yellow-50">
+            <div class="premium-card rounded-xl p-6 ">
               <div class="flex items-center justify-between mb-6 ">
                 <span
                   class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
@@ -1085,7 +1088,7 @@
                 worth building first.
               </p>
             </div>
-            <div class="premium-card rounded-xl p-6 bg-red-50">
+            <div class="premium-card rounded-xl p-6 ">
               <div class="flex items-center justify-between mb-6 ">
                 <span
                   class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
@@ -1104,7 +1107,7 @@
                 before any heavy development starts.
               </p>
             </div>
-            <div class="premium-card rounded-xl p-6 bg-green-50">
+            <div class="premium-card rounded-xl p-6">
               <div class="flex items-center justify-between mb-6">
                 <span
                   class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
@@ -1123,7 +1126,7 @@
                 and make decisions weekly.
               </p>
             </div>
-            <div class="premium-card rounded-xl p-6 bg-blue-50">
+            <div class="premium-card rounded-xl p-6">
               <div class="flex items-center justify-between mb-6">
                 <span
                   class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
@@ -1143,11 +1146,20 @@
               </p>
             </div>
           </div>
+          <div class="flex justify-center mt-10">
+            <a
+              href="/documents/template.pdf"
+              target="_blank"
+              class="px-5 py-2.5 bg-black text-white border border-border text-sm font-medium rounded shadow-sm transition-all duration-300 ease-out hover:bg-gray-100 hover:border-obsidian/40 hover:text-black hover:shadow-md active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-obsidian/10 focus:ring-offset-2"
+            >
+              Client Template
+            </a>
+          </div>
         </div>
       </section>
       <section
         id="work"
-        class="reveal reveal-right py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
       >
         <div class="max-w-7xl mx-auto">
           <div
@@ -1207,7 +1219,7 @@
 
       <section
         id="why-us"
-        class="reveal reveal-up py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-white"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-white"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-12">
@@ -1227,7 +1239,7 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
-            <div class="premium-card rounded-xl p-6 bg-yellow-50">
+            <div class="premium-card rounded-xl p-6">
               <h3 class="font-semibold text-obsidian mb-2">
                 AI + full-stack delivery
               </h3>
@@ -1236,7 +1248,7 @@
                 to end.
               </p>
             </div>
-            <div class="premium-card rounded-xl p-6 bg-red-50">
+            <div class="premium-card rounded-xl p-6">
               <h3 class="font-semibold text-obsidian mb-2">
                 Fast iteration cycles
               </h3>
@@ -1245,7 +1257,7 @@
                 still moving.
               </p>
             </div>
-            <div class="premium-card rounded-xl p-6 bg-green-50">
+            <div class="premium-card rounded-xl p-6">
               <h3 class="font-semibold text-obsidian mb-2">
                 End-to-end MVP execution
               </h3>
@@ -1254,7 +1266,7 @@
                 not just a slice.
               </p>
             </div>
-            <div class="premium-card rounded-xl p-6 bg-violet-50">
+            <div class="premium-card rounded-xl p-6">
               <h3 class="font-semibold text-obsidian mb-2">
                 Clean handoff, no lock-in
               </h3>
@@ -1263,7 +1275,7 @@
                 team can own.
               </p>
             </div>
-            <div class="premium-card rounded-xl p-6 bg-blue-50">
+            <div class="premium-card rounded-xl p-6">
               <h3 class="font-semibold text-obsidian mb-2">
                 Small, focused team
               </h3>
@@ -1277,7 +1289,7 @@
       </section>
       <section
         id="pricing"
-        class="reveal reveal-scale py-24 px-6 md:px-12 lg:px-20 border-b border-border bg-white"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border bg-white"
       >
         <div class="max-w-7xl mx-auto">
           <div class="max-w-2xl mb-16">
@@ -1375,7 +1387,7 @@
 
       <section
         id="faq"
-        class="reveal reveal-left py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
+        class="py-24 px-6 md:px-12 lg:px-20 border-b border-border/60 bg-canvas"
       >
         <div class="max-w-4xl mx-auto">
           <div class="mb-12">
@@ -1390,12 +1402,8 @@
             </h2>
           </div>
           <div class="space-y-4" id="faq-accordion">
-  <style>
-    #faq-accordion details { background-color: transparent; }
-    #faq-accordion details[open] { background-color: #e9e9e8; }
-  </style>
 
-  <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#fcf5e9]">
+  <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
     <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
     <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
       <span class="group-open:text-obsidian transition-colors duration-300">Who do you work with?</span>
@@ -1411,16 +1419,8 @@
         We work with international early-stage founders, solo founders, and small startups, especially teams building B2B SaaS products with AI inside the workflow.
       </p>
     </div>
-
-
-              <style>
-                @keyframes fadeSlideIn {
-                  from { opacity: 0; transform: translateY(-6px); }
-                  to { opacity: 1; transform: translateY(0); }
-                }
-              </style>
-            </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#fcf5e9]">
+          </details>
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">What does an MVP include?</span>
@@ -1437,7 +1437,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#fcf5e9]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">How long does it take?</span>
@@ -1453,7 +1453,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#fcf5e9]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">Do you work with non-technical founders?</span>
@@ -1469,7 +1469,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#fcf5e9]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">Do we get the source code?</span>
@@ -1485,7 +1485,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#fcf5e9]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">Can you add AI features into an existing product?</span>
@@ -1501,19 +1501,13 @@
                 </p>
               </div>
             </details>
-      </p>
-    </div>
-
-
-              
-            </details>
           </div>
         </div>
       </section>
 
       <section
         id="contact"
-        class="reveal reveal-up py-24 px-6 md:px-12 lg:px-20 bg-obsidian text-white relative overflow-hidden"
+        class="py-24 px-6 md:px-12 lg:px-20 bg-obsidian text-white relative overflow-hidden"
       >
         <div
           class="absolute inset-0 opacity-10"
@@ -2244,6 +2238,71 @@
           { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
         );
         reveals.forEach((el) => observer.observe(el));
+      });
+    </script>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reducedMotion) {
+
+        function animateSection(id) {
+          const el = document.getElementById(id);
+          if (!el) return;
+
+          const heading = el.querySelector('.max-w-2xl');
+          const cards = el.querySelectorAll('.premium-card');
+          const details = el.querySelectorAll('details');
+          const items = cards.length ? cards : details.length ? details : [];
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            },
+          });
+
+          if (heading) {
+            const span = heading.querySelector('span');
+            const h2 = heading.querySelector('h2');
+            const p = heading.querySelector('p');
+            if (span) tl.fromTo(span, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 0);
+            if (h2) tl.fromTo(h2, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.05);
+            if (p) tl.fromTo(p, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 0.15);
+          }
+
+          if (items.length) {
+            tl.fromTo(
+              items,
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.6, stagger: 0.1 },
+              0.2
+            );
+          }
+        }
+
+        animateSection('services');
+        animateSection('process');
+        animateSection('work');
+        animateSection('why-us');
+        animateSection('pricing');
+        animateSection('faq');
+        animateSection('contact');
+      }
+    </script>
+
+    <script>
+      // FAQ Accordion — close other details when one opens
+      document.querySelectorAll('#faq-accordion details').forEach((detail) => {
+        detail.addEventListener('toggle', () => {
+          if (detail.open) {
+            document.querySelectorAll('#faq-accordion details').forEach((other) => {
+              if (other !== detail) other.open = false;
+            });
+          }
+        });
       });
     </script>
 

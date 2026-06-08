@@ -5,6 +5,11 @@
 # <div align="center">Qbit Labs</div>
 ### <div align="center">AI-First MVP Studio</div>
 
+<p align="center">
+  <a href="https://qbitlabs.tech/" target="_blank">
+    <img src="https://img.shields.io/badge/🌐%20Visit%20Live%20Site-qbitlabs.tech-blueviolet?style=for-the-badge&logoColor=white" height="40" />
+  </a>
+</p>
 ---
 
 <p align="center">
@@ -14,10 +19,10 @@
 </p>
 
 <p align="center">
-  <a href="#-about">About</a> •
-  <a href="#-stack">Tech Stack</a> •
-  <a href="#-features">Features</a> •
-  <a href="#-team">Team</a> •
+  <a href="#-about">About</a> |
+  <a href="#-stack">Tech Stack</a> |
+  <a href="#-features">Features</a> |
+  <a href="#-team">Team</a> |
   <a href="#-contact">Contact</a>
 </p>
 
@@ -42,7 +47,7 @@ We specialize in shortening the path from concept to launched product — delive
 | Name | Role |
 |------|------|
 | <img src="images/ayush.jpg" width="60" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Ayush Kumar** — Founder / AI Lead |
-| <img src="images/bibek%202.png" width="65" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Bibek Gupta** — Full Stack Engineer |
+| <img src="images/bibek%202.png" width="65" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Bibek Gupta** — Technical Architect |
 | <img src="images/pratim.jpeg" width="60" height="60" style="border-radius:50%; object-fit:cover;" align="center" /> | **Pratim Pramanik** — ML Engineer |
 | <img src="images/aditya.jpg" width="60" height="60" style="border-radius:50%; object-fit:cover;" align="center" /> | **Aditya Jyoti** — Product Lead |
 
