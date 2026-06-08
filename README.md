@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/qbit.jpg" alt="Qbit Labs Logo" width="120" height="120" style="border-radius: 12px;" />
+  <img src="images/qbit.jpeg" alt="Qbit Labs Logo" width="90" height="100" style="border-radius: 22px;" />
 </p>
 
 # <div align="center">Qbit Labs</div>
