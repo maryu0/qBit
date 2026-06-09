@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <script>
@@ -37,13 +38,13 @@
               mono: ['"JetBrains Mono"', "monospace"],
             },
             colors: {
-              canvas: "#f5fafa",
+              canvas: "#F5F4EE",
               surface: "#FFFFFF",
               obsidian: "#111111",
               charcoal: "#333333",
               subtle: "#6B7280",
-              border: "#E5E0D8",
-              accent: "#2563EB",
+              border: "#E2E1D3",
+              accent: "#0B4FFF",
               primary: "#000000",
             },
             letterSpacing: {
@@ -59,41 +60,162 @@
       html { scroll-behavior: smooth; }
       body {
         margin: 0;
-        background-color: #fbfaf9;
+        background-color: #F5F4EE;
         color: #111111;
         -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       :root {
-        --beige: #ffffff;
-        --beige-dark: #ffffff;
-        --blue: #2563EB;
-        --blue-light: #3B82F6;
-        --blue-glow: rgba(37, 99, 235, 0.12);
+        --cream: #F5F4EE;
+        --cream-border: #E2E1D3;
+        --blue: #0B4FFF;
+        --blue-light: #4D6FFF;
+        --blue-glow: rgba(11, 79, 255, 0.18);
+        --blue-subtle: rgba(11, 79, 255, 0.06);
         --obsidian: #111111;
         --subtle: #6B7280;
-        --border: #ffffff;
+        --border: #E2E1D3;
       }
+
+      /* ── Announcement bar ── */
+      .announcement-bar {
+        background: var(--blue);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 9px 16px;
+        position: relative;
+        z-index: 60;
+      }
+      .announcement-bar a {
+        color: rgba(255,255,255,0.85);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255,255,255,0.4);
+        transition: color 0.2s;
+      }
+      .announcement-bar a:hover { color: #fff; }
+      .announcement-bar .close-bar {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        padding: 2px 4px;
+        transition: color 0.2s;
+      }
+      .announcement-bar .close-bar:hover { color: #fff; }
+
+      /* ── Tech marquee ── */
+      .marquee-wrap {
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+      }
+      .marquee-track {
+        display: flex;
+        gap: 48px;
+        width: max-content;
+        animation: marqueeScroll 28s linear infinite;
+      }
+      .marquee-track:hover { animation-play-state: paused; }
+      @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      .marquee-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--subtle);
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        padding: 6px 18px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: #fff;
+        transition: color 0.2s, border-color 0.2s;
+      }
+      .marquee-item:hover { color: var(--blue); border-color: var(--blue); }
+      ::selection { background: var(--blue); color: #fff; }
+      ::-moz-selection { background: var(--blue); color: #fff; }
+
       .technical-grid {
         background-size: 40px 40px;
         background-image:
-          linear-gradient(to right, rgba(0, 0, 0, 0.025) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+          linear-gradient(to right, rgba(11,79,255,0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(11,79,255,0.03) 1px, transparent 1px);
         mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
       }
       .premium-card {
         background: #ffffff;
         border: 1px solid var(--border);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 4px 12px -2px rgba(0,0,0,0.03);
-        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px -4px rgba(0,0,0,0.06);
+        transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
       }
       .premium-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.03), 0 16px 40px -8px rgba(0,0,0,0.08);
-        border-color: #d4d0c8;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px -4px rgba(0,0,0,0.10), 0 0 0 1px rgba(11,79,255,0.08);
+        border-color: rgba(11,79,255,0.25);
       }
       .accent-blue { color: var(--blue); }
       .bg-accent-blue { background-color: var(--blue); }
-      .glow-blue { box-shadow: 0 0 0 1px var(--blue), 0 0 20px var(--blue-glow); }
+      .glow-blue { box-shadow: 0 0 0 1px var(--blue), 0 0 28px var(--blue-glow); }
+
+      /* ── Section heading reveal line ── */
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--blue);
+        margin-bottom: 12px;
+      }
+      .section-label::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 2px;
+        background: var(--blue);
+        border-radius: 2px;
+      }
+
+      /* ── Blue CTA button ── */
+      .btn-blue {
+        background: var(--blue);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 6px;
+        padding: 12px 28px;
+        font-size: 14px;
+        letter-spacing: -0.01em;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+        box-shadow: 0 1px 3px rgba(11,79,255,0.25), 0 8px 24px -8px rgba(11,79,255,0.4);
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-blue:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 4px 12px rgba(11,79,255,0.3), 0 16px 40px -8px rgba(11,79,255,0.5);
+      }
+      .btn-blue:active { transform: scale(0.98); }
+
+      /* ── Scroll reveal base ── */
+      .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
       .sticky-section { position: relative; overflow: hidden; }
       .sticky-section .pin-wrapper { position: relative; }
       .journey-path { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
@@ -453,19 +575,26 @@
   </head>
 
   <body class="w-full relative bg-canvas">
+    <!-- Announcement Bar -->
+    <div class="announcement-bar" id="announcement-bar">
+      <span>⚡ Now taking projects for Q3 2026 &mdash; <a href="#contact">Book a discovery call →</a></span>
+      <button class="close-bar" onclick="this.parentElement.style.display='none'" aria-label="Close">&times;</button>
+    </div>
     <!-- Fixed Backgrounds -->
     <div class="fixed inset-0 z-0 technical-grid pointer-events-none"></div>
     <div id="canvas-container" class="fixed inset-0 z-0 opacity-100"></div>
 
     <!-- Navigation -->
     <header
-      class="fixed top-0 left-0 right-0 z-50 w-full px-6 py-5 md:px-12 flex justify-between items-center bg-canvas/90 backdrop-blur-md border-b border-border/50 transition-all duration-300"
+      id="main-header"
+      class="fixed top-0 left-0 right-0 z-50 w-full px-6 py-4 md:px-12 flex justify-between items-center bg-canvas/95 backdrop-blur-lg border-b border-border transition-all duration-300"
     >
       <div class="flex items-center gap-2">
         <div
-          class="w-5 h-5 bg-obsidian text-white flex items-center justify-center rounded-sm"
+          class="w-5 h-5 flex items-center justify-center rounded-sm"
+          style="background:var(--blue);"
         >
-          <span class="text-white font-mono text-sm font-bold">&lt;&gt;</span>
+          <span class="text-white font-mono text-sm font-bold" style="font-size:9px;">&lt;&gt;</span>
         </div>
         <span class="font-sans text-sm font-bold tracking-tight text-obsidian">
           QBIT LABS
@@ -473,53 +602,23 @@
       </div>
 
       <nav class="hidden md:flex items-center gap-8">
-        <a
-          href="#work"
-          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
-        >
-          Work
-        </a>
-        <a
-          href="#services"
-          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
-        >
-          Services
-        </a>
-        <a
-          href="#process"
-          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
-        >
-          Process
-        </a>
-        <a
-          href="team.html"
-          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
-        >
-          Team
-        </a>
-        <a
-          href="#faq"
-          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
-        >
-          FAQ
-        </a>
-        <a
-          href="#contact"
-          class="font-sans text-xs font-medium text-subtle hover:text-obsidian transition-colors"
-        >
-          Contact
-        </a>
+        <a href="#work" class="font-sans text-xs font-medium text-subtle transition-colors" style="--tw-text-opacity:1;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Work</a>
+        <a href="#services" class="font-sans text-xs font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Services</a>
+        <a href="#process" class="font-sans text-xs font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Process</a>
+        <a href="team.html" class="font-sans text-xs font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Team</a>
+        <a href="#faq" class="font-sans text-xs font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">FAQ</a>
+        <a href="#contact" class="font-sans text-xs font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Contact</a>
       </nav>
 
       <div class="flex items-center gap-3">
         <a
-          href="mailto:qbitlabs.studio@gmail.com?subject=AI-first%20MVP%20project%20inquiry"
-          class="group relative isolate overflow-hidden bg-obsidian text-white text-xs font-semibold px-5 py-2.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.08)] ring-1 ring-white/10 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.04] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.25)] hover:ring-white/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-obsidian/20 focus:ring-offset-1"
+          href="#contact"
+          class="group relative isolate overflow-hidden text-white text-xs font-semibold px-5 py-2.5 rounded transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] focus:outline-none"
+          style="background:var(--blue); box-shadow:0 1px 3px rgba(11,79,255,0.3),0 6px 20px -4px rgba(11,79,255,0.4);"
+          onmouseover="this.style.boxShadow='0 4px 12px rgba(11,79,255,0.4),0 12px 32px -4px rgba(11,79,255,0.5)'" onmouseout="this.style.boxShadow='0 1px 3px rgba(11,79,255,0.3),0 6px 20px -4px rgba(11,79,255,0.4)'"
         >
-          <div
-            class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent z-10"
-          ></div>
-          <span class="relative z-20">Email us</span>
+          <div class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
+          <span class="relative z-20">Start a Project</span>
         </a>
         
         <!-- Hamburger Menu Button -->
@@ -559,84 +658,59 @@
             <h1
               class="font-sans text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tighter text-obsidian leading-[0.95]"
             >
-              AI-first MVPs
+              <span style="color:var(--blue);">AI-first</span> MVPs
               <br />
-              <span class="text-subtle"
-                >for founders who need to move fast.</span
-              >
+              <span class="text-subtle">for founders who ship fast.</span>
             </h1>
             <p
               class="max-w-xl font-sans text-base md:text-lg text-subtle leading-relaxed"
             >
               We build AI-first B2B SaaS MVPs for early-stage founders, solo
-              founders, and small startups - from idea, to prototype, to
+              founders, and small startups — from idea, to prototype, to
               deployed product in weeks.
             </p>
-            <div
-              class="flex flex-wrap gap-3 text-[11px] font-medium text-subtle"
-            >
-              <span
-                class="px-3 py-1.5 rounded-full border border-border/70 bg-white"
-                >MERN + AI</span
-              >
-              <span
-                class="px-3 py-1.5 rounded-full border border-border/70 bg-white"
-                >4-person studio</span
-              >
-              <span
-                class="px-3 py-1.5 rounded-full border border-border/70 bg-white"
-                >Available globally</span
-              >
+            <div class="flex flex-wrap gap-2 text-[11px] font-semibold">
+              <span class="px-3 py-1.5 rounded-full border bg-white" style="border-color:var(--border); color:var(--subtle);">MERN + AI</span>
+              <span class="px-3 py-1.5 rounded-full border bg-white" style="border-color:var(--border); color:var(--subtle);">4-person studio</span>
+              <span class="px-3 py-1.5 rounded-full border bg-white" style="border-color:var(--border); color:var(--subtle);">Available globally</span>
+              <span class="px-3 py-1.5 rounded-full font-semibold" style="background:var(--blue-subtle,rgba(11,79,255,0.08)); color:var(--blue); border:1px solid rgba(11,79,255,0.2);">&#9889; Accepting Q3 projects</span>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-4">
+            <!-- Primary Blue CTA -->
             <a
               href="#contact"
-              class="group relative isolate overflow-hidden bg-obsidian text-white text-sm font-semibold px-8 py-3.5 rounded shadow-[0_1px_2px_rgba(0,0,0,0.08)] ring-1 ring-white/10 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.03] hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.3)] hover:ring-white/20 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-obsidian/20 focus:ring-offset-2 flex items-center gap-2"
+              class="group relative isolate overflow-hidden text-white text-sm font-semibold px-8 py-3.5 rounded flex items-center gap-2 transition-all duration-300"
+              style="background:var(--blue); box-shadow:0 2px 8px rgba(11,79,255,0.3),0 12px 32px -8px rgba(11,79,255,0.45);"
+              onmouseover="this.style.transform='translateY(-2px) scale(1.02)'; this.style.boxShadow='0 4px 16px rgba(11,79,255,0.4),0 20px 48px -8px rgba(11,79,255,0.5)'"
+              onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(11,79,255,0.3),0 12px 32px -8px rgba(11,79,255,0.45)'"
             >
-              <div
-                class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent z-0 pointer-events-none"
-              ></div>
-              <span class="relative z-10">Email us</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-arrow-right relative z-10 transition-transform duration-300 group-hover:translate-x-1"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
+              <div class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent z-0 pointer-events-none"></div>
+              <span class="relative z-10">Start a Project</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
+                <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
               </svg>
             </a>
+            <!-- Ghost CTA -->
             <a
               href="#work"
-              class="px-8 py-3.5 bg-white text-obsidian border border-border text-sm font-medium rounded shadow-sm transition-all duration-300 ease-out hover:bg-gray-50 hover:border-obsidian/40 hover:text-black hover:shadow-md active:scale-[0.97] active:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-obsidian/10 focus:ring-offset-2"
+              class="px-8 py-3.5 bg-white text-obsidian border text-sm font-medium rounded transition-all duration-300"
+              style="border-color:var(--border);"
+              onmouseover="this.style.borderColor='var(--blue)'; this.style.color='var(--blue)'; this.style.transform='translateY(-1px)'"
+              onmouseout="this.style.borderColor=''; this.style.color=''; this.style.transform=''"
             >
               See case studies
             </a>
           </div>
         </div>
 
-        <!-- Visual -->
-        <div
-          class="relative w-full max-w-lg aspect-square lg:aspect-[4/3] flex items-center justify-center"
-        >
-          <div
-            class="absolute inset-0 bg-gradient-to-tr from-canvas via-white to-canvas opacity-50 blur-3xl"
-          ></div>
-          <div
-            class="premium-card w-full h-full p-6 relative overflow-hidden rounded-xl"
-          >
-            <div
-              class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-obsidian to-transparent"
-            ></div>
+        <!-- Hero Visual Card -->
+        <div class="relative w-full max-w-lg aspect-square lg:aspect-[4/3] flex items-center justify-center">
+          <div class="absolute inset-0 blur-3xl opacity-30" style="background:radial-gradient(ellipse at 60% 40%, rgba(11,79,255,0.18) 0%, transparent 70%);"></div>
+          <div class="premium-card w-full h-full p-6 relative overflow-hidden rounded-xl">
+            <!-- Blue accent top bar -->
+            <div class="absolute top-0 left-0 w-full h-[3px]" style="background:linear-gradient(90deg,var(--blue),var(--blue-light),transparent);"></div>
             <!-- Mock UI: Node Graph -->
             <div class="h-full w-full flex flex-col">
               <div
@@ -951,9 +1025,10 @@
 
                 <!-- Floating Label -->
                 <div
-                  class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-obsidian text-white text-[10px] font-medium px-3 py-1.5 rounded shadow-xl"
+                  class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-lg"
+                  style="background:var(--blue); box-shadow:0 4px 16px rgba(11,79,255,0.4);"
                 >
-                  Typical MVP: 4-8 weeks
+                  &#9889; Typical MVP: 4–8 weeks
                 </div>
               </div>
             </div>
@@ -961,20 +1036,63 @@
         </div>
       </section>
 
+      <!-- TECH MARQUEE -->
+      <section class="py-14 border-y bg-white" style="border-color:var(--border);">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+          <p class="text-center text-[10px] font-bold tracking-[0.2em] uppercase mb-6" style="color:var(--subtle);">Built with industry-standard tools</p>
+          <div class="marquee-wrap">
+            <div class="marquee-track">
+              <!-- First set -->
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#61DAFB"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>React</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#339933"><path d="M11.998 0C5.37 0 0 5.37 0 12c0 5.304 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12.002-12z"/></svg>Node.js</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#10a37f"><path d="M22.282 9.821a5.985 5.985 0 00-.233-1.327l-.003-.01-.011-.04A6.01 6.01 0 0013.98 4.8a5.985 5.985 0 00-4.698 2.262 5.985 5.985 0 00-1.217 4.53l.001.012.003.015a6.015 6.015 0 004.705 4.705l.015.003.012.001a5.985 5.985 0 004.53-1.217 5.985 5.985 0 002.262-4.698v-.012a5.97 5.97 0 00-.311-1.58z"/></svg>OpenAI</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M8 12h8M12 8v8"/></svg>LangChain</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#47A248"><path d="M17.193 9.555c-1.264-5.58-4.252-7.507-4.573-8.232-.725-1.566-1.51.159-1.51.159-1.081 2.481-3.803 7.547-5.902 10.488-2.128 2.974-1.16 5.665 0 7.001 1.158 1.337 4.104 2.271 6.397-.08 2.293-2.352 2.97-5.428 2.97-5.428 0 0 1.876-1.034 2.618-3.908z"/></svg>MongoDB</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>Vercel</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#009688"><path d="M0 0h24v24H0z" fill="none"/><path d="M17.36 2.64L15.95 4.05C17.22 5.32 18 7.07 18 9s-.78 3.68-2.06 4.95l1.41 1.41C19.1 13.73 20 11.46 20 9s-.9-4.73-2.64-6.36zm-1.41 1.42C14.96 5.05 14 6.96 14 9s.96 3.95 1.95 4.94l1.41-1.41C16.54 11.7 16 10.4 16 9s.54-2.7 1.36-3.53l-1.41-1.41zM5.64 2.64C3.9 4.27 3 6.54 3 9s.9 4.73 2.64 6.36l1.41-1.41C5.78 12.68 5 10.93 5 9s.78-3.68 2.06-4.95L5.64 2.64zM9 5C7.48 5 6.12 5.61 5.11 6.59L6.52 8C7.16 7.37 8.03 7 9 7s1.84.37 2.48 1L12.9 6.59C11.88 5.61 10.52 5 9 5zm3 4c0 1.66-1.34 3-3 3S6 10.66 6 9s1.34-3 3-3 3 1.34 3 3z"/></svg>FastAPI</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#635BFF"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg>Stripe</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#306998"><path d="M9.585.164C9.585.164 4.54.164 3.38 1.46c-.637.752-.855 1.814-.93 2.84l-.001 4.07c-.064 1.015.354 1.995 1.184 2.52.755.48 1.775.51 2.626.51h.001c1.21 0 2.264-.13 3.076-.5V10.9c-.812.37-1.866.5-3.076.5-.851 0-1.87-.03-2.626-.51-.83-.525-1.248-1.505-1.184-2.52L3.45 4.3c.075-1.026.293-2.088.93-2.84C5.54.164 10.585.164 10.585.164z"/></svg>Python</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#3ECF8E"><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.09 12.932.736 14.2 1.9 14.2h9.2l.13 8.732c.015.987 1.262 1.41 1.876.638l9.262-11.653c.674-.882.027-2.15-1.14-2.15H12.03l-.13-8.731z"/></svg>Supabase</span>
+              <!-- Duplicate for infinite loop -->
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#61DAFB"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>React</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#339933"><path d="M11.998 0C5.37 0 0 5.37 0 12c0 5.304 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12.002-12z"/></svg>Node.js</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#10a37f"><path d="M22.282 9.821a5.985 5.985 0 00-.233-1.327l-.003-.01-.011-.04A6.01 6.01 0 0013.98 4.8a5.985 5.985 0 00-4.698 2.262 5.985 5.985 0 00-1.217 4.53l.001.012.003.015a6.015 6.015 0 004.705 4.705l.015.003.012.001a5.985 5.985 0 004.53-1.217 5.985 5.985 0 002.262-4.698v-.012a5.97 5.97 0 00-.311-1.58z"/></svg>OpenAI</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M8 12h8M12 8v8"/></svg>LangChain</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#47A248"><path d="M17.193 9.555c-1.264-5.58-4.252-7.507-4.573-8.232-.725-1.566-1.51.159-1.51.159-1.081 2.481-3.803 7.547-5.902 10.488-2.128 2.974-1.16 5.665 0 7.001 1.158 1.337 4.104 2.271 6.397-.08 2.293-2.352 2.97-5.428 2.97-5.428 0 0 1.876-1.034 2.618-3.908z"/></svg>MongoDB</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>Vercel</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#009688"><path d="M17.36 2.64L15.95 4.05C17.22 5.32 18 7.07 18 9s-.78 3.68-2.06 4.95l1.41 1.41C19.1 13.73 20 11.46 20 9s-.9-4.73-2.64-6.36zm-1.41 1.42C14.96 5.05 14 6.96 14 9s.96 3.95 1.95 4.94l1.41-1.41C16.54 11.7 16 10.4 16 9s.54-2.7 1.36-3.53l-1.41-1.41zM5.64 2.64C3.9 4.27 3 6.54 3 9s.9 4.73 2.64 6.36l1.41-1.41C5.78 12.68 5 10.93 5 9s.78-3.68 2.06-4.95L5.64 2.64zM9 5C7.48 5 6.12 5.61 5.11 6.59L6.52 8C7.16 7.37 8.03 7 9 7s1.84.37 2.48 1L12.9 6.59C11.88 5.61 10.52 5 9 5zm3 4c0 1.66-1.34 3-3 3S6 10.66 6 9s1.34-3 3-3 3 1.34 3 3z"/></svg>FastAPI</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#635BFF"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg>Stripe</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#306998"><path d="M9.585.164C9.585.164 4.54.164 3.38 1.46c-.637.752-.855 1.814-.93 2.84l-.001 4.07c-.064 1.015.354 1.995 1.184 2.52.755.48 1.775.51 2.626.51h.001c1.21 0 2.264-.13 3.076-.5V10.9c-.812.37-1.866.5-3.076.5-.851 0-1.87-.03-2.626-.51-.83-.525-1.248-1.505-1.184-2.52L3.45 4.3c.075-1.026.293-2.088.93-2.84C5.54.164 10.585.164 10.585.164z"/></svg>Python</span>
+              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#3ECF8E"><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.09 12.932.736 14.2 1.9 14.2h9.2l.13 8.732c.015.987 1.262 1.41 1.876.638l9.262-11.653c.674-.882.027-2.15-1.14-2.15H12.03l-.13-8.731z"/></svg>Supabase</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- JOURNEY PATH -->
-      <section class="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" style="min-height: 60vh;">
+      <section class="relative py-20 px-6 md:px-12 lg:px-20 overflow-hidden" style="background:#F5F4EE;">
         <div class="max-w-5xl mx-auto relative">
+          <p class="text-center font-sans text-sm text-subtle mb-6">From first call to shipped product &mdash; a clear, fast path.</p>
           <svg id="journey-svg" class="w-full h-auto" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 200px;">
-            <path id="journey-line" class="journey-path" d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <circle class="journey-dot" cx="50" cy="100" r="6" fill="#2563EB"/>
-            <circle class="journey-dot" cx="250" cy="30" r="6" fill="#2563EB"/>
-            <circle class="journey-dot" cx="450" cy="170" r="6" fill="#2563EB"/>
-            <circle class="journey-dot" cx="650" cy="100" r="6" fill="#2563EB"/>
+            <defs>
+              <filter id="jBlueGlow" x="-20%" y="-50%" width="140%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- Track -->
+            <path d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="rgba(11,79,255,0.12)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <!-- Animated blue path -->
+            <path id="journey-line" class="journey-path" d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="#0B4FFF" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#jBlueGlow)"/>
+            <circle class="journey-dot" cx="50" cy="100" r="6" fill="#0B4FFF"/>
+            <circle class="journey-dot" cx="250" cy="30" r="6" fill="#0B4FFF"/>
+            <circle class="journey-dot" cx="450" cy="170" r="6" fill="#0B4FFF"/>
+            <circle class="journey-dot" cx="650" cy="100" r="6" fill="#0B4FFF"/>
             <circle class="journey-dot" cx="780" cy="100" r="8" fill="#111111"/>
-            <text x="50" y="130" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Discovery</text>
-            <text x="250" y="10" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Prototype</text>
-            <text x="450" y="200" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Build</text>
-            <text x="650" y="130" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Launch</text>
+            <text x="50" y="128" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Discovery</text>
+            <text x="250" y="16" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Prototype</text>
+            <text x="450" y="196" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Build</text>
+            <text x="650" y="128" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Launch</text>
           </svg>
         </div>
       </section>
