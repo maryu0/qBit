@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/qbit.jpeg" alt="Qbit Labs Logo" width="90" height="100" style="border-radius: 22px;" />
+  <img src="images/qbit.jpeg" alt="Qbit Labs Logo" width="120" height="120" style="border-radius: 12px;" />
 </p>
 
 # <div align="center">Qbit Labs</div>
@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://qbitlabs.tech/" target="_blank">
-    <img src="https://img.shields.io/badge/🌐%20Visit%20Live%20Site-qbitlabs.tech-blueviolet?style=for-the-badge&logoColor=white" height="40" />
+    <img src="https://img.shields.io/badge/🌐%20Visit%20Live%20Site-qbitlabs.tech-blueviolet?style=for-the-badge&logoColor=white" height="60" />
   </a>
 </p>
 ---
@@ -66,7 +66,7 @@ We specialize in shortening the path from concept to launched product — delive
 
 ## <img src="https://cdn-icons-png.flaticon.com/512/3506/3506377.png" width="24" height="24" align="center" /> Features
 
-### Portfolio (`portfolio.html`)
+### Portfolio (`index.html`)
 - 🚀 **Hero Section** with animated 3D node graph visualization
 - 🎯 **Services Overview** — Discovery Sprint, Prototype MVP, Launch MVP
 - 📋 **4-Step Studio Process** — Discovery → Wireframes → Weekly Builds → Launch
@@ -100,7 +100,7 @@ We specialize in shortening the path from concept to launched product — delive
 
 ## <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" width="24" height="24" align="center" /> Quick Start
 
-1. Open `portfolio.html` in your browser to view the main website  
+1. Open `index.html` in your browser to view the main website  
 2. Navigate to the **Team** link to view `team.html`  
 3. Click on team cards to explore individual profiles  
 4. Use arrow keys or drag cards to navigate the stack  
