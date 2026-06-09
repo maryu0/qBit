@@ -37,13 +37,13 @@
               mono: ['"JetBrains Mono"', "monospace"],
             },
             colors: {
-              canvas: "#FAFAFA",
+              canvas: "#f5fafa",
               surface: "#FFFFFF",
               obsidian: "#111111",
               charcoal: "#333333",
-              subtle: "#737373",
-              border: "#E5E5E5",
-              accent: "#252525",
+              subtle: "#6B7280",
+              border: "#E5E0D8",
+              accent: "#2563EB",
               primary: "#000000",
             },
             letterSpacing: {
@@ -55,121 +55,156 @@
       };
     </script>
     <style>
-      html,
-      body {
-        overflow-x: hidden;
-        max-width: 100%;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
+      html, body { overflow-x: hidden; max-width: 100%; }
+      html { scroll-behavior: smooth; }
       body {
         margin: 0;
-        background-color: #fafafa;
+        background-color: #fbfaf9;
         color: #111111;
         -webkit-font-smoothing: antialiased;
+      }
+      :root {
+        --beige: #ffffff;
+        --beige-dark: #ffffff;
+        --blue: #2563EB;
+        --blue-light: #3B82F6;
+        --blue-glow: rgba(37, 99, 235, 0.12);
+        --obsidian: #111111;
+        --subtle: #6B7280;
+        --border: #ffffff;
       }
       .technical-grid {
         background-size: 40px 40px;
         background-image:
-          linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+          linear-gradient(to right, rgba(0, 0, 0, 0.025) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
         mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
       }
       .premium-card {
         background: #ffffff;
-        border: 1px solid #eaeaea;
-        box-shadow:
-          0 2px 4px rgba(0, 0, 0, 0.02),
-          0 8px 16px -4px rgba(0, 0, 0, 0.04);
-        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 4px 12px -2px rgba(0,0,0,0.03);
+        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
       }
       .premium-card:hover {
-        transform: translateY(-2px);
-        box-shadow:
-          0 4px 8px rgba(0, 0, 0, 0.03),
-          0 12px 24px -6px rgba(0, 0, 0, 0.06);
-        border-color: #d4d4d4;
+        transform: translateY(-4px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.03), 0 16px 40px -8px rgba(0,0,0,0.08);
+        border-color: #d4d0c8;
       }
-      .node-line {
-        stroke-dasharray: 4;
-        animation: dash 30s linear infinite;
-      }
-      @keyframes dash {
-        to {
-          stroke-dashoffset: -100;
-        }
-      }
+      .accent-blue { color: var(--blue); }
+      .bg-accent-blue { background-color: var(--blue); }
+      .glow-blue { box-shadow: 0 0 0 1px var(--blue), 0 0 20px var(--blue-glow); }
+      .sticky-section { position: relative; overflow: hidden; }
+      .sticky-section .pin-wrapper { position: relative; }
+      .journey-path { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
 
-      /* ============ CARD 3D BASE ============ */
       .card-3d {
-        transform-style: preserve-3d;
-        backface-visibility: hidden;
-        will-change: transform, opacity;
-        transition:
-          transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
-          opacity 550ms ease,
-          border-color 300ms ease,
-          filter 550ms ease;
+        transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity;
+        transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1), opacity 550ms ease, border-color 300ms ease, filter 550ms ease;
       }
-      .card-dragging {
-        transition: none !important;
-        cursor: grabbing !important;
+      .card-dragging { transition: none !important; cursor: grabbing !important; }
+      .dot { height: 8px; width: 8px; border-radius: 9999px; background-color: rgba(0,0,0,0.12); transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1); }
+      .dot:hover { background-color: rgba(0,0,0,0.25); }
+      .dot-active { width: 24px; background-color: var(--blue); box-shadow: 0 0 12px var(--blue-glow); }
+      .progress-track { width: 120px; height: 2px; background: rgba(0,0,0,0.06); border-radius: 999px; overflow: hidden; margin: 0 auto; }
+      .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue-light), var(--blue)); border-radius: 999px; transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 0 8px var(--blue-glow); }
+      .node-line { stroke-dasharray: 4; animation: dash 30s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -100; } }
+      .pricing-transition {
+        transition: transform 300ms cubic-bezier(0.22,1,0.36,1), box-shadow 300ms cubic-bezier(0.22,1,0.36,1), border-color 500ms cubic-bezier(0.22,1,0.36,1), opacity 500ms cubic-bezier(0.22,1,0.36,1), background-color 500ms cubic-bezier(0.22,1,0.36,1);
+        will-change: transform, opacity, box-shadow;
       }
+      @keyframes shimmer { 100% { transform: translateX(100%); } }
+      .shimmer-layer { transform: translateX(-100%); }
+      .group:hover .shimmer-layer { animation: shimmer 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 
-      /* ============ DOTS ============ */
-      .dot {
-        height: 8px;
-        width: 8px;
-        border-radius: 9999px;
-        background-color: rgba(0, 0, 0, 0.15);
-        transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+      /* Process Scroll-Trace — auxia.io style */
+      .process-scroll-area { overflow: visible; position: relative; }
+      .process-canvas {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 92%;
       }
-      .dot:hover {
-        background-color: rgba(0, 0, 0, 0.3);
-      }
-      .dot-active {
-        width: 24px;
-        background-color: #111111;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* ============ PROGRESS BAR ============ */
-      .progress-track {
-        width: 120px;
-        height: 2px;
-        background: rgba(0, 0, 0, 0.06);
-        border-radius: 999px;
-        overflow: hidden;
-        margin: 0 auto;
-      }
-      .progress-fill {
+      .process-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, rgba(17, 17, 17, 0.4), #111111);
-        border-radius: 999px;
-        transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1);
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        pointer-events: none;
       }
-
-      /* ============ SCROLL REVEAL ANIMATIONS ============ */
-      .reveal {
+      .process-card {
+        position: absolute;
+        z-index: 2;
+        width: 340px;
         opacity: 0;
-        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        transform: translateY(30px);
       }
-      .reveal.revealed {
-        opacity: 1;
-        transform: translate(0, 0) scale(1) !important;
+      .process-card-tl { top: 0; left: 0; }
+      .process-card-mr { top: 30%; right: 0; }
+      .process-card-ml { top: 58%; left: 0; }
+      .process-card-br { top: 84%; right: 0; }
+      .process-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--blue);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding: 6px 14px;
+        border-radius: 999px;
+        box-shadow: 0 0 16px var(--blue-glow);
       }
-      .reveal-up    { transform: translateY(40px); }
-      .reveal-left  { transform: translateX(-40px); }
-      .reveal-right { transform: translateX(40px); }
-      .reveal-scale { transform: scale(0.95); }
-
-      .reveal-delay-1 { transition-delay: 0.1s; }
-      .reveal-delay-2 { transition-delay: 0.2s; }
-      .reveal-delay-3 { transition-delay: 0.3s; }
-      .reveal-delay-4 { transition-delay: 0.4s; }
+      .process-label {
+        position: absolute;
+        z-index: 2;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--subtle);
+        white-space: nowrap;
+        opacity: 0;
+      }
+      .process-label-right { top: 20%; right: 4%; }
+      .process-label-left { top: 50%; left: 2%; }
+      .process-node-dot {
+        opacity: 0;
+      }
+      /* Mobile */
+      @media (max-width: 767px) {
+        .process-canvas {
+          padding-bottom: 0;
+          height: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+        }
+        .process-svg { display: none; }
+        .process-svg-mobile {
+          display: block !important;
+          position: absolute;
+          left: 10px;
+          top: 0;
+          width: 20px;
+          height: 100%;
+          z-index: 1;
+          pointer-events: none;
+        }
+        .process-card {
+          position: relative !important;
+          top: auto !important;
+          left: auto !important;
+          right: auto !important;
+          width: 100% !important;
+          margin-left: 2.5rem;
+          margin-bottom: 2rem;
+        }
+        .process-label { display: none; }
+      }
     </style>
     <link
       id="all-fonts-link-font-geist"
@@ -517,7 +552,7 @@
     <div class="z-10 flex flex-col w-full relative">
       <!-- HERO SECTION -->
       <section
-        class="reveal reveal-up relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-32 pb-20 gap-16"
+        class="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-32 pb-20 gap-16"
       >
         <div class="max-w-2xl space-y-10 relative z-10">
           <div class="space-y-6">
@@ -926,6 +961,24 @@
         </div>
       </section>
 
+      <!-- JOURNEY PATH -->
+      <section class="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" style="min-height: 60vh;">
+        <div class="max-w-5xl mx-auto relative">
+          <svg id="journey-svg" class="w-full h-auto" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 200px;">
+            <path id="journey-line" class="journey-path" d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <circle class="journey-dot" cx="50" cy="100" r="6" fill="#2563EB"/>
+            <circle class="journey-dot" cx="250" cy="30" r="6" fill="#2563EB"/>
+            <circle class="journey-dot" cx="450" cy="170" r="6" fill="#2563EB"/>
+            <circle class="journey-dot" cx="650" cy="100" r="6" fill="#2563EB"/>
+            <circle class="journey-dot" cx="780" cy="100" r="8" fill="#111111"/>
+            <text x="50" y="130" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Discovery</text>
+            <text x="250" y="10" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Prototype</text>
+            <text x="450" y="200" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Build</text>
+            <text x="650" y="130" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600" fill="#6B7280">Launch</text>
+          </svg>
+        </div>
+      </section>
+
       <!-- LOGOS -->
       <section
         id="services"
@@ -1049,111 +1102,151 @@
       </section>
       <section
         id="process"
-        class="relative w-full bg-canvas border-b border-border/60 py-24 px-6 md:px-12 lg:px-20"
+        class="relative w-full bg-canvas border-b border-border/60"
       >
-        <div class="max-w-7xl mx-auto">
-          <div class="max-w-2xl mb-14">
-            <span
-              class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
-              >Process</span
-            >
-            <h2
-              class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4 leading-[1.1]"
-            >
-              A simple four-step studio process.
-            </h2>
-            <p class="text-subtle text-base leading-relaxed max-w-xl">
-              We keep the engagement tight, the build cycle visible, and the
-              handoff clean so founders can move quickly without losing control.
-            </p>
+        <!-- Header -->
+        <div class="px-6 md:px-12 lg:px-20 pt-24 pb-8">
+          <div class="max-w-7xl mx-auto">
+            <div class="max-w-2xl mb-4">
+              <span
+                class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle block mb-3"
+                >Process</span
+              >
+              <h2
+                class="font-sans text-3xl md:text-4xl font-semibold text-obsidian tracking-tight mb-4 leading-[1.1]"
+              >
+                A simple four-step studio process.
+              </h2>
+              <p class="text-subtle text-base leading-relaxed max-w-xl">
+                We keep the engagement tight, the build cycle visible, and the
+                handoff clean so founders can move quickly without losing control.
+              </p>
+            </div>
           </div>
+        </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 ">
-            <div class="premium-card rounded-xl p-6 ">
-              <div class="flex items-center justify-between mb-6 ">
-                <span
-                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
-                  >01</span
-                >
-                <span
-                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
-                  >1</span
-                >
+        <!-- Scroll-trace area -->
+        <div class="process-scroll-area px-6 md:px-12 lg:px-20 pb-48">
+          <div class="max-w-7xl mx-auto">
+            <div class="process-canvas">
+
+              <!-- Shared filter defs -->
+              <svg style="position:absolute; width:0; height:0; overflow:hidden;" aria-hidden="true">
+                <defs>
+                  <filter id="pg" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3" result="b"/>
+                    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+              </svg>
+
+              <!-- Desktop SVG Path -->
+              <svg class="process-svg hidden md:block" viewBox="0 0 1000 920" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                <!-- BG track -->
+                <path id="pp-bg" d="M190,70 L560,70 Q600,70 600,110 L600,310 Q600,350 560,350 L190,350 Q150,350 150,390 L150,570 Q150,610 190,610 L560,610 Q600,610 600,650 L600,830 Q600,870 560,870 L350,870" stroke="rgba(0,0,0,0.06)" stroke-width="1.5" fill="none"/>
+                <!-- Animated path -->
+                <path id="pp" d="M190,70 L560,70 Q600,70 600,110 L600,310 Q600,350 560,350 L190,350 Q150,350 150,390 L150,570 Q150,610 190,610 L560,610 Q600,610 600,650 L600,830 Q600,870 560,870 L350,870" stroke="#111" stroke-width="2" fill="none" filter="url(#pg)" stroke-linejoin="round"/>
+                <!-- Node dots -->
+                <circle class="pn" cx="190" cy="70" r="5" fill="#111" opacity="0"/>
+                <circle class="pn" cx="600" cy="70" r="5" fill="#111" opacity="0"/>
+                <circle class="pn" cx="600" cy="350" r="5" fill="#111" opacity="0"/>
+                <circle class="pn" cx="150" cy="350" r="5" fill="#111" opacity="0"/>
+                <circle class="pn" cx="150" cy="610" r="5" fill="#111" opacity="0"/>
+                <circle class="pn" cx="600" cy="610" r="5" fill="#111" opacity="0"/>
+                <circle class="pn" cx="600" cy="870" r="5" fill="#111" opacity="0"/>
+                <circle class="pn" cx="350" cy="870" r="5" fill="#111" opacity="0"/>
+              </svg>
+
+              <!-- Mobile SVG -->
+              <svg class="process-svg-mobile hidden" viewBox="0 0 20 760" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path id="pp-m-bg" d="M10,35 L10,725" stroke="rgba(0,0,0,0.06)" stroke-width="1.5" stroke-linecap="round"/>
+                <path id="pp-m" d="M10,35 L10,725" stroke="#111" stroke-width="2" stroke-linecap="round" filter="url(#pg)"/>
+                <circle class="pn-m" cx="10" cy="35" r="4" fill="#111" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="220" r="4" fill="#111" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="405" r="4" fill="#111" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="590" r="4" fill="#111" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="725" r="4" fill="#111" opacity="0"/>
+              </svg>
+
+              <!-- Card 1 — top-left -->
+              <div class="process-card process-card-tl">
+                <div class="process-badge mb-4">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  Discovery &amp; Scope
+                </div>
+                <div class="premium-card rounded-xl p-6">
+                  <h3 class="text-base font-semibold text-obsidian mb-2">Define the right problem</h3>
+                  <p class="text-sm text-subtle leading-relaxed">We clarify the problem, user, and MVP scope, then define what is worth building first.</p>
+                </div>
               </div>
-              <h3 class="text-lg font-semibold text-obsidian mb-3">
-                Discovery &amp; Scope
-              </h3>
-              <p class="text-sm text-subtle leading-relaxed">
-                We clarify the problem, user, and MVP scope, then define what is
-                worth building first.
-              </p>
-            </div>
-            <div class="premium-card rounded-xl p-6 ">
-              <div class="flex items-center justify-between mb-6 ">
-                <span
-                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
-                  >02</span
-                >
-                <span
-                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
-                  >2</span
-                >
+
+              <!-- Card 2 — mid-right -->
+              <div class="process-card process-card-mr">
+                <div class="process-badge mb-4">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+                  Wireframes &amp; Architecture
+                </div>
+                <div class="premium-card rounded-xl p-6">
+                  <h3 class="text-base font-semibold text-obsidian mb-2">Map the product flow</h3>
+                  <p class="text-sm text-subtle leading-relaxed">We map the product flow, key screens, and system architecture before any heavy development starts.</p>
+                </div>
               </div>
-              <h3 class="text-lg font-semibold text-obsidian mb-3">
-                Wireframes &amp; Architecture
-              </h3>
-              <p class="text-sm text-subtle leading-relaxed">
-                We map the product flow, key screens, and system architecture
-                before any heavy development starts.
-              </p>
-            </div>
-            <div class="premium-card rounded-xl p-6">
-              <div class="flex items-center justify-between mb-6">
-                <span
-                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
-                  >03</span
-                >
-                <span
-                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
-                  >3</span
-                >
+
+              <!-- Label — right gap -->
+              <div class="process-label process-label-right">Validated Scope</div>
+
+              <!-- Card 3 — lower-left -->
+              <div class="process-card process-card-ml">
+                <div class="process-badge mb-4">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>
+                  Weekly MVP Builds
+                </div>
+                <div class="premium-card rounded-xl p-6">
+                  <h3 class="text-base font-semibold text-obsidian mb-2">Ship in visible increments</h3>
+                  <p class="text-sm text-subtle leading-relaxed">We ship in small, visible increments so you can review progress and make decisions weekly.</p>
+                </div>
               </div>
-              <h3 class="text-lg font-semibold text-obsidian mb-3">
-                Weekly MVP Builds
-              </h3>
-              <p class="text-sm text-subtle leading-relaxed">
-                We ship in small, visible increments so you can review progress
-                and make decisions weekly.
-              </p>
-            </div>
-            <div class="premium-card rounded-xl p-6">
-              <div class="flex items-center justify-between mb-6">
-                <span
-                  class="text-[11px] font-semibold tracking-[0.2em] uppercase text-subtle"
-                  >04</span
-                >
-                <span
-                  class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-obsidian"
-                  >4</span
-                >
+
+              <!-- Label — left gap -->
+              <div class="process-label process-label-left">Weekly Deliverables</div>
+
+              <!-- Card 4 — bottom-right -->
+              <div class="process-card process-card-br">
+                <div class="process-badge mb-4">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Launch &amp; Handoff
+                </div>
+                <div class="premium-card rounded-xl p-6">
+                  <h3 class="text-base font-semibold text-obsidian mb-2">Deploy with confidence</h3>
+                  <p class="text-sm text-subtle leading-relaxed">We deploy the product, document the system, and hand over the source code and next steps cleanly.</p>
+                </div>
               </div>
-              <h3 class="text-lg font-semibold text-obsidian mb-3">
-                Launch &amp; Handoff
-              </h3>
-              <p class="text-sm text-subtle leading-relaxed">
-                We deploy the product, document the system, and hand over the
-                source code and next steps cleanly.
-              </p>
+
+              <!-- CTA at end of path -->
+              <div class="process-cta-end" style="position:absolute; left:15%; top:90.5%; z-index:2; opacity:0; transform:translateY(20px); text-align:center;">
+                <div style="font-size:10px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--subtle); margin-bottom:10px; white-space:nowrap;">Check here for more</div>
+                <a
+                  href="/documents/template.pdf"
+                  target="_blank"
+                  class="inline-flex px-8 py-4 bg-black text-white border border-border text-base font-semibold rounded-lg shadow-md transition-all duration-300 ease-out hover:bg-gray-100 hover:border-obsidian/40 hover:text-black hover:shadow-lg active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-obsidian/10 focus:ring-offset-2"
+                >
+                  Client Template
+                </a>
+              </div>
+
             </div>
-          </div>
-          <div class="flex justify-center mt-10">
-            <a
-              href="/documents/template.pdf"
-              target="_blank"
-              class="px-5 py-2.5 bg-black text-white border border-border text-sm font-medium rounded shadow-sm transition-all duration-300 ease-out hover:bg-gray-100 hover:border-obsidian/40 hover:text-black hover:shadow-md active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-obsidian/10 focus:ring-offset-2"
-            >
-              Client Template
-            </a>
+
+            <!-- Mobile CTA — hidden on desktop -->
+            <div class="process-cta-mobile hidden mt-12" style="justify-content:center; text-align:center;">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--subtle); margin-bottom:10px;">Check here for more</div>
+              <a
+                href="/documents/template.pdf"
+                target="_blank"
+                class="inline-flex px-8 py-4 bg-black text-white border border-border text-base font-semibold rounded-lg shadow-md transition-all duration-300 ease-out hover:bg-gray-100 hover:border-obsidian/40 hover:text-black hover:shadow-lg active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-obsidian/10 focus:ring-offset-2"
+              >
+                Client Template
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -1403,7 +1496,7 @@
           </div>
           <div class="space-y-4" id="faq-accordion">
 
-  <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
+  <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#eff2f0]">
     <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
     <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
       <span class="group-open:text-obsidian transition-colors duration-300">Who do you work with?</span>
@@ -1420,7 +1513,7 @@
       </p>
     </div>
           </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#eff2f0]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">What does an MVP include?</span>
@@ -1437,7 +1530,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#eff2f0]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">How long does it take?</span>
@@ -1453,7 +1546,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#eff2f0]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">Do you work with non-technical founders?</span>
@@ -1469,7 +1562,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#eff2f0]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">Do we get the source code?</span>
@@ -1485,7 +1578,7 @@
                 </p>
               </div>
             </details>
-            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#F2F0EF]">
+            <details class="premium-card rounded-xl p-6 group overflow-hidden relative bg-[#eff2f0]">
               <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/[0.03] opacity-0 group-open:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span class="group-open:text-obsidian transition-colors duration-300">Can you add AI features into an existing product?</span>
@@ -2224,33 +2317,63 @@
     </script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const reveals = document.querySelectorAll(".reveal");
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("revealed");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-        );
-        reveals.forEach((el) => observer.observe(el));
-      });
-    </script>
-
-    <script>
       gsap.registerPlugin(ScrollTrigger);
 
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reducedMotion) {
 
-        function animateSection(id) {
+        /* ── Hero parallax ── */
+        const heroContent = document.querySelector('section:first-of-type .max-w-7xl');
+        if (heroContent) {
+          gsap.fromTo(heroContent, { y: 0 }, {
+            y: 80,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: 'section:first-of-type',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: 0.5,
+            },
+          });
+        }
+
+        /* ── SVG journey path draw ── */
+        const journeyLine = document.getElementById('journey-line');
+        const journeyDots = document.querySelectorAll('.journey-dot');
+        if (journeyLine) {
+          const pathLength = journeyLine.getTotalLength();
+          gsap.set(journeyLine, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+
+          const journeyTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: '#journey-svg',
+              start: 'top 80%',
+              end: 'bottom 40%',
+              scrub: 1,
+            },
+          });
+          journeyTl.to(journeyLine, { strokeDashoffset: 0, duration: 3, ease: 'none' });
+
+          journeyDots.forEach((dot, i) => {
+            gsap.to(dot, {
+              scale: 1,
+              opacity: 1,
+              duration: 0.3,
+              delay: (i + 1) * 0.25,
+              ease: 'back.out(1.7)',
+              scrollTrigger: {
+                trigger: '#journey-svg',
+                start: 'top 70%',
+                toggleActions: 'play none none none',
+              },
+            });
+          });
+        }
+
+        /* ── Section animation helper ── */
+        function animateSection(id, opts = {}) {
           const el = document.getElementById(id);
           if (!el) return;
-
           const heading = el.querySelector('.max-w-2xl');
           const cards = el.querySelectorAll('.premium-card');
           const details = el.querySelectorAll('details');
@@ -2259,7 +2382,7 @@
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: el,
-              start: 'top 80%',
+              start: opts.start || 'top 80%',
               toggleActions: 'play none none none',
             },
           });
@@ -2274,22 +2397,199 @@
           }
 
           if (items.length) {
-            tl.fromTo(
-              items,
-              { y: 40, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.6, stagger: 0.1 },
+            tl.fromTo(items,
+              { y: 40, opacity: 0, scale: 0.97 },
+              { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: 'power2.out' },
               0.2
             );
           }
         }
 
-        animateSection('services');
-        animateSection('process');
+        /* ── Non-pinned sections (work, faq, contact) ── */
         animateSection('work');
-        animateSection('why-us');
-        animateSection('pricing');
         animateSection('faq');
         animateSection('contact');
+
+        /* ── Pinned scroll sections ── */
+        function pinSection(id, opts = {}) {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.classList.add('sticky-section');
+
+          const heading = el.querySelector('.max-w-2xl');
+          const cards = el.querySelectorAll('.premium-card');
+          const ctas = el.querySelectorAll('.max-w-7xl > .flex a, .max-w-7xl > a');
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: el,
+              start: 'top top',
+              end: opts.end || '+=80%',
+              pin: true,
+              pinSpacing: true,
+              scrub: 0.6,
+            },
+          });
+
+          if (heading) {
+            const span = heading.querySelector('span');
+            const h2 = heading.querySelector('h2');
+            const p = heading.querySelector('p');
+            if (span) tl.fromTo(span, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 0);
+            if (h2) tl.fromTo(h2, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 0.02);
+            if (p) tl.fromTo(p, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 0.06);
+          }
+
+          if (cards.length) {
+            tl.fromTo(cards,
+              { y: 60, opacity: 0, scale: 0.96 },
+              { y: 0, opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' },
+              0.1
+            );
+          }
+
+          if (ctas.length) {
+            tl.fromTo(ctas,
+              { y: 20, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.3, stagger: 0.05, ease: 'power2.out' },
+              0.3
+            );
+          }
+        }
+
+        pinSection('services');
+        pinSection('why-us', { end: '+=80%' });
+        pinSection('pricing', { end: '+=80%' });
+
+        /* ── Process SVG scroll-trace ── */
+        (function() {
+          const processSection = document.getElementById('process');
+          if (!processSection) return;
+
+          const isMobile = window.matchMedia('(max-width: 767px)').matches;
+
+          // Desktop path
+          if (!isMobile) {
+            const pathEl = document.getElementById('pp');
+            if (!pathEl) return;
+            const pathLength = pathEl.getTotalLength();
+            gsap.set(pathEl, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+
+            const nodes = processSection.querySelectorAll('.pn');
+            const cards = processSection.querySelectorAll('.process-card');
+            const labels = processSection.querySelectorAll('.process-label');
+
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: processSection.querySelector('.process-scroll-area'),
+                start: 'top 70%',
+                end: 'bottom 25%',
+                scrub: 1,
+              },
+            });
+
+            // Draw path — finishes at 0.75 so line is done when card 4 appears
+            tl.to(pathEl, { strokeDashoffset: 0, duration: 0.75, ease: 'none' }, 0);
+
+            // Node dots — positioned at path corners
+            const nodePositions = [0, 0.12, 0.28, 0.35, 0.50, 0.65, 0.82, 1];
+            nodes.forEach((node, i) => {
+              tl.to(node, { opacity: 1, duration: 0.04, ease: 'power1.out' }, nodePositions[i] * 0.98);
+            });
+
+            // Cards fade in sequentially 1→2→3→4
+            const cardPositions = [0.01, 0.22, 0.46, 0.70];
+            cards.forEach((card, i) => {
+              tl.fromTo(card,
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.14, ease: 'power2.out' },
+                cardPositions[i]
+              );
+            });
+
+            // Labels fade in
+            const labelPositions = [0.18, 0.56];
+            labels.forEach((label, i) => {
+              tl.fromTo(label,
+                { opacity: 0 },
+                { opacity: 1, duration: 0.08, ease: 'power1.out' },
+                labelPositions[i]
+              );
+            });
+
+            // CTA at end of path — same time as card 4
+            const ctaEnd = processSection.querySelector('.process-cta-end');
+            if (ctaEnd) {
+              tl.fromTo(ctaEnd,
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.14, ease: 'power2.out' },
+                0.70
+              );
+            }
+          }
+
+          // Mobile — simple vertical line
+          if (isMobile) {
+            const pathEl = document.getElementById('pp-m');
+            if (!pathEl) return;
+            const pathLength = pathEl.getTotalLength();
+            gsap.set(pathEl, { strokeDasharray: pathLength, strokeDashoffset: pathLength });
+
+            const nodes = processSection.querySelectorAll('.pn-m');
+            const cards = processSection.querySelectorAll('.process-card');
+
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: processSection.querySelector('.process-scroll-area'),
+                start: 'top 80%',
+                end: 'bottom 20%',
+                scrub: 1,
+              },
+            });
+
+            tl.to(pathEl, { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0);
+
+            const nodePositions = [0, 0.25, 0.5, 0.75, 1];
+            nodes.forEach((node, i) => {
+              tl.to(node, { opacity: 1, duration: 0.05, ease: 'power1.out' }, nodePositions[i]);
+            });
+
+            cards.forEach((card, i) => {
+              tl.fromTo(card,
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.15, ease: 'power2.out' },
+                0.05 + i * 0.2
+              );
+            });
+
+            // Mobile CTA
+            const ctaMobile = processSection.querySelector('.process-cta-mobile');
+            if (ctaMobile) {
+              tl.fromTo(ctaMobile,
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.12, ease: 'power2.out' },
+                0.85
+              );
+            }
+          }
+        })();
+
+        /* ── Contact section ── */
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          const contactHeading = contactSection.querySelector('h2');
+          const contactP = contactSection.querySelector('p');
+          const contactLink = contactSection.querySelector('a');
+          if (contactHeading) gsap.fromTo(contactHeading, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: contactSection, start: 'top 75%', toggleActions: 'play none none none' } });
+          if (contactP) gsap.fromTo(contactP, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.1, ease: 'power2.out', scrollTrigger: { trigger: contactSection, start: 'top 75%', toggleActions: 'play none none none' } });
+          if (contactLink) gsap.fromTo(contactLink, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.2, ease: 'power2.out', scrollTrigger: { trigger: contactSection, start: 'top 75%', toggleActions: 'play none none none' } });
+        }
+
+        /* ── Footer ── */
+        const footer = document.querySelector('footer');
+        if (footer) {
+          gsap.fromTo(footer, { opacity: 0 }, { opacity: 1, duration: 0.8, scrollTrigger: { trigger: footer, start: 'top 90%', toggleActions: 'play none none none' } });
+        }
       }
     </script>
 
