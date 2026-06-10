@@ -38,13 +38,13 @@
               mono: ['"JetBrains Mono"', "monospace"],
             },
             colors: {
-              canvas: "#F5F4EE",
+              canvas: "#fefdfd",
               surface: "#FFFFFF",
               obsidian: "#111111",
               charcoal: "#333333",
               subtle: "#6B7280",
               border: "#E2E1D3",
-              accent: "#0B4FFF",
+              accent: "#333333",
               primary: "#000000",
             },
             letterSpacing: {
@@ -60,18 +60,18 @@
       html { scroll-behavior: smooth; }
       body {
         margin: 0;
-        background-color: #F5F4EE;
+        background-color: #fefdfd;
         color: #111111;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
       :root {
-        --cream: #F5F4EE;
+        --cream: #fefdfd;
         --cream-border: #E2E1D3;
-        --blue: #0B4FFF;
-        --blue-light: #4D6FFF;
-        --blue-glow: rgba(11, 79, 255, 0.18);
-        --blue-subtle: rgba(11, 79, 255, 0.06);
+        --blue: #333333;
+        --blue-light: #555555;
+        --blue-glow: rgba(51, 51, 51, 0.18);
+        --blue-subtle: rgba(51, 51, 51, 0.06);
         --obsidian: #111111;
         --subtle: #6B7280;
         --border: #E2E1D3;
@@ -115,44 +115,187 @@
       }
       .announcement-bar .close-bar:hover { color: #fff; }
 
-      /* ── Tech marquee ── */
-      .marquee-wrap {
+      /* ═══════════════════════════════════════════
+         TECH MARQUEE — Duotone + Glassmorphism
+         ═══════════════════════════════════════════ */
+      .tech-marquee-section {
+        position: relative;
         overflow: hidden;
-        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
-        mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+        background: #F5F4EE;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
       }
-      .marquee-track {
+      .tech-marquee-glass {
+        position: relative;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(60px) saturate(2);
+        -webkit-backdrop-filter: blur(60px) saturate(2);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.5),
+          0 16px 50px rgba(51, 51, 51, 0.08),
+          0 2px 8px rgba(51, 51, 51, 0.04);
+        border-radius: 28px;
+        margin: 0 48px;
+        padding: 32px 40px;
+        overflow: hidden;
+      }
+      @media (max-width: 768px) {
+        .tech-marquee-glass { margin: 0 16px; border-radius: 20px; padding: 24px 16px; }
+      }
+
+      /* ── Track ── */
+      .tech-marquee-track {
         display: flex;
-        gap: 48px;
+        gap: 58px;
         width: max-content;
-        animation: marqueeScroll 28s linear infinite;
+        will-change: transform;
       }
-      .marquee-track:hover { animation-play-state: paused; }
-      @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-      .marquee-item {
+
+      /* ── Card ── */
+      .tech-marquee-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-width: 130px;
+        height: 110px;
+        padding: 20px 24px 16px;
+        border-radius: 20px;
+        border: 1.5px solid transparent;
+        cursor: default;
+        flex-shrink: 0;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        transition:
+          box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+          border-color 250ms ease,
+          background-color 250ms ease;
+        will-change: transform, box-shadow;
+        overflow: hidden;
+      }
+      .tech-marquee-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        opacity: 0;
+        transition: opacity 300ms ease;
+        pointer-events: none;
+      }
+      .tech-marquee-card:hover::before {
+        opacity: 1;
+      }
+      .tech-marquee-card:hover {
+        border-color: var(--brand);
+        background-color: #ffffff;
+        box-shadow:
+          0 0 0 1.5px var(--brand),
+          0 0 24px var(--brand-shadow-45),
+          0 0 48px var(--brand-shadow-25),
+          0 8px 60px var(--brand-shadow-10);
+      }
+      .card-sheen {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.55) 0%, transparent 60%);
+        opacity: 0;
+        transition: opacity 250ms ease;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .tech-marquee-card:hover .card-sheen {
+        opacity: 1;
+      }
+ 
+      /* ── Icon Mask & SVG ── */
+      .tech-icon-mask {
+        width: 48px;
+        height: 48px;
+        background-color: var(--brand, currentColor);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .tech-icon {
+        width: 48px;
+        height: 48px;
         display: flex;
         align-items: center;
-        gap: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--subtle);
-        letter-spacing: 0.04em;
-        white-space: nowrap;
-        padding: 6px 18px;
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        background: #fff;
-        transition: color 0.2s, border-color 0.2s;
+        justify-content: center;
+        transition: transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
       }
-      .marquee-item:hover { color: var(--blue); border-color: var(--blue); }
+      .tech-icon svg,
+      .tech-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .tech-marquee-card:hover .tech-icon-mask,
+      .tech-marquee-card:hover .tech-icon {
+        transform: scale(1.15);
+      }
+ 
+      /* ── Label ── */
+      .tech-marquee-card .tech-label {
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--subtle);
+        white-space: nowrap;
+        transition: color 300ms ease;
+      }
+      .tech-marquee-card:hover .tech-label {
+        color: var(--brand);
+        letter-spacing: 0.03em;
+        color: var(--subtle);
+        white-space: nowrap;
+        transition: color 300ms ease;
+      }
+      .tech-marquee-card:hover .tech-label {
+        color: var(--brand);
+      }
+
+      /* ── Fade mask ── */
+      .tech-marquee-fade-left,
+      .tech-marquee-fade-right {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 140px;
+        z-index: 10;
+        pointer-events: none;
+      }
+      .tech-marquee-fade-left {
+        left: 0;
+        background: linear-gradient(to right, rgba(255,255,255,0.95) 0%, transparent 100%);
+      }
+      .tech-marquee-fade-right {
+        right: 0;
+        background: linear-gradient(to left, rgba(255,255,255,0.95) 0%, transparent 100%);
+      }
+      @media (max-width: 768px) {
+        .tech-marquee-fade-left,
+        .tech-marquee-fade-right { width: 60px; }
+      }
       ::selection { background: var(--blue); color: #fff; }
       ::-moz-selection { background: var(--blue); color: #fff; }
 
       .technical-grid {
         background-size: 40px 40px;
         background-image:
-          linear-gradient(to right, rgba(11,79,255,0.03) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(11,79,255,0.03) 1px, transparent 1px);
+          linear-gradient(to right, rgba(51,51,51,0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(51,51,51,0.03) 1px, transparent 1px);
         mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
       }
       .premium-card {
@@ -163,8 +306,8 @@
       }
       .premium-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 24px -4px rgba(0,0,0,0.10), 0 0 0 1px rgba(11,79,255,0.08);
-        border-color: rgba(11,79,255,0.25);
+        box-shadow: 0 8px 24px -4px rgba(0,0,0,0.10), 0 0 0 1px rgba(51,51,51,0.08);
+        border-color: rgba(51,51,51,0.25);
       }
       .accent-blue { color: var(--blue); }
       .bg-accent-blue { background-color: var(--blue); }
@@ -199,7 +342,7 @@
       .blue-hover-card:hover {
         border-left-color: var(--blue);
         transform: translateX(4px) translateY(-2px);
-        box-shadow: 0 8px 24px -4px rgba(11,79,255,0.10);
+        box-shadow: 0 8px 24px -4px rgba(51,51,51,0.10);
       }
 
       /* ── FAQ open-state blue border ── */
@@ -216,7 +359,7 @@
       .pricing-featured {
         outline: 2px solid var(--blue);
         outline-offset: 0px;
-        box-shadow: 0 0 0 4px rgba(11,79,255,0.08), 0 12px 40px -8px rgba(11,79,255,0.18);
+        box-shadow: 0 0 0 4px rgba(51,51,51,0.08), 0 12px 40px -8px rgba(51,51,51,0.18);
         position: relative;
       }
 
@@ -227,7 +370,7 @@
         right: -80px;
         width: 420px;
         height: 420px;
-        background: radial-gradient(circle, rgba(11,79,255,0.22) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(51,51,51,0.22) 0%, transparent 70%);
         pointer-events: none;
         z-index: 0;
       }
@@ -244,13 +387,13 @@
         border: none;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
-        box-shadow: 0 1px 3px rgba(11,79,255,0.25), 0 8px 24px -8px rgba(11,79,255,0.4);
+        box-shadow: 0 1px 3px rgba(51,51,51,0.25), 0 8px 24px -8px rgba(51,51,51,0.4);
         position: relative;
         overflow: hidden;
       }
       .btn-blue:hover {
         transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 4px 12px rgba(11,79,255,0.3), 0 16px 40px -8px rgba(11,79,255,0.5);
+        box-shadow: 0 4px 12px rgba(51,51,51,0.3), 0 16px 40px -8px rgba(51,51,51,0.5);
       }
       .btn-blue:active { transform: scale(0.98); }
 
@@ -266,6 +409,42 @@
         transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1), opacity 550ms ease, border-color 300ms ease, filter 550ms ease;
       }
       .card-dragging { transition: none !important; cursor: grabbing !important; }
+      /* ── Project Card Accent Line ── */
+      .card-accent-line {
+        position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, var(--blue), var(--blue-light));
+        border-radius: 999px 999px 0 0;
+        opacity: 0; transition: opacity 400ms ease;
+      }
+      .card-active .card-accent-line { opacity: 1; }
+      /* ── Stack Pill Tags ── */
+      .stack-pill {
+        display: inline-flex; align-items: center; padding: 2px 8px;
+        border-radius: 9999px; font-size: 9px; font-weight: 600;
+        background: var(--blue-subtle); color: var(--blue); border: 1px solid rgba(51,51,51,0.1);
+        white-space: nowrap; line-height: 1.4;
+      }
+      /* ── Card Detail Reveal Animation ── */
+      @keyframes detailReveal {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .detail-reveal {
+        opacity: 0;
+        animation: detailReveal 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      .detail-reveal:nth-child(1) { animation-delay: 80ms; }
+      .detail-reveal:nth-child(2) { animation-delay: 160ms; }
+      .detail-reveal:nth-child(3) { animation-delay: 240ms; }
+      .detail-reveal:nth-child(4) { animation-delay: 320ms; }
+      /* ── Card Entrance Animation ── */
+      @keyframes cardEntrance {
+        from { opacity: 0; transform: translate3d(0, 12px, -20px) scale(0.97); }
+        to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+      }
+      .card-active {
+        animation: cardEntrance 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
       .dot { height: 8px; width: 8px; border-radius: 9999px; background-color: rgba(0,0,0,0.12); transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1); }
       .dot:hover { background-color: rgba(0,0,0,0.25); }
       .dot-active { width: 24px; background-color: var(--blue); box-shadow: 0 0 12px var(--blue-glow); }
@@ -424,10 +603,11 @@
       </div>
 
       <nav class="hidden md:flex items-center gap-8">
-        <a href="#work" class="font-sans text-sm font-medium text-subtle transition-colors" style="--tw-text-opacity:1;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Work</a>
         <a href="#services" class="font-sans text-sm font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Services</a>
         <a href="#process" class="font-sans text-sm font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Process</a>
+        <a href="#work" class="font-sans text-sm font-medium text-subtle transition-colors" style="--tw-text-opacity:1;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Work</a>
         <a href="team.html" class="font-sans text-sm font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Team</a>
+        <a href="#pricing" class="font-sans text-sm font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Pricing</a>
         <a href="#faq" class="font-sans text-sm font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">FAQ</a>
         <a href="#contact" class="font-sans text-sm font-medium text-subtle transition-colors" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">Contact</a>
       </nav>
@@ -436,8 +616,8 @@
         <a
           href="#contact"
           class="group relative isolate overflow-hidden text-white text-xs font-semibold px-5 py-2.5 rounded transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] focus:outline-none"
-          style="background:var(--blue); box-shadow:0 1px 3px rgba(11,79,255,0.3),0 6px 20px -4px rgba(11,79,255,0.4);"
-          onmouseover="this.style.boxShadow='0 4px 12px rgba(11,79,255,0.4),0 12px 32px -4px rgba(11,79,255,0.5)'" onmouseout="this.style.boxShadow='0 1px 3px rgba(11,79,255,0.3),0 6px 20px -4px rgba(11,79,255,0.4)'"
+          style="background:var(--blue); box-shadow:0 1px 3px rgba(51,51,51,0.3),0 6px 20px -4px rgba(51,51,51,0.4);"
+          onmouseover="this.style.boxShadow='0 4px 12px rgba(51,51,51,0.4),0 12px 32px -4px rgba(51,51,51,0.5)'" onmouseout="this.style.boxShadow='0 1px 3px rgba(51,51,51,0.3),0 6px 20px -4px rgba(51,51,51,0.4)'"
         >
           <div class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
           <span class="relative z-20">Start a Project</span>
@@ -482,7 +662,7 @@
             >
               <span style="color:var(--blue);">AI-first</span> MVPs
               <br />
-              <span class="text-subtle">for founders who ship fast.</span>
+              <span class="text-subtle">for founders who ship fast and scale effortlessly.</span>
             </h1>
             <p
               class="max-w-xl font-sans text-base md:text-lg text-subtle leading-relaxed"
@@ -495,7 +675,7 @@
               <span class="px-3 py-1.5 rounded-full border bg-white" style="border-color:var(--border); color:var(--subtle);">MERN + AI</span>
               <span class="px-3 py-1.5 rounded-full border bg-white" style="border-color:var(--border); color:var(--subtle);">4-person studio</span>
               <span class="px-3 py-1.5 rounded-full border bg-white" style="border-color:var(--border); color:var(--subtle);">Available globally</span>
-              <span class="px-3 py-1.5 rounded-full font-semibold" style="background:var(--blue-subtle,rgba(11,79,255,0.08)); color:var(--blue); border:1px solid rgba(11,79,255,0.2);">&#9889; Accepting Q3 projects</span>
+              <span class="px-3 py-1.5 rounded-full font-semibold" style="background:var(--blue-subtle,rgba(51,51,51,0.08)); color:var(--blue); border:1px solid rgba(51,51,51,0.2);">&#9889; Accepting Q3 projects</span>
             </div>
           </div>
 
@@ -504,9 +684,9 @@
             <a
               href="#contact"
               class="group relative isolate overflow-hidden text-white text-sm font-semibold px-8 py-3.5 rounded flex items-center gap-2 transition-all duration-300"
-              style="background:var(--blue); box-shadow:0 2px 8px rgba(11,79,255,0.3),0 12px 32px -8px rgba(11,79,255,0.45);"
-              onmouseover="this.style.transform='translateY(-2px) scale(1.02)'; this.style.boxShadow='0 4px 16px rgba(11,79,255,0.4),0 20px 48px -8px rgba(11,79,255,0.5)'"
-              onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(11,79,255,0.3),0 12px 32px -8px rgba(11,79,255,0.45)'"
+              style="background:var(--blue); box-shadow:0 2px 8px rgba(51,51,51,0.3),0 12px 32px -8px rgba(51,51,51,0.45);"
+              onmouseover="this.style.transform='translateY(-2px) scale(1.02)'; this.style.boxShadow='0 4px 16px rgba(51,51,51,0.4),0 20px 48px -8px rgba(51,51,51,0.5)'"
+              onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 8px rgba(51,51,51,0.3),0 12px 32px -8px rgba(51,51,51,0.45)'"
             >
               <div class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent z-0 pointer-events-none"></div>
               <span class="relative z-10">Start a Project</span>
@@ -529,7 +709,7 @@
 
         <!-- Hero Visual Card -->
         <div class="relative w-full max-w-lg aspect-square lg:aspect-[4/3] flex items-center justify-center">
-          <div class="absolute inset-0 blur-3xl opacity-30" style="background:radial-gradient(ellipse at 60% 40%, rgba(11,79,255,0.18) 0%, transparent 70%);"></div>
+          <div class="absolute inset-0 blur-3xl opacity-30" style="background:radial-gradient(ellipse at 60% 40%, rgba(51,51,51,0.18) 0%, transparent 70%);"></div>
           <div class="premium-card w-full h-full p-6 relative overflow-hidden rounded-xl">
             <!-- Blue accent top bar -->
             <div class="absolute top-0 left-0 w-full h-[3px]" style="background:linear-gradient(90deg,var(--blue),var(--blue-light),transparent);"></div>
@@ -848,7 +1028,7 @@
                 <!-- Floating Label -->
                 <div
                   class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-lg"
-                  style="background:var(--blue); box-shadow:0 4px 16px rgba(11,79,255,0.4);"
+                  style="background:var(--blue); box-shadow:0 4px 16px rgba(51,51,51,0.4);"
                 >
                   &#9889; Typical MVP: 4–8 weeks
                 </div>
@@ -859,40 +1039,132 @@
       </section>
 
       <!-- TECH MARQUEE -->
-      <section class="py-14 border-y bg-white" style="border-color:var(--border);">
-        <div class="max-w-7xl mx-auto px-6 md:px-12">
-          <p class="text-center text-[10px] font-bold tracking-[0.2em] uppercase mb-6" style="color:var(--subtle);">Built with industry-standard tools</p>
-          <div class="marquee-wrap">
-            <div class="marquee-track">
-              <!-- First set -->
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#61DAFB"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>React</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#339933"><path d="M11.998 0C5.37 0 0 5.37 0 12c0 5.304 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12.002-12z"/></svg>Node.js</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#10a37f"><path d="M22.282 9.821a5.985 5.985 0 00-.233-1.327l-.003-.01-.011-.04A6.01 6.01 0 0013.98 4.8a5.985 5.985 0 00-4.698 2.262 5.985 5.985 0 00-1.217 4.53l.001.012.003.015a6.015 6.015 0 004.705 4.705l.015.003.012.001a5.985 5.985 0 004.53-1.217 5.985 5.985 0 002.262-4.698v-.012a5.97 5.97 0 00-.311-1.58z"/></svg>OpenAI</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M8 12h8M12 8v8"/></svg>LangChain</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#47A248"><path d="M17.193 9.555c-1.264-5.58-4.252-7.507-4.573-8.232-.725-1.566-1.51.159-1.51.159-1.081 2.481-3.803 7.547-5.902 10.488-2.128 2.974-1.16 5.665 0 7.001 1.158 1.337 4.104 2.271 6.397-.08 2.293-2.352 2.97-5.428 2.97-5.428 0 0 1.876-1.034 2.618-3.908z"/></svg>MongoDB</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>Vercel</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#009688"><path d="M0 0h24v24H0z" fill="none"/><path d="M17.36 2.64L15.95 4.05C17.22 5.32 18 7.07 18 9s-.78 3.68-2.06 4.95l1.41 1.41C19.1 13.73 20 11.46 20 9s-.9-4.73-2.64-6.36zm-1.41 1.42C14.96 5.05 14 6.96 14 9s.96 3.95 1.95 4.94l1.41-1.41C16.54 11.7 16 10.4 16 9s.54-2.7 1.36-3.53l-1.41-1.41zM5.64 2.64C3.9 4.27 3 6.54 3 9s.9 4.73 2.64 6.36l1.41-1.41C5.78 12.68 5 10.93 5 9s.78-3.68 2.06-4.95L5.64 2.64zM9 5C7.48 5 6.12 5.61 5.11 6.59L6.52 8C7.16 7.37 8.03 7 9 7s1.84.37 2.48 1L12.9 6.59C11.88 5.61 10.52 5 9 5zm3 4c0 1.66-1.34 3-3 3S6 10.66 6 9s1.34-3 3-3 3 1.34 3 3z"/></svg>FastAPI</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#635BFF"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg>Stripe</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#306998"><path d="M9.585.164C9.585.164 4.54.164 3.38 1.46c-.637.752-.855 1.814-.93 2.84l-.001 4.07c-.064 1.015.354 1.995 1.184 2.52.755.48 1.775.51 2.626.51h.001c1.21 0 2.264-.13 3.076-.5V10.9c-.812.37-1.866.5-3.076.5-.851 0-1.87-.03-2.626-.51-.83-.525-1.248-1.505-1.184-2.52L3.45 4.3c.075-1.026.293-2.088.93-2.84C5.54.164 10.585.164 10.585.164z"/></svg>Python</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#3ECF8E"><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.09 12.932.736 14.2 1.9 14.2h9.2l.13 8.732c.015.987 1.262 1.41 1.876.638l9.262-11.653c.674-.882.027-2.15-1.14-2.15H12.03l-.13-8.731z"/></svg>Supabase</span>
-              <!-- Duplicate for infinite loop -->
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#61DAFB"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" stroke="#61DAFB" stroke-width="1.5" fill="none" transform="rotate(120 12 12)"/></svg>React</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#339933"><path d="M11.998 0C5.37 0 0 5.37 0 12c0 5.304 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12.002-12z"/></svg>Node.js</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#10a37f"><path d="M22.282 9.821a5.985 5.985 0 00-.233-1.327l-.003-.01-.011-.04A6.01 6.01 0 0013.98 4.8a5.985 5.985 0 00-4.698 2.262 5.985 5.985 0 00-1.217 4.53l.001.012.003.015a6.015 6.015 0 004.705 4.705l.015.003.012.001a5.985 5.985 0 004.53-1.217 5.985 5.985 0 002.262-4.698v-.012a5.97 5.97 0 00-.311-1.58z"/></svg>OpenAI</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M8 12h8M12 8v8"/></svg>LangChain</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#47A248"><path d="M17.193 9.555c-1.264-5.58-4.252-7.507-4.573-8.232-.725-1.566-1.51.159-1.51.159-1.081 2.481-3.803 7.547-5.902 10.488-2.128 2.974-1.16 5.665 0 7.001 1.158 1.337 4.104 2.271 6.397-.08 2.293-2.352 2.97-5.428 2.97-5.428 0 0 1.876-1.034 2.618-3.908z"/></svg>MongoDB</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>Vercel</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#009688"><path d="M17.36 2.64L15.95 4.05C17.22 5.32 18 7.07 18 9s-.78 3.68-2.06 4.95l1.41 1.41C19.1 13.73 20 11.46 20 9s-.9-4.73-2.64-6.36zm-1.41 1.42C14.96 5.05 14 6.96 14 9s.96 3.95 1.95 4.94l1.41-1.41C16.54 11.7 16 10.4 16 9s.54-2.7 1.36-3.53l-1.41-1.41zM5.64 2.64C3.9 4.27 3 6.54 3 9s.9 4.73 2.64 6.36l1.41-1.41C5.78 12.68 5 10.93 5 9s.78-3.68 2.06-4.95L5.64 2.64zM9 5C7.48 5 6.12 5.61 5.11 6.59L6.52 8C7.16 7.37 8.03 7 9 7s1.84.37 2.48 1L12.9 6.59C11.88 5.61 10.52 5 9 5zm3 4c0 1.66-1.34 3-3 3S6 10.66 6 9s1.34-3 3-3 3 1.34 3 3z"/></svg>FastAPI</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#635BFF"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg>Stripe</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#306998"><path d="M9.585.164C9.585.164 4.54.164 3.38 1.46c-.637.752-.855 1.814-.93 2.84l-.001 4.07c-.064 1.015.354 1.995 1.184 2.52.755.48 1.775.51 2.626.51h.001c1.21 0 2.264-.13 3.076-.5V10.9c-.812.37-1.866.5-3.076.5-.851 0-1.87-.03-2.626-.51-.83-.525-1.248-1.505-1.184-2.52L3.45 4.3c.075-1.026.293-2.088.93-2.84C5.54.164 10.585.164 10.585.164z"/></svg>Python</span>
-              <span class="marquee-item"><svg viewBox="0 0 24 24" width="14" height="14" fill="#3ECF8E"><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.09 12.932.736 14.2 1.9 14.2h9.2l.13 8.732c.015.987 1.262 1.41 1.876.638l9.262-11.653c.674-.882.027-2.15-1.14-2.15H12.03l-.13-8.731z"/></svg>Supabase</span>
+      <section class="tech-marquee-section py-20 md:py-24">
+        <!-- Vibrant background glow blobs underneath glass panel -->
+        <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-gradient-to-tr from-blue-500/10 to-teal-400/20 blur-[90px] pointer-events-none z-0"></div>
+        <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/20 blur-[90px] pointer-events-none z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center mb-16">
+          <div class="section-label inline-flex mb-4">Tech Stack</div>
+          <h2 class="font-sans text-3xl md:text-5xl font-semibold text-obsidian tracking-tight leading-none">
+            Built with <span style="color:var(--blue);">industry-standard</span> technologies.
+          </h2>
+        </div>
+        <div class="tech-marquee-glass">
+          <div class="tech-marquee-fade-left"></div>
+          <div class="tech-marquee-fade-right"></div>
+          <div class="tech-marquee-track" id="tech-marquee-track">
+            <!-- React -->
+            <div class="tech-marquee-card" data-slug="react" data-rgb="97,218,251">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">React</span>
+            </div>
+            <!-- Node.js -->
+            <div class="tech-marquee-card" data-slug="nodedotjs" data-rgb="104,159,56">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Node.js</span>
+            </div>
+            <!-- OpenAI -->
+            <div class="tech-marquee-card" data-slug="openai" data-rgb="16,163,127">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">OpenAI</span>
+            </div>
+            <!-- LangChain -->
+            <div class="tech-marquee-card" data-rgb="41,97,255">
+              <div class="tech-icon"><img src="images/langchain.png" alt="LangChain"></div>
+              <span class="tech-label">LangChain</span>
+            </div>
+            <!-- LangGraph -->
+            <div class="tech-marquee-card" data-rgb="41,97,255">
+              <div class="tech-icon"><img src="images/langgraph.png" alt="LangGraph"></div>
+              <span class="tech-label">LangGraph</span>
+            </div>
+            <!-- Java -->
+            <div class="tech-marquee-card" data-rgb="237,139,0">
+              <div class="tech-icon"><img src="images/java.png" alt="Java"></div>
+              <span class="tech-label">Java</span>
+            </div>
+            <!-- JavaScript -->
+            <div class="tech-marquee-card" data-slug="javascript" data-rgb="247,223,30">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">JavaScript</span>
+            </div>
+            <!-- Express -->
+            <div class="tech-marquee-card" data-slug="express" data-rgb="68,68,68">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Express</span>
+            </div>
+            <!-- MongoDB -->
+            <div class="tech-marquee-card" data-slug="mongodb" data-rgb="71,162,72">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">MongoDB</span>
+            </div>
+            <!-- MySQL -->
+            <div class="tech-marquee-card" data-slug="mysql" data-rgb="0,117,143">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">MySQL</span>
+            </div>
+            <!-- Vercel -->
+            <div class="tech-marquee-card" data-slug="vercel" data-rgb="0,0,0">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Vercel</span>
+            </div>
+            <!-- FastAPI -->
+            <div class="tech-marquee-card" data-slug="fastapi" data-rgb="0,150,136">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">FastAPI</span>
+            </div>
+            <!-- Stripe -->
+            <div class="tech-marquee-card" data-slug="stripe" data-rgb="99,91,255">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Stripe</span>
+            </div>
+            <!-- Python -->
+            <div class="tech-marquee-card" data-slug="python" data-rgb="55,118,171">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Python</span>
+            </div>
+            <!-- Supabase -->
+            <div class="tech-marquee-card" data-slug="supabase" data-rgb="62,207,142">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Supabase</span>
+            </div>
+            <!-- CSS3 -->
+            <div class="tech-marquee-card" data-slug="css3" data-rgb="38,77,228">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">CSS3</span>
+            </div>
+            <!-- HTML5 -->
+            <div class="tech-marquee-card" data-slug="html5" data-rgb="227,76,38">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">HTML5</span>
+            </div>
+            <!-- Oracle DB -->
+            <div class="tech-marquee-card" data-slug="oracle" data-rgb="248,0,0">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Oracle</span>
+            </div>
+            <!-- Scikit-learn -->
+            <div class="tech-marquee-card" data-slug="scikitlearn" data-rgb="253,197,44">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Scikit</span>
+            </div>
+            <!-- Bootstrap -->
+            <div class="tech-marquee-card" data-slug="bootstrap" data-rgb="121,82,179">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">Bootstrap</span>
+            </div>
+            <!-- PyTorch -->
+            <div class="tech-marquee-card" data-slug="pytorch" data-rgb="238,76,44">
+              <div class="tech-icon-mask"></div>
+              <span class="tech-label">PyTorch</span>
             </div>
           </div>
         </div>
       </section>
 
       <!-- JOURNEY PATH -->
-      <section class="relative py-20 px-6 md:px-12 lg:px-20 overflow-hidden" style="background:#F5F4EE;">
+      <section class="relative py-20 px-6 md:px-12 lg:px-20 overflow-hidden" style="background:#fcfbf9;">
         <div class="max-w-5xl mx-auto relative">
           <p class="text-center font-sans text-sm text-subtle mb-6">From first call to shipped product &mdash; a clear, fast path.</p>
           <svg id="journey-svg" class="w-full h-auto" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 200px;">
@@ -903,18 +1175,18 @@
               </filter>
             </defs>
             <!-- Track -->
-            <path d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="rgba(11,79,255,0.12)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="rgba(51,51,51,0.12)" stroke-width="3" stroke-linecap="round" fill="none"/>
             <!-- Animated blue path -->
-            <path id="journey-line" class="journey-path" d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="#0B4FFF" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#jBlueGlow)"/>
-            <circle class="journey-dot" cx="50" cy="100" r="6" fill="#0B4FFF"/>
-            <circle class="journey-dot" cx="250" cy="30" r="6" fill="#0B4FFF"/>
-            <circle class="journey-dot" cx="450" cy="170" r="6" fill="#0B4FFF"/>
-            <circle class="journey-dot" cx="650" cy="100" r="6" fill="#0B4FFF"/>
+            <path id="journey-line" class="journey-path" d="M50,100 C150,100 150,30 250,30 C350,30 350,170 450,170 C550,170 550,100 650,100 C700,100 750,100 780,100" stroke="#333333" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#jBlueGlow)"/>
+            <circle class="journey-dot" cx="50" cy="100" r="6" fill="#333333"/>
+            <circle class="journey-dot" cx="250" cy="30" r="6" fill="#333333"/>
+            <circle class="journey-dot" cx="450" cy="170" r="6" fill="#333333"/>
+            <circle class="journey-dot" cx="650" cy="100" r="6" fill="#333333"/>
             <circle class="journey-dot" cx="780" cy="100" r="8" fill="#111111"/>
-            <text x="50" y="128" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Discovery</text>
-            <text x="250" y="16" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Prototype</text>
-            <text x="450" y="196" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Build</text>
-            <text x="650" y="128" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#0B4FFF">Launch</text>
+            <text x="50" y="128" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#333333">Discovery</text>
+            <text x="250" y="16" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#333333">Prototype</text>
+            <text x="450" y="196" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#333333">Build</text>
+            <text x="650" y="128" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#333333">Launch</text>
           </svg>
         </div>
       </section>
@@ -976,7 +1248,7 @@
             >
               <!-- Popular badge -->
               <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-white text-[10px] font-bold tracking-widest uppercase" style="background:var(--blue); box-shadow:0 4px 12px rgba(11,79,255,0.4);">⭐ Most Popular</span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-white text-[10px] font-bold tracking-widest uppercase" style="background:var(--blue); box-shadow:0 4px 12px rgba(51,51,51,0.4);">⭐ Most Popular</span>
               </div>
               <div class="mb-6">
                 <span
@@ -1088,29 +1360,29 @@
                   </filter>
                 </defs>
                 <!-- BG track -->
-                <path id="pp-bg" d="M190,70 L560,70 Q600,70 600,110 L600,310 Q600,350 560,350 L190,350 Q150,350 150,390 L150,570 Q150,610 190,610 L560,610 Q600,610 600,650 L600,830 Q600,870 560,870 L350,870" stroke="rgba(11,79,255,0.08)" stroke-width="2" fill="none"/>
+                <path id="pp-bg" d="M190,70 L560,70 Q600,70 600,110 L600,310 Q600,350 560,350 L190,350 Q150,350 150,390 L150,570 Q150,610 190,610 L560,610 Q600,610 600,650 L600,830 Q600,870 560,870 L350,870" stroke="rgba(51,51,51,0.08)" stroke-width="2" fill="none"/>
                 <!-- Animated path — electric blue + glow -->
-                <path id="pp" d="M190,70 L560,70 Q600,70 600,110 L600,310 Q600,350 560,350 L190,350 Q150,350 150,390 L150,570 Q150,610 190,610 L560,610 Q600,610 600,650 L600,830 Q600,870 560,870 L350,870" stroke="#0B4FFF" stroke-width="2.5" fill="none" filter="url(#blue-path-glow)" stroke-linejoin="round"/>
+                <path id="pp" d="M190,70 L560,70 Q600,70 600,110 L600,310 Q600,350 560,350 L190,350 Q150,350 150,390 L150,570 Q150,610 190,610 L560,610 Q600,610 600,650 L600,830 Q600,870 560,870 L350,870" stroke="#333333" stroke-width="2.5" fill="none" filter="url(#blue-path-glow)" stroke-linejoin="round"/>
                 <!-- Node dots -->
-                <circle class="pn" cx="190" cy="70" r="5" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn" cx="600" cy="70" r="5" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn" cx="600" cy="350" r="5" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn" cx="150" cy="350" r="5" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn" cx="150" cy="610" r="5" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn" cx="600" cy="610" r="5" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn" cx="600" cy="870" r="5" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn" cx="350" cy="870" r="5" fill="#0B4FFF" opacity="0"/>
+                <circle class="pn" cx="190" cy="70" r="5" fill="#333333" opacity="0"/>
+                <circle class="pn" cx="600" cy="70" r="5" fill="#333333" opacity="0"/>
+                <circle class="pn" cx="600" cy="350" r="5" fill="#333333" opacity="0"/>
+                <circle class="pn" cx="150" cy="350" r="5" fill="#333333" opacity="0"/>
+                <circle class="pn" cx="150" cy="610" r="5" fill="#333333" opacity="0"/>
+                <circle class="pn" cx="600" cy="610" r="5" fill="#333333" opacity="0"/>
+                <circle class="pn" cx="600" cy="870" r="5" fill="#333333" opacity="0"/>
+                <circle class="pn" cx="350" cy="870" r="5" fill="#333333" opacity="0"/>
               </svg>
 
               <!-- Mobile SVG -->
               <svg class="process-svg-mobile hidden" viewBox="0 0 20 760" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <path id="pp-m-bg" d="M10,35 L10,725" stroke="rgba(11,79,255,0.10)" stroke-width="1.5" stroke-linecap="round"/>
-                <path id="pp-m" d="M10,35 L10,725" stroke="#0B4FFF" stroke-width="2" stroke-linecap="round" filter="url(#blue-path-glow)"/>
-                <circle class="pn-m" cx="10" cy="35" r="4" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn-m" cx="10" cy="220" r="4" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn-m" cx="10" cy="405" r="4" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn-m" cx="10" cy="590" r="4" fill="#0B4FFF" opacity="0"/>
-                <circle class="pn-m" cx="10" cy="725" r="4" fill="#0B4FFF" opacity="0"/>
+                <path id="pp-m-bg" d="M10,35 L10,725" stroke="rgba(51,51,51,0.10)" stroke-width="1.5" stroke-linecap="round"/>
+                <path id="pp-m" d="M10,35 L10,725" stroke="#333333" stroke-width="2" stroke-linecap="round" filter="url(#blue-path-glow)"/>
+                <circle class="pn-m" cx="10" cy="35" r="4" fill="#333333" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="220" r="4" fill="#333333" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="405" r="4" fill="#333333" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="590" r="4" fill="#333333" opacity="0"/>
+                <circle class="pn-m" cx="10" cy="725" r="4" fill="#333333" opacity="0"/>
               </svg>
 
               <!-- Card 1 — top-left -->
@@ -1216,7 +1488,7 @@
                     href="documents/template.pdf"
                     target="_blank"
                     class="group relative isolate overflow-hidden text-white text-xs font-semibold px-5 py-2.5 rounded flex items-center justify-center gap-2 transition-all duration-300"
-                    style="background:var(--blue); box-shadow:0 2px 8px rgba(11,79,255,0.25);"
+                    style="background:var(--blue); box-shadow:0 2px 8px rgba(51,51,51,0.25);"
                   >
                     <span>View Onboarding PDF</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1">
@@ -1237,7 +1509,7 @@
                   href="documents/template.pdf"
                   target="_blank"
                   class="group relative isolate overflow-hidden text-white text-xs font-semibold px-5 py-2.5 rounded flex items-center justify-center gap-2 transition-all duration-300"
-                  style="background:var(--blue); box-shadow:0 2px 8px rgba(11,79,255,0.25);"
+                  style="background:var(--blue); box-shadow:0 2px 8px rgba(51,51,51,0.25);"
                 >
                   <span>View Onboarding PDF</span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1">
@@ -1329,8 +1601,8 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 why-us-cards">
             <div class="premium-card blue-hover-card rounded-xl p-6">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(11,79,255,0.08);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B4FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(51,51,51,0.08);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               </div>
               <h3 class="font-semibold text-obsidian mb-2">
                 AI + full-stack delivery
@@ -1341,8 +1613,8 @@
               </p>
             </div>
             <div class="premium-card blue-hover-card rounded-xl p-6">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(11,79,255,0.08);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B4FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(51,51,51,0.08);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
               </div>
               <h3 class="font-semibold text-obsidian mb-2">
                 Fast iteration cycles
@@ -1353,8 +1625,8 @@
               </p>
             </div>
             <div class="premium-card blue-hover-card rounded-xl p-6">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(11,79,255,0.08);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B4FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(51,51,51,0.08);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               </div>
               <h3 class="font-semibold text-obsidian mb-2">
                 End-to-end MVP execution
@@ -1365,8 +1637,8 @@
               </p>
             </div>
             <div class="premium-card blue-hover-card rounded-xl p-6">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(11,79,255,0.08);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B4FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(51,51,51,0.08);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
               </div>
               <h3 class="font-semibold text-obsidian mb-2">
                 Clean handoff, no lock-in
@@ -1377,8 +1649,8 @@
               </p>
             </div>
             <div class="premium-card blue-hover-card rounded-xl p-6">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(11,79,255,0.08);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B4FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style="background:rgba(51,51,51,0.08);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               </div>
               <h3 class="font-semibold text-obsidian mb-2">
                 Small, focused team
@@ -1419,7 +1691,7 @@
                 >Discovery Sprint</span
               >
               <h3 class="text-xl font-bold text-obsidian mb-1">
-                Starting at <span style="color:var(--blue);">$300</span>
+                Starting at <span style="color:var(--blue);">$800</span>
               </h3>
               <p class="text-xs text-subtle mb-4 font-medium">One-time fixed fee</p>
               <p class="text-sm text-subtle leading-relaxed mb-6">
@@ -1436,10 +1708,10 @@
             </div>
 
             <!-- Card 2: Prototype MVP — Featured -->
-            <div class="premium-card pricing-featured rounded-xl p-8 flex flex-col relative" style="background:#fff; border: 2px solid var(--blue);">
+            <div class="premium-card pricing-featured rounded-xl p-8 flex flex-col relative" style="background:#fff; border: 1px solid var(--blue);">
               <!-- Popular badge -->
               <div class="absolute -top-4 left-1/2 -translate-x-1/2">
-                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-white text-[10px] font-bold tracking-widest uppercase" style="background:var(--blue); box-shadow:0 4px 12px rgba(11,79,255,0.4);">⭐ Most Popular</span>
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-white text-[10px] font-bold tracking-widest uppercase" style="background:var(--blue); box-shadow:0 4px 12px rgba(51,51,51,0.4);">⭐ Most Popular</span>
               </div>
               <span
                 class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase mb-6 text-white"
@@ -1447,7 +1719,7 @@
                 >Prototype MVP</span
               >
               <h3 class="text-xl font-bold text-obsidian mb-1">
-                <span style="color:var(--blue);">$1,200</span> – $2,500
+                <span style="color:var(--blue);">$3,000</span> – $5,000
               </h3>
               <p class="text-xs text-subtle mb-4 font-medium">Typical range · fixed scope</p>
               <p class="text-sm text-subtle leading-relaxed mb-6">
@@ -1460,7 +1732,7 @@
                 <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 shrink-0" style="color:var(--blue)" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Authentication and basic admin tools</li>
                 <li class="flex items-start gap-2"><svg class="w-4 h-4 mt-0.5 shrink-0" style="color:var(--blue)" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Deployment-ready handoff</li>
               </ul>
-              <a href="#contact" class="group relative isolate overflow-hidden text-center w-full py-2.5 rounded text-sm font-semibold text-white transition-all duration-300" style="background:var(--blue); box-shadow:0 4px 16px rgba(11,79,255,0.35);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(11,79,255,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(11,79,255,0.35)'">
+              <a href="#contact" class="group relative isolate overflow-hidden text-center w-full py-2.5 rounded text-sm font-semibold text-white transition-all duration-300" style="background:var(--blue); box-shadow:0 4px 16px rgba(51,51,51,0.35);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(51,51,51,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(51,51,51,0.35)'">
                 <div class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent z-0"></div>
                 <span class="relative z-10">Start a Project</span>
               </a>
@@ -1490,9 +1762,9 @@
               <a
                 href="mailto:qbitlabs.studio@gmail.com?subject=Custom%20MVP%20Build%20inquiry"
                 class="group relative isolate overflow-hidden inline-flex items-center justify-center gap-2 text-white text-sm font-semibold px-6 py-2.5 rounded w-full transition-all duration-300"
-                style="background:var(--blue); box-shadow:0 2px 8px rgba(11,79,255,0.25);"
-                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(11,79,255,0.4)'"
-                onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(11,79,255,0.25)'"
+                style="background:var(--blue); box-shadow:0 2px 8px rgba(51,51,51,0.25);"
+                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(51,51,51,0.4)'"
+                onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(51,51,51,0.25)'"
               >
                 <div class="shimmer-layer absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent z-10"></div>
                 <span class="relative z-20">Contact Us</span>
@@ -1517,7 +1789,7 @@
           </div>
           <div class="space-y-3" id="faq-accordion">
 
-            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-blue-500">
+            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-gray-500">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span>Who do you work with?</span>
                 <span class="transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-open:rotate-45 inline-flex items-center justify-center w-6 h-6 rounded-full border shrink-0" style="border-color:var(--border); color:var(--subtle);" data-faq-icon>
@@ -1532,7 +1804,7 @@
               </div>
             </details>
 
-            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-blue-500">
+            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-gray-500">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span>What does an MVP include?</span>
                 <span class="transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-open:rotate-45 inline-flex items-center justify-center w-6 h-6 rounded-full border shrink-0" style="border-color:var(--border); color:var(--subtle);" data-faq-icon>
@@ -1547,7 +1819,7 @@
               </div>
             </details>
 
-            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-blue-500">
+            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-gray-500">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span>How long does it take?</span>
                 <span class="transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-open:rotate-45 inline-flex items-center justify-center w-6 h-6 rounded-full border shrink-0" style="border-color:var(--border); color:var(--subtle);" data-faq-icon>
@@ -1562,7 +1834,7 @@
               </div>
             </details>
 
-            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-blue-500">
+            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-gray-500">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span>Do you work with non-technical founders?</span>
                 <span class="transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-open:rotate-45 inline-flex items-center justify-center w-6 h-6 rounded-full border shrink-0" style="border-color:var(--border); color:var(--subtle);" data-faq-icon>
@@ -1577,7 +1849,7 @@
               </div>
             </details>
 
-            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-blue-500">
+            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-gray-500">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span>Do we get the source code?</span>
                 <span class="transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-open:rotate-45 inline-flex items-center justify-center w-6 h-6 rounded-full border shrink-0" style="border-color:var(--border); color:var(--subtle);" data-faq-icon>
@@ -1592,7 +1864,7 @@
               </div>
             </details>
 
-            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-blue-500">
+            <details class="faq-item premium-card rounded-xl p-6 group overflow-hidden relative bg-white border border-transparent open:border-gray-500">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-6 font-semibold text-obsidian select-none">
                 <span>Can you add AI features into an existing product?</span>
                 <span class="transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-open:rotate-45 inline-flex items-center justify-center w-6 h-6 rounded-full border shrink-0" style="border-color:var(--border); color:var(--subtle);" data-faq-icon>
@@ -1620,19 +1892,19 @@
         <!-- Dot pattern — blue tinted -->
         <div
           class="absolute inset-0 opacity-[0.07]"
-          style="background-image: radial-gradient(rgba(11,79,255,0.6) 1px, transparent 1px); background-size: 32px 32px;"
+          style="background-image: radial-gradient(rgba(51,51,51,0.6) 1px, transparent 1px); background-size: 32px 32px;"
         ></div>
         <!-- Subtle blue gradient band at top -->
-        <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg,transparent,rgba(11,79,255,0.6),transparent);"></div>
+        <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg,transparent,rgba(51,51,51,0.6),transparent);"></div>
         <div class="max-w-5xl mx-auto relative z-10">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div>
-              <div class="section-label" style="color:rgba(11,79,255,0.8);">Get in Touch</div>
+              <div class="section-label" style="color:rgba(51,51,51,0.8);">Get in Touch</div>
               <h2
                 class="text-4xl md:text-5xl font-semibold tracking-tighter mb-6 leading-[1.05]"
               >
                 Have an idea, prototype, or early product that needs an
-                <span style="color:rgba(11,79,255,0.85);">AI-powered MVP?</span>
+                <span style="color:rgba(174, 173, 173, 0.85);">AI-powered MVP?</span>
               </h2>
               <p class="text-white/60 text-base leading-relaxed max-w-xl mb-6">
                 Tell us what you're building and we'll point you toward the
@@ -1650,7 +1922,7 @@
               </p>
               <!-- Trust badges -->
               <div class="flex flex-wrap gap-3 mt-8">
-                <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full" style="background:rgba(11,79,255,0.15); color:rgba(11,79,255,0.9); border:1px solid rgba(11,79,255,0.25);">⚡ Q3 slots open</span>
+                <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full" style="background:rgba(190, 189, 189, 0.279); color:rgba(246, 230, 4, 0.9); border:1px solid rgba(51,51,51,0.25);">⚡ Q3 slots open</span>
                 <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full" style="background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.1);">4–8 week delivery</span>
                 <span class="text-[11px] font-semibold px-3 py-1.5 rounded-full" style="background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.1);">No agency overhead</span>
               </div>
@@ -2136,23 +2408,25 @@
           cardEl.style.transform = `translate3d(${x}px, ${y}px, ${zTranslate}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`;
 
           // Setup details view inside card
+          // Setup details view inside card
+          const stackTags = item.stack.split(',').map(s => `<span class="stack-pill">${s.trim()}</span>`).join('');
           let detailsHtml = '';
           if (item.id === 'fair-council' || item.id === 'prism') {
             detailsHtml = `
               <div class="grid grid-cols-2 gap-3 text-xs text-subtle mb-4">
-                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight">
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight detail-reveal">
                   <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-0.5 font-bold">Problem</div>
                   <div class="text-obsidian font-medium">${item.problem}</div>
                 </div>
-                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight">
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight detail-reveal">
                   <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-0.5 font-bold">Built</div>
                   <div class="text-obsidian font-medium">${item.built}</div>
                 </div>
-                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight">
-                  <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-0.5 font-bold">Stack</div>
-                  <div class="text-obsidian font-medium">${item.stack}</div>
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight detail-reveal">
+                  <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-1 font-bold">Stack</div>
+                  <div class="flex flex-wrap gap-1">${stackTags}</div>
                 </div>
-                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight">
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight detail-reveal">
                   <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-0.5 font-bold">${item.id === 'prism' ? 'Timeline' : 'Scoring formula'}</div>
                   <div class="text-obsidian font-medium">${item.scoring}</div>
                 </div>
@@ -2161,15 +2435,15 @@
           } else {
             detailsHtml = `
               <div class="grid grid-cols-2 gap-3 text-xs text-subtle mb-4">
-                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight col-span-2">
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight col-span-2 detail-reveal">
                   <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-0.5 font-bold">Built</div>
                   <div class="text-obsidian font-medium">${item.built}</div>
                 </div>
-                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight">
-                  <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-0.5 font-bold">Stack</div>
-                  <div class="text-obsidian font-medium">${item.stack}</div>
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight detail-reveal">
+                  <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-1 font-bold">Stack</div>
+                  <div class="flex flex-wrap gap-1">${stackTags}</div>
                 </div>
-                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight">
+                <div class="rounded-lg border border-border bg-canvas p-2 text-[10px] leading-tight detail-reveal">
                   <div class="text-[8px] uppercase tracking-[0.12em] text-subtle mb-0.5 font-bold">Timeline</div>
                   <div class="text-obsidian font-medium">${item.scoring}</div>
                 </div>
@@ -2179,13 +2453,17 @@
 
           const isFeatured = item.category.toUpperCase().includes("FEATURED") || item.category.toUpperCase().includes("DEVELOPING");
           const categoryBadgeClass = isFeatured 
-            ? "border-blue-200 text-[#0B4FFF] bg-[#0B4FFF]/10" 
+            ? "border-gray-200 text-[#333333] bg-[#333333]/10" 
             : "border-border text-subtle bg-canvas";
           const subCategoryBadgeClass = isFeatured 
-            ? "border-blue-200 text-[#0B4FFF] bg-[#0B4FFF]/5" 
+            ? "border-gray-200 text-[#333333] bg-[#333333]/5" 
             : "border-border text-subtle bg-canvas";
 
+          const cardNumber = String(i + 1).padStart(2, '0');
+          const totalCards = String(projects.length).padStart(2, '0');
+
           cardEl.innerHTML = `
+            <div class="card-accent-line"></div>
             <div class="w-full h-full flex flex-col justify-between pointer-events-none select-none">
               <div>
                 <div class="flex items-start justify-between gap-4 mb-3">
@@ -2196,10 +2474,11 @@
                     <h3 class="text-xl font-bold text-obsidian tracking-tight leading-tight">${item.title}</h3>
                   </div>
                   <div class="flex flex-col items-end gap-1.5">
+                    <span class="text-[9px] font-mono font-bold text-subtle/50 tracking-wider">${cardNumber} / ${totalCards}</span>
                     <span class="text-[9px] border px-2.5 py-0.5 rounded-full uppercase tracking-wider font-bold whitespace-nowrap ${subCategoryBadgeClass}">
                       ${item.subCategory}
                     </span>
-                    <span class="text-[9px] font-bold uppercase tracking-wider text-[#0B4FFF] bg-[#0B4FFF]/10 px-2.5 py-0.5 rounded-full border border-blue-200/50">
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-[#333333] bg-[#333333]/10 px-2.5 py-0.5 rounded-full border border-gray-200/50">
                       ${item.outcomeMetric}
                     </span>
                   </div>
@@ -2215,7 +2494,7 @@
                   <a href="${item.repo}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 rounded-full bg-obsidian text-white text-[11px] font-semibold hover:bg-obsidian/85 transition-colors pointer-events-auto">
                     Repo
                   </a>
-                  <a href="#contact" class="px-4 py-1.5 rounded-full bg-[#0B4FFF] text-white text-[11px] font-semibold hover:bg-[#0B4FFF]/90 transition-colors pointer-events-auto flex items-center gap-1">
+                  <a href="#contact" class="px-4 py-1.5 rounded-full bg-[#333333] text-white text-[11px] font-semibold hover:bg-[#333333]/90 transition-colors pointer-events-auto flex items-center gap-1">
                     <span>Hire us to build this</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
@@ -2664,6 +2943,149 @@
           }
         });
       });
+    </script>
+
+    <script>
+      /* ═══════════════════════════════════════════
+         TECH MARQUEE — Dynamic Duotone Engine
+         ═══════════════════════════════════════════ */
+      (function () {
+        const track = document.getElementById('tech-marquee-track');
+        if (!track) return;
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const cards = track.querySelectorAll('.tech-marquee-card');
+
+        function styleCard(card) {
+          var rgb = card.getAttribute('data-rgb');
+          var slug = card.getAttribute('data-slug');
+          if (!rgb) return;
+          var parts = rgb.split(',').map(function (s) { return parseInt(s.trim(), 10); });
+          var r = parts[0], g = parts[1], b = parts[2];
+          var dark = 'rgb(' + r + ',' + g + ',' + b + ')';
+          var shadow45 = 'rgba(' + r + ',' + g + ',' + b + ',0.45)';
+          var shadow25 = 'rgba(' + r + ',' + g + ',' + b + ',0.25)';
+          var shadow10 = 'rgba(' + r + ',' + g + ',' + b + ',0.10)';
+
+          card.style.setProperty('--brand', dark);
+          card.style.setProperty('--brand-shadow-45', shadow45);
+          card.style.setProperty('--brand-shadow-25', shadow25);
+          card.style.setProperty('--brand-shadow-10', shadow10);
+          card.style.backgroundColor = '#ffffff';
+          card.style.borderColor = 'rgba(0,0,0,0.06)';
+
+          var mask = card.querySelector('.tech-icon-mask');
+          if (mask && slug) {
+            var url = 'https://cdn.jsdelivr.net/npm/simple-icons@12.0.0/icons/' + slug + '.svg';
+            mask.style.webkitMaskImage = 'url(' + url + ')';
+            mask.style.maskImage = 'url(' + url + ')';
+            mask.style.backgroundColor = dark;
+          }
+
+          var icon = card.querySelector('.tech-icon');
+          if (icon) {
+            icon.style.color = dark;
+          }
+
+          /* ── Sheen Injection ── */
+          if (!card.querySelector('.card-sheen')) {
+            var sheen = document.createElement('div');
+            sheen.className = 'card-sheen';
+            card.appendChild(sheen);
+          }
+
+          /* ── 3D Tilt & Sheen Tracking ── */
+          card.addEventListener('mousemove', function (e) {
+            var rect = card.getBoundingClientRect();
+            var x = e.clientX - rect.left - rect.width / 2;
+            var y = e.clientY - rect.top - rect.height / 2;
+            var px = ((e.clientX - rect.left) / rect.width) * 100;
+            var py = ((e.clientY - rect.top) / rect.height) * 100;
+
+            card.style.setProperty('--x', px + '%');
+            card.style.setProperty('--y', py + '%');
+
+            gsap.to(card, {
+              rotateY: x * 0.18,
+              rotateX: -y * 0.22,
+              y: -12,
+              scale: 1.08,
+              ease: "power2.out",
+              duration: 0.35,
+              overwrite: "auto"
+            });
+          });
+
+          card.addEventListener('mouseleave', function () {
+            gsap.to(card, {
+              rotateY: 0,
+              rotateX: 0,
+              y: 0,
+              scale: 1,
+              ease: "power2.out",
+              duration: 0.5,
+              overwrite: "auto"
+            });
+          });
+        }
+
+        /* ── Apply duotone colors from data-rgb ── */
+        cards.forEach(styleCard);
+
+        /* ── Clone for seamless loop ── */
+        var originals = Array.prototype.slice.call(track.children);
+        var cloneCount = originals.length;
+        for (var i = 0; i < cloneCount; i++) {
+          var clone = originals[i].cloneNode(true);
+          track.appendChild(clone);
+        }
+
+        /* ── GSAP Seamless Marquee Loop ── */
+        var dur = 50; // default duration
+
+        var loop = gsap.to(track, {
+          x: "-50%",
+          ease: "none",
+          duration: dur,
+          repeat: -1
+        });
+
+        /* ── Hover Interaction with Smooth Deceleration/Acceleration ── */
+        var glass = document.querySelector('.tech-marquee-glass');
+        if (glass && !reducedMotion) {
+          glass.addEventListener('mouseenter', function() {
+            gsap.to(loop, { timeScale: 0.08, duration: 1.5, ease: "power2.out" });
+          });
+          glass.addEventListener('mouseleave', function() {
+            gsap.to(loop, { timeScale: 1, duration: 1.5, ease: "power2.out" });
+          });
+        }
+
+        /* ── Responsive speed adjustments ── */
+        function updateSpeed() {
+          var w = window.innerWidth;
+          var speed = w < 640 ? 30 : w < 1024 ? 40 : 50;
+          loop.duration(speed);
+        }
+        updateSpeed();
+        window.addEventListener('resize', updateSpeed);
+
+        /* ── Reduced motion check ── */
+        if (reducedMotion) {
+          loop.pause();
+        }
+
+        /* ── Staggered entry ── */
+        cards.forEach(function (card, idx) {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
+          setTimeout(function () {
+            card.style.transition = 'opacity 500ms cubic-bezier(0.22,1,0.36,1), transform 500ms cubic-bezier(0.34,1.56,0.64,1)';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, 80 * idx);
+        });
+      })();
     </script>
 
     <script
