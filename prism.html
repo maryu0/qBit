@@ -215,10 +215,57 @@
     }
     .back-nav-link:hover { color: var(--text-secondary); }
 
-    @media (max-width: 768px) {
+     @media (max-width: 768px) {
       #prism-nav { padding: 16px 24px; }
       #prism-nav.scrolled { padding: 12px 24px; }
       .nav-links { display: none; }
+      .nav-actions { display: none; }
+      .mobile-toggle { display: block !important; }
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 20px;
+      padding: 4px;
+      z-index: 110;
+    }
+
+    #mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(8, 12, 16, 0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 300ms var(--ease-out);
+    }
+
+    #mobile-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #mobile-menu a {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 200ms;
+    }
+
+    #mobile-menu a:hover {
+      color: var(--text-primary);
     }
 
     /* ═══ HERO ═══ */
@@ -1936,7 +1983,20 @@
       <a href="https://github.com/maryu0/prism.git" target="_blank" rel="noopener" class="btn-ghost-sm">GitHub</a>
       <a href="#cta" class="btn-primary-sm" id="nav-cta">Request Access</a>
     </div>
+
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
   </nav>
+
+  <div id="mobile-menu">
+    <a href="#problem" class="mobile-link">Problem</a>
+    <a href="#solution" class="mobile-link">Solution</a>
+    <a href="#features" class="mobile-link">Features</a>
+    <a href="#ai-chat" class="mobile-link">AI Mentor</a>
+    <a href="index.html" class="mobile-link">qBit Labs</a>
+    <a href="https://github.com/maryu0/prism.git" target="_blank" rel="noopener" class="mobile-link">GitHub</a>
+  </div>
 
   <!-- ═══════════════════════════════════
        HERO
@@ -2806,7 +2866,7 @@
       </p>
 
       <div class="cta-actions reveal reveal-delay-2">
-        <a href="mailto:hello@qbitlabs.io?subject=Prism%20Early%20Access&body=Hi%2C%20I%27m%20interested%20in%20early%20access%20to%20Prism." class="btn-cta-primary" id="cta-main">
+        <a href="mailto:founder@qbitlabs.ai?subject=Prism%20Early%20Access&body=Hi%2C%20I%27m%20interested%20in%20early%20access%20to%20Prism." class="btn-cta-primary" id="cta-main">
           Request Early Access
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
@@ -2862,7 +2922,7 @@
               <li><a href="index.html">qBit Labs</a></li>
               <li><a href="team.html">Team</a></li>
               <li><a href="https://github.com/maryu0/prism.git" target="_blank" rel="noopener">GitHub</a></li>
-              <li><a href="mailto:hello@qbitlabs.io">Contact</a></li>
+              <li><a href="mailto:team@qbitlabs.ai">Contact</a></li>
             </ul>
           </div>
           <div class="footer-links-col">
@@ -3126,6 +3186,32 @@
         card.style.setProperty('--y', `${y}px`);
       }, { passive: true });
     });
+
+    // Mobile Menu Toggle
+    const mobileToggle = document.getElementById("mobile-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const mobileLinks = document.querySelectorAll(".mobile-link");
+
+    if (mobileToggle && mobileMenu) {
+      mobileToggle.addEventListener("click", () => {
+        const isOpen = mobileMenu.classList.toggle("open");
+        if (isOpen) {
+          mobileToggle.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+          document.body.style.overflow = "hidden";
+        } else {
+          mobileToggle.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
+          document.body.style.overflow = "";
+        }
+      });
+
+      mobileLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.remove("open");
+          mobileToggle.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
+          document.body.style.overflow = "";
+        });
+      });
+    }
   </script>
 </body>
 </html>

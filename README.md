@@ -47,7 +47,7 @@ We specialize in shortening the path from concept to launched product — delive
 | Name | Role |
 |------|------|
 | <img src="images/ayush.jpg" width="60" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Ayush Kumar** — Founder / AI Lead |
-| <img src="images/bibek%202.png" width="65" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Bibek Gupta** — Technical Architect |
+| <img src="images/bibek-gupta.png" width="65" height="65" style="border-radius:50%; object-fit:cover;" align="center" /> | **Bibek Gupta** — Technical Architect |
 | <img src="images/pratim.jpeg" width="60" height="60" style="border-radius:50%; object-fit:cover;" align="center" /> | **Pratim Pramanik** — ML Engineer |
 | <img src="images/aditya.jpg" width="60" height="60" style="border-radius:50%; object-fit:cover;" align="center" /> | **Aditya Jyoti** — Product Lead |
 
@@ -92,7 +92,7 @@ We specialize in shortening the path from concept to launched product — delive
 
 ## <img src="https://cdn-icons-png.flaticon.com/512/4622/4622666.png" width="24" height="24" align="center" /> Contact
 
-📧 **Email:** [team@qbitlabs.tech](mailto:team@qbitlabs.tech)  
+📧 **Email:** [team@qbitlabs.ai](mailto:team@qbitlabs.ai)  
 🔗 **Twitter / X:** [@buildqBit](https://x.com/buildqBit)  
 📸 **Instagram:** [@buildqbit](https://instagram.com/buildqbit)
 

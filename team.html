@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Meet the developers, architects, and ML engineers building the future at Qbit Labs MVP Studio." />
     <title>Qbit Labs | Our Team</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,7 +24,14 @@
               mono: ['"JetBrains Mono"', "monospace"],
             },
             colors: {
+              canvas: "#fefdfd",
+              surface: "#FFFFFF",
               obsidian: "#111111",
+              charcoal: "#333333",
+              subtle: "#4B5563",
+              border: "#E2E1D3",
+              accent: "#333333",
+              primary: "#000000",
               cardBg: "#121212",
             },
           },
@@ -31,6 +39,18 @@
       };
     </script>
     <style>
+      :root {
+        --cream: #fefdfd;
+        --cream-border: #E2E1D3;
+        --blue: #333333;
+        --blue-light: #555555;
+        --blue-glow: rgba(51, 51, 51, 0.18);
+        --blue-subtle: rgba(51, 51, 51, 0.06);
+        --obsidian: #111111;
+        --subtle: #4B5563;
+        --border: #E2E1D3;
+      }
+
       html,
       body {
         overflow-x: hidden;
@@ -38,8 +58,8 @@
         margin: 0;
       }
       body {
-        background-color: #050505;
-        color: #ffffff;
+        background-color: var(--cream);
+        color: var(--obsidian);
         -webkit-font-smoothing: antialiased;
       }
 
@@ -49,12 +69,12 @@
         background-image:
           linear-gradient(
             to right,
-            rgba(255, 255, 255, 0.03) 1px,
+            rgba(51, 51, 51, 0.03) 1px,
             transparent 1px
           ),
           linear-gradient(
             to bottom,
-            rgba(255, 255, 255, 0.03) 1px,
+            rgba(51, 51, 51, 0.03) 1px,
             transparent 1px
           );
         mask-image: radial-gradient(
@@ -83,11 +103,11 @@
       @keyframes blobPulse {
         0%,
         100% {
-          opacity: 0.6;
+          opacity: 0.2;
           transform: translate(-50%, 0) scale(1);
         }
         50% {
-          opacity: 1;
+          opacity: 0.4;
           transform: translate(-50%, 0) scale(1.15);
         }
       }
@@ -96,11 +116,11 @@
       .heading-shimmer {
         background: linear-gradient(
           90deg,
-          #ffffff 0%,
-          #ffffff 40%,
-          rgba(255, 255, 255, 0.5) 50%,
-          #ffffff 60%,
-          #ffffff 100%
+          #111111 0%,
+          #111111 40%,
+          rgba(17, 17, 17, 0.5) 50%,
+          #111111 60%,
+          #111111 100%
         );
         background-size: 200% 100%;
         -webkit-background-clip: text;
@@ -142,11 +162,11 @@
         padding: 2px;
         background: conic-gradient(
           from var(--angle, 0deg),
-          rgba(255, 255, 255, 0.4),
-          rgba(255, 255, 255, 0.05),
-          rgba(180, 200, 255, 0.35),
-          rgba(255, 255, 255, 0.05),
-          rgba(255, 255, 255, 0.4)
+          rgba(51, 51, 51, 0.15),
+          rgba(51, 51, 51, 0.02),
+          rgba(58, 123, 247, 0.25),
+          rgba(51, 51, 51, 0.02),
+          rgba(51, 51, 51, 0.15)
         );
         -webkit-mask:
           linear-gradient(#000 0 0) content-box,
@@ -178,13 +198,13 @@
         border-radius: 1rem;
         background: repeating-linear-gradient(
           0deg,
-          rgba(255, 255, 255, 0.015) 0px,
-          rgba(255, 255, 255, 0.015) 1px,
+          rgba(51, 51, 51, 0.015) 0px,
+          rgba(51, 51, 51, 0.015) 1px,
           transparent 1px,
           transparent 3px
         );
         pointer-events: none;
-        opacity: 0.6;
+        opacity: 0.15;
         mix-blend-mode: overlay;
       }
       .scanline-overlay::after {
@@ -196,7 +216,7 @@
         background: linear-gradient(
           to bottom,
           transparent,
-          rgba(255, 255, 255, 0.04),
+          rgba(51, 51, 51, 0.04),
           transparent
         );
         animation: scanSweep 4s linear infinite;
@@ -220,11 +240,11 @@
         border-radius: 9999px;
         background: conic-gradient(
           from 0deg,
-          rgba(255, 255, 255, 0.5),
-          rgba(255, 255, 255, 0.05),
-          rgba(180, 200, 255, 0.45),
-          rgba(255, 255, 255, 0.05),
-          rgba(255, 255, 255, 0.5)
+          rgba(51, 51, 51, 0.25),
+          rgba(51, 51, 51, 0.05),
+          rgba(58, 123, 247, 0.35),
+          rgba(51, 51, 51, 0.05),
+          rgba(51, 51, 51, 0.25)
         );
         animation: spinSlow 5s linear infinite;
         -webkit-mask: radial-gradient(
@@ -252,10 +272,10 @@
       @keyframes avatarPulse {
         0%,
         100% {
-          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.15);
+          box-shadow: 0 0 0 0 rgba(51, 51, 51, 0.05);
         }
         50% {
-          box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+          box-shadow: 0 0 0 8px rgba(51, 51, 51, 0);
         }
       }
 
@@ -285,7 +305,7 @@
         transition-delay: 180ms;
       }
       .social-icon:hover {
-        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+        filter: drop-shadow(0 0 6px rgba(51, 51, 51, 0.2));
       }
 
       /* ============ DOTS ============ */
@@ -293,33 +313,33 @@
         height: 8px;
         width: 8px;
         border-radius: 9999px;
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: rgba(0, 0, 0, 0.18);
         transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
       }
       .dot:hover {
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(0, 0, 0, 0.3);
       }
       .dot-active {
         width: 24px;
-        background-color: #ffffff;
-        box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        background-color: #333333;
+        box-shadow: 0 0 12px rgba(51, 51, 51, 0.3);
       }
 
       /* ============ PROGRESS BAR ============ */
       .progress-track {
         width: 120px;
         height: 2px;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.06);
         border-radius: 999px;
         overflow: hidden;
         margin: 0 auto;
       }
       .progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), #ffffff);
+        background: linear-gradient(90deg, #555555, #333333);
         border-radius: 999px;
         transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1);
-        box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 8px rgba(51, 51, 51, 0.3);
       }
 
       /* ============ ENTRANCE ANIMATION ============ */
@@ -350,66 +370,56 @@
     </style>
   </head>
   <body
-    class="w-full min-h-screen relative flex flex-col justify-between items-center py-8 px-6 overflow-y-auto overflow-x-hidden"
+    class="w-full min-h-screen relative flex flex-col justify-between items-center pt-28 pb-8 px-6 overflow-y-auto overflow-x-hidden"
   >
     <!-- Ambient glowing backgrounds -->
     <div
       class="fixed inset-0 z-0 dark-technical-grid pointer-events-none"
     ></div>
     <div
-      class="ambient-blob absolute top-[20%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-white/[0.03] rounded-full blur-[120px] pointer-events-none z-0"
+      class="ambient-blob absolute top-[20%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-black/[0.01] rounded-full blur-[120px] pointer-events-none z-0"
     ></div>
     <div
-      class="ambient-blob ambient-blob-2 absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-white/[0.02] rounded-full blur-[100px] pointer-events-none z-0"
+      class="ambient-blob ambient-blob-2 absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-black/[0.005] rounded-full blur-[100px] pointer-events-none z-0"
     ></div>
 
     <!-- Header Navigation -->
-    <header
-      class="w-full max-w-6xl mx-auto flex justify-between items-center z-20 relative mb-4 fade-up"
-    >
-      <a href="index.html" class="flex items-center gap-2 group">
-        <div
-          class="w-5 h-5 bg-white text-black flex items-center justify-center rounded-sm transition-transform group-hover:-translate-x-0.5"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-        </div>
-        <span
-          class="font-sans text-xs font-bold tracking-tight text-white/80 group-hover:text-white transition-colors"
-        >
-          Back to Studio
-        </span>
-      </a>
-      <div class="flex items-center gap-3">
-        <!-- Desktop Page Title -->
-        <div class="hidden md:flex items-center gap-2">
-          <div
-            class="w-5 h-5 bg-white/10 text-white flex items-center justify-center rounded-sm"
-          >
-            <span class="text-white font-mono text-xs font-bold">&lt;&gt;</span>
+    <header id="main-header"
+      class="fixed top-0 left-0 right-0 z-50 w-full px-6 py-4 md:px-12 flex justify-between items-center bg-canvas/95 backdrop-blur-lg border-b border-border transition-all duration-300">
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="flex items-center gap-2">
+          <div class="w-5 h-5 flex items-center justify-center rounded-sm bg-obsidian" style="background:var(--blue);">
+            <span class="text-white font-mono text-sm font-bold" style="font-size:9px;">&lt;&gt;</span>
           </div>
-          <span class="font-sans text-xs font-bold tracking-tight text-white/90">
-            QBIT.LABS / TEAM
+          <span class="font-sans text-sm font-bold tracking-tight text-obsidian">
+            QBIT LABS
           </span>
-        </div>
+        </a>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="index.html#services" class="font-sans text-sm font-medium text-subtle hover:text-obsidian transition-colors">Services</a>
+        <a href="index.html#process" class="font-sans text-sm font-medium text-subtle hover:text-obsidian transition-colors">Process</a>
+        <a href="index.html#work" class="font-sans text-sm font-medium text-subtle hover:text-obsidian transition-colors">Work</a>
+        <a href="team.html" class="font-sans text-sm font-medium text-obsidian transition-colors">Team</a>
+        <a href="index.html#pricing" class="font-sans text-sm font-medium text-subtle hover:text-obsidian transition-colors">Pricing</a>
+        <a href="index.html#faq" class="font-sans text-sm font-medium text-subtle hover:text-obsidian transition-colors">FAQ</a>
+        <a href="index.html#contact" class="font-sans text-sm font-medium text-subtle hover:text-obsidian transition-colors">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="index.html#contact"
+          class="group relative isolate overflow-hidden text-white text-xs font-semibold px-5 py-2.5 rounded transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] focus:outline-none"
+          style="background:var(--blue); box-shadow:0 1px 3px rgba(51,51,51,0.3),0 6px 20px -4px rgba(51,51,51,0.4);"
+          onmouseover="this.style.boxShadow='0 4px 12px rgba(51,51,51,0.4),0 12px 32px -4px rgba(51,51,51,0.5)'"
+          onmouseout="this.style.boxShadow='0 1px 3px rgba(51,51,51,0.3),0 6px 20px -4px rgba(51,51,51,0.4)'">
+          <span class="relative z-20">Start a Project</span>
+        </a>
 
         <!-- Hamburger Menu Button -->
-        <button
-          id="menu-toggle"
-          class="md:hidden p-2 text-white focus:outline-none hover:bg-white/10 rounded transition-colors z-50"
-          aria-label="Toggle navigation menu"
-        >
+        <button id="menu-toggle"
+          class="md:hidden p-2 text-obsidian focus:outline-none hover:bg-black/5 rounded transition-colors z-50"
+          aria-label="Toggle navigation menu">
           <i data-lucide="menu" class="w-5 h-5 transition-transform duration-300"></i>
         </button>
       </div>
@@ -418,15 +428,15 @@
     <!-- Mobile Menu Overlay -->
     <div
       id="mobile-menu"
-      class="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col justify-center items-center transition-all duration-300 opacity-0 pointer-events-none md:hidden"
+      class="fixed inset-0 z-40 bg-canvas/98 backdrop-blur-xl flex flex-col justify-center items-center transition-all duration-300 opacity-0 pointer-events-none md:hidden"
     >
-      <nav class="flex flex-col items-center gap-8 text-2xl font-semibold tracking-tight text-white animate-fade-in">
-        <a href="index.html#work" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Work</a>
-        <a href="index.html#services" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Services</a>
-        <a href="index.html#process" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Process</a>
-        <a href="team.html" class="mobile-nav-link text-white hover:text-white transition-colors">Team</a>
-        <a href="index.html#faq" class="mobile-nav-link text-white/60 hover:text-white transition-colors">FAQ</a>
-        <a href="index.html#contact" class="mobile-nav-link text-white/60 hover:text-white transition-colors">Contact</a>
+      <nav class="flex flex-col items-center gap-8 text-2xl font-semibold tracking-tight text-subtle animate-fade-in">
+        <a href="index.html#work" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Work</a>
+        <a href="index.html#services" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Services</a>
+        <a href="index.html#process" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Process</a>
+        <a href="team.html" class="mobile-nav-link text-obsidian hover:text-obsidian transition-colors">Team</a>
+        <a href="index.html#faq" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">FAQ</a>
+        <a href="index.html#contact" class="mobile-nav-link text-subtle hover:text-obsidian transition-colors">Contact</a>
       </nav>
     </div>
 
@@ -439,7 +449,7 @@
         style="animation-delay: 100ms"
       >
         <span
-          class="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase font-mono block mb-2"
+          class="text-[10px] font-bold tracking-[0.2em] text-subtle uppercase font-mono block mb-2"
           >Meet the architects</span
         >
         <h1
@@ -447,7 +457,7 @@
         >
           Our Core Team
         </h1>
-        <p class="text-xs text-white/50 leading-relaxed font-sans">
+        <p class="text-xs text-subtle leading-relaxed font-sans">
           The builders, designers, and engineers behind Qbit Labs. Swipe, drag,
           or use arrow keys to navigate the stack.
         </p>
@@ -478,18 +488,39 @@
       >
         <div id="dots-container" class="flex items-center gap-2.5"></div>
         <div
-          class="flex items-center gap-4 text-[9px] text-white/30 font-mono tracking-wider"
+          class="flex items-center gap-4 text-[9px] text-subtle/40 font-mono tracking-wider"
         >
           <span class="flex items-center gap-1">DRAG / SWIPE</span>
-          <span class="w-1 h-1 rounded-full bg-white/10"></span>
+          <span class="w-1 h-1 rounded-full bg-subtle/25"></span>
           <span class="flex items-center gap-1">ARROW KEYS</span>
         </div>
       </div>
     </main>
 
+    <!-- Team CTA Section -->
+    <section class="w-full max-w-2xl mx-auto text-center mt-12 mb-8 px-6 z-20 relative fade-up" style="animation-delay: 350ms">
+      <div class="p-8 rounded-2xl border border-border bg-white shadow-[0_12px_40px_-8px_rgba(51,51,51,0.08)]">
+        <h2 class="text-xl font-bold tracking-tight text-obsidian mb-2 font-sans">
+          Ready to ship your AI-first MVP?
+        </h2>
+        <p class="text-xs text-subtle max-w-md mx-auto mb-6 leading-relaxed font-sans">
+          Collaborate directly with our builders and ML engineers to validate, prototype, and deploy your product in weeks instead of months.
+        </p>
+        <div class="flex justify-center gap-4">
+          <a href="index.html#contact"
+            class="text-xs font-semibold px-6 py-2.5 rounded text-white hover:scale-[1.03] transition-all duration-300 animate-shimmer"
+            style="background:var(--blue); box-shadow:0 1px 3px rgba(51,51,51,0.3),0 6px 20px -4px rgba(51,51,51,0.4);"
+            onmouseover="this.style.boxShadow='0 4px 12px rgba(51,51,51,0.4),0 12px 32px -4px rgba(51,51,51,0.5)'"
+            onmouseout="this.style.boxShadow='0 1px 3px rgba(51,51,51,0.3),0 6px 20px -4px rgba(51,51,51,0.4)'">
+            Book a Discovery Call
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="w-full max-w-6xl mx-auto text-center mt-6 z-20 relative">
-      <div class="text-[9px] text-white/20 font-mono">
+      <div class="text-[9px] text-subtle/40 font-mono">
         © 2026 Qbit Labs. Built for early-stage MVPs.
       </div>
     </footer>
@@ -519,7 +550,7 @@
           description:
             "Builds end-to-end web applications and AI-powered pipelines, bridging backend logic with polished UIs.",
           initials: "BG",
-          image: "images/bibek 2.png",
+          image: "images/bibek-gupta.png",
           socials: {
             linkedin: "https://linkedin.com/in/bibekgupta14",
             github: "https://github.com/Bibek-Gupta14",
@@ -654,10 +685,10 @@
           const blurPx = isActive ? 0 : Math.min(abs * 1.5, 4);
 
           const cardEl = document.createElement("div");
-          cardEl.className = `absolute rounded-2xl border bg-cardBg shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] p-6 flex flex-col items-center justify-between card-3d ${
+          cardEl.className = `absolute rounded-2xl border bg-white shadow-[0_20px_50px_-12px_rgba(51,51,51,0.12)] p-6 flex flex-col items-center justify-between card-3d ${
             isActive
-              ? "cursor-grab active:cursor-grabbing border-white/20 card-active"
-              : "cursor-pointer border-white/10"
+              ? "cursor-grab active:cursor-grabbing border-border card-active"
+              : "cursor-pointer border-border"
           }`;
           cardEl.style.width = `${cardWidth}px`;
           cardEl.style.height = `${cardHeight}px`;
@@ -676,46 +707,46 @@
           // Avatar content - image or initials fallback
           const avatarContent = item.image
             ? `<img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-               <span class="text-white/70 text-lg font-bold tracking-wider font-mono" style="display:none">${item.initials}</span>`
-            : `<span class="text-white/70 text-lg font-bold tracking-wider font-mono">${item.initials}</span>`;
+               <span class="text-subtle text-lg font-bold tracking-wider font-mono" style="display:none">${item.initials}</span>`
+            : `<span class="text-subtle text-lg font-bold tracking-wider font-mono">${item.initials}</span>`;
 
           cardEl.innerHTML = `
             ${glowRing}
             ${scanline}
             <div class="w-full h-full flex flex-col items-center justify-between pointer-events-none select-none relative">
-              <div class="w-full flex justify-between items-center text-[9px] font-mono tracking-[0.15em] text-white/0 border-b border-white/5 pb-3">
-                <span style="color: wheat">MEMBER PROFILE</span>
-                <span style="color: #b3d9ff">QBIT / 0${i + 1}</span>
+              <div class="w-full flex justify-between items-center text-[9px] font-mono tracking-[0.15em] border-b border-border pb-3">
+                <span class="text-subtle">MEMBER PROFILE</span>
+                <span class="text-subtle">QBIT / 0${i + 1}</span>
               </div>
 
               <div class="flex flex-col items-center gap-3 my-auto py-2">
                 <div class="avatar-wrap">
                   ${avatarRing}
-                  <div class="h-28 w-28 rounded-full overflow-hidden border-2 border-white/10 bg-white/5 flex items-center justify-center shrink-0 shadow-inner relative ${avatarPulseClass}">
+                  <div class="h-28 w-28 rounded-full overflow-hidden border-2 border-border bg-black/[0.03] flex items-center justify-center shrink-0 shadow-inner relative ${avatarPulseClass}">
                     ${avatarContent}
                   </div>
                 </div>
 
                 <div class="text-center">
-                  <div class="text-lg font-semibold text-white tracking-tight leading-tight font-sans" ${isActive ? "data-scramble-name" : ""}>${item.title}</div>
-                  <div class="mt-0.5 text-[9px] font-bold tracking-[0.18em] text-white/40 uppercase font-mono" ${isActive ? "data-scramble-role" : ""}>
+                  <div class="text-lg font-semibold text-obsidian tracking-tight leading-tight font-sans" ${isActive ? "data-scramble-name" : ""}>${item.title}</div>
+                  <div class="mt-0.5 text-[9px] font-bold tracking-[0.18em] text-subtle/60 uppercase font-mono" ${isActive ? "data-scramble-role" : ""}>
                     ${item.designation}
                   </div>
                 </div>
               </div>
 
-              <p class="text-center text-xs text-white/50 leading-relaxed max-w-[270px] line-clamp-3 pb-3 font-sans">
+              <p class="text-center text-xs text-subtle leading-relaxed max-w-[270px] line-clamp-3 pb-3 font-sans">
                 ${item.description}
               </p>
 
-              <div class="w-full flex items-center justify-center gap-5 border-t border-white/5 pt-3 pointer-events-auto">
+              <div class="w-full flex items-center justify-center gap-5 border-t border-border pt-3 pointer-events-auto">
                 <a href="${item.socials.linkedin}" target="_blank" rel="noreferrer" class="social-icon text-[#3394f5] hover:text-[#3394f5] hover:drop-shadow-[0_0_18px_rgba(85, 167, 250)] transition-all duration-200" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="2" y="2" width="20" height="20" rx="4" /><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7" /></svg>
                 </a>
-                <a href="${item.socials.github}" target="_blank" rel="noreferrer" class="social-icon text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-200" aria-label="GitHub">
+                <a href="${item.socials.github}" target="_blank" rel="noreferrer" class="social-icon text-subtle hover:text-obsidian transition-all duration-200" aria-label="GitHub">
     <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.579.688.481C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z" /></svg>
   </a>
-                <a href="${item.socials.twitter}" target="_blank" rel="noreferrer" class="social-icon text-white/70 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] transition-all duration-200" aria-label="Twitter X">
+                <a href="${item.socials.twitter}" target="_blank" rel="noreferrer" class="social-icon text-subtle hover:text-obsidian transition-all duration-200" aria-label="Twitter X">
     <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
   </a>
               </div>
