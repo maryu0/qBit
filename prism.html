@@ -1,0 +1,1230 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prism — AI-Powered Developer Onboarding | Living Knowledge Graph</title>
+  <meta name="description" content="Prism compresses 3–4 week dev onboarding into 3–5 days using a Living Knowledge Graph built from your GitHub, Slack, and docs. Powered by Neo4j, LangChain & GPT-4." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            obsidian: '#18181b',
+            obsidian2: '#27272a',
+            zinc: { 400: '#a1a1aa', 500: '#71717a', 600: '#52525b', 700: '#3f3f46', 800: '#27272a', 900: '#18181b' }
+          },
+          animation: {
+            'pulse-beam': 'pulseBeam 2.4s ease-in-out infinite',
+            'marquee': 'marquee 18s linear infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+            'cursor-blink': 'cursorBlink 1s step-end infinite',
+            'node-pulse': 'nodePulse 2s ease-in-out infinite',
+          },
+          keyframes: {
+            pulseBeam: {
+              '0%': { top: '-10%', opacity: '0' },
+              '10%': { opacity: '1' },
+              '90%': { opacity: '1' },
+              '100%': { top: '110%', opacity: '0' }
+            },
+            marquee: {
+              '0%': { transform: 'translateX(0)' },
+              '100%': { transform: 'translateX(-50%)' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            },
+            glowPulse: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.8', transform: 'scale(1.05)' }
+            },
+            cursorBlink: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0' }
+            },
+            nodePulse: {
+              '0%, 100%': { r: '4', opacity: '0.7' },
+              '50%': { r: '6', opacity: '1' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #1c1c1c;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    :root {
+      --bg: #0e0e0e;
+      --border: #27272a;
+      --border-subtle: #18181b;
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --violet: #8b5cf6;
+      --indigo: #6366f1;
+      --cyan: #06b6d4;
+      --violet-glow: rgba(139,92,246,0.15);
+      --indigo-glow: rgba(99,102,241,0.12);
+      --cyan-glow: rgba(6,182,212,0.12);
+    }
+
+    /* ── Background node pipeline ── */
+    .bg-pipeline {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-pipeline::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(139,92,246,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(6,182,212,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 40%, rgba(99,102,241,0.04) 0%, transparent 70%);
+    }
+
+    /* Grid pattern */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ── Bento card base ── */
+    .bento-card {
+      background: #050505;
+      border: 1px solid #1f1f23;
+      border-radius: 16px;
+      padding: 24px;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(139,92,246,0.07) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .bento-card:hover::before { opacity: 1; }
+    .bento-card:hover {
+      border-color: #3f3f46;
+      box-shadow: 0 0 40px rgba(139,92,246,0.08), 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    /* ── Graph node SVG animations ── */
+    @keyframes nodeFloat {
+      0%, 100% { transform: translate(0px, 0px); }
+      25%  { transform: translate(3px, -4px); }
+      50%  { transform: translate(-2px, 3px); }
+      75%  { transform: translate(4px, 1px); }
+    }
+
+    @keyframes edgePulse {
+      0%, 100% { stroke-opacity: 0.15; stroke-width: 1; }
+      50%       { stroke-opacity: 0.45; stroke-width: 1.5; }
+    }
+
+    @keyframes dataFlow {
+      0%   { stroke-dashoffset: 100; opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+
+    @keyframes labelReveal {
+      0%, 100% { opacity: 0.5; }
+      50%       { opacity: 1; }
+    }
+
+    .node-group { animation: nodeFloat 7s ease-in-out infinite; }
+    .node-group:nth-child(2) { animation-delay: -1.5s; animation-duration: 8.5s; }
+    .node-group:nth-child(3) { animation-delay: -3s;   animation-duration: 6.5s; }
+    .node-group:nth-child(4) { animation-delay: -4.5s; animation-duration: 9s;   }
+
+    .graph-edge { animation: edgePulse 2.5s ease-in-out infinite; }
+    .graph-edge:nth-child(2) { animation-delay: -0.8s; }
+    .graph-edge:nth-child(3) { animation-delay: -1.6s; }
+    .graph-edge:nth-child(4) { animation-delay: -2.4s; }
+    .graph-edge:nth-child(5) { animation-delay: -1.2s; }
+
+    .data-flow { animation: dataFlow 3s ease-in-out infinite; }
+    .data-flow:nth-child(1) { animation-delay: 0s; }
+    .data-flow:nth-child(2) { animation-delay: 1s; }
+    .data-flow:nth-child(3) { animation-delay: 2s; }
+
+    /* ── Streamer (Chat Card) ── */
+    @keyframes streamIn {
+      from { opacity: 0; width: 0; }
+      to   { opacity: 1; width: 100%; }
+    }
+
+    .stream-line {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: streamIn 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .stream-line:nth-child(1) { animation-delay: 0.3s; }
+    .stream-line:nth-child(2) { animation-delay: 1.1s; }
+    .stream-line:nth-child(3) { animation-delay: 1.9s; }
+    .stream-line:nth-child(4) { animation-delay: 2.7s; }
+    .stream-line:nth-child(5) { animation-delay: 3.5s; }
+
+    /* ── AST Beam ── */
+    @keyframes beamSlide {
+      0%   { top: -5%;  opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 105%; opacity: 0; }
+    }
+
+    .ast-beam {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 60px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, transparent 0%, #06b6d4 40%, #8b5cf6 80%, transparent 100%);
+      filter: blur(1px);
+      animation: beamSlide 2.2s ease-in-out infinite;
+      box-shadow: 0 0 8px #06b6d4, 0 0 20px rgba(6,182,212,0.4);
+    }
+
+    /* ── Marquee ── */
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-inner { animation: marqueeScroll 18s linear infinite; }
+    .marquee-inner:hover { animation-play-state: paused; }
+
+    /* ── Acceleration dial ── */
+    @keyframes dialSweep {
+      0%   { stroke-dashoffset: 220; opacity: 0.3; }
+      60%  { stroke-dashoffset: 60;  opacity: 1;   }
+      100% { stroke-dashoffset: 10;  opacity: 1;   }
+    }
+
+    @keyframes labelFly {
+      0%   { opacity: 0; transform: translateX(-8px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    .dial-arc {
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      animation: dialSweep 3s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;
+    }
+
+    .speed-label {
+      animation: labelFly 0.6s ease forwards;
+      opacity: 0;
+    }
+    .speed-label:nth-child(1) { animation-delay: 1.2s; }
+    .speed-label:nth-child(2) { animation-delay: 1.8s; }
+
+    /* ── Citation block glow ── */
+    .cite-block {
+      transition: background 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .cite-block:hover {
+      background: rgba(6,182,212,0.08) !important;
+      border-color: rgba(6,182,212,0.4) !important;
+      box-shadow: 0 0 16px rgba(6,182,212,0.15);
+    }
+
+    /* ── Telemetry warning pulse ── */
+    @keyframes warnPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.5; }
+    }
+    .warn-dot { animation: warnPulse 1.4s ease-in-out infinite; }
+    .warn-dot:nth-child(2) { animation-delay: 0.5s; }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #71717a;
+      text-decoration: none;
+      transition: color 0.2s;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      padding: 8px 14px;
+    }
+    .back-btn:hover { color: #fff; border-color: #3f3f46; }
+
+    /* ── Spectral badge ── */
+    .spectral-badge {
+      background: linear-gradient(135deg, rgba(139,92,246,0.15) 0%, rgba(99,102,241,0.1) 50%, rgba(6,182,212,0.15) 100%);
+      border: 1px solid rgba(139,92,246,0.25);
+      color: #c4b5fd;
+    }
+
+    /* ── Section overline ── */
+    .overline {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #6366f1;
+    }
+
+    /* ── CTA Button ── */
+    .cta-primary {
+      background: linear-gradient(135deg, #fefe00, #ffca00, #ff8800);
+      color: #000000;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(149, 255, 0, 0.3);
+    }
+    .cta-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .cta-build {
+      background-color: #107ddc;
+      color: #fffafa;
+      border-radius: 10px;
+    }
+    .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 0 16px yellowgreen; }
+    .cta-primary:hover::before { opacity: 1; }
+
+    .cta-ghost {
+      background: transparent;
+      color: #a1a1aa;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid #27272a;
+      border-radius: 10px;
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .cta-ghost:hover { border-color: #52525b; color: #fff; background: rgba(255,255,255,0.04); }
+
+    /* ── Metric number ── */
+    .metric-num {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+
+    /* ── Hover glow tracking ── */
+    .glow-track {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 0.3s;
+    }
+
+    /* Responsive bento */
+    @media (max-width: 768px) {
+      .bento-card { padding: 18px; }
+      .metric-num { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background -->
+  <div class="bg-pipeline"></div>
+  <div class="bg-grid"></div>
+
+  <!-- Main wrapper -->
+  <div class="relative z-10 min-h-screen">
+
+    <!-- ── NAV ── -->
+    <nav class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 md:px-12"
+         style="background: rgba(35, 33, 33, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid #1b1818;">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="back-btn " style="background-color: rgb(255, 0, 0); color: rgb(255, 255, 255); box-shadow: 0px 0px 17px rgb(255, 0, 0);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+          </svg>
+          Back to Qbit Labs
+        </a>
+        <div class="h-4 w-px" style="background:#27272a;"></div>
+        <!-- Prism Logo -->
+        <div class="flex items-center gap-2.5">
+          <div class="relative w-7 h-7 flex items-center justify-center rounded-md overflow-hidden"
+               style="background: linear-gradient(135deg, #fefe00, #ffca00, #ff8800);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <span class="font-bold text-white text-sm tracking-tight">Prism</span>
+          <span class="spectral-badge text-[10px] font-semibold px-2 py-0.5 rounded-full">Beta</span>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://github.com/maryu0/prism.git" target="_blank" rel="noopener"
+           class="cta-ghost text-[13px] py-2 px-4" style="box-shadow: 0px 0px 7px rgb(254, 250, 250);">View Repo</a>
+        <button class="cta-primary text-[13px] py-2.5 px-5">Request Early Access</button>
+      </div>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <section class="relative px-6 pt-20 pb-16 md:px-12 lg:px-20 text-center max-w-5xl mx-auto">
+      <!-- Overline badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 spectral-badge">
+        <div class="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></div>
+        <span class="text-[11px] font-semibold tracking-wider uppercase" style="color: yellowgreen;">AI Developer Onboarding Platform</span>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6 text-white">
+        From
+        <span class="relative inline-block">
+          <span class="line-through decoration-1.5 font-normal opacity-30">3–4 Weeks</span>
+        </span>
+        to
+        <br />
+        <span class="font-bold" style="background: linear-gradient(135deg, #fefe00, #ffca00, #ff8800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          3–5 Days.
+        </span>
+      </h1>
+
+      <p class="text-zinc-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+        Prism builds a <strong class="text-white font-semibold">Living Knowledge Graph</strong> from your GitHub repos, Slack conversations, and documentation — slashing engineering onboarding from weeks to days.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <button class="cta-build font-bold px-7 py-3.5 text-[17px]">HAVE US BUILD IT --></button>
+        <a href="https://github.com/maryu0/prism.git" target="_blank" rel="noopener"
+           class="cta-ghost px-5 py-3 text-[15px] flex items-center gap-2" style="box-shadow: 0px 0px 7px rgb(254, 250, 250);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          Star on GitHub
+        </a>
+      </div>
+
+      <!-- Trust metrics row -->
+      <div class="flex flex-wrap items-center justify-center gap-6 mt-10 pt-10" style="border-top: 1px solid #18181b;">
+        <div class="text-center">
+          <div class="metric-num">10×</div>
+          <div class="text-[11px] text-zinc-500 mt-1 font-medium tracking-wide uppercase">Faster Onboarding</div>
+        </div>
+        <div class="w-px h-12 hidden md:block" style="background: #18181b;"></div>
+        <div class="text-center">
+          <div class="metric-num">3–5</div>
+          <div class="text-[11px] text-zinc-500 mt-1 font-medium tracking-wide uppercase">Days vs Weeks</div>
+        </div>
+        <div class="w-px h-12 hidden md:block" style="background: #18181b;"></div>
+        <div class="text-center">
+          <div class="metric-num">∞</div>
+          <div class="text-[11px] text-zinc-500 mt-1 font-medium tracking-wide uppercase">Knowledge Connections</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BENTO GRID ── -->
+    <section class="px-6 pb-24 md:px-12 lg:px-20 max-w-7xl mx-auto">
+
+      <div class="mb-8">
+        <p class="overline mb-2 " style="color: yellow;">Platform Intelligence</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight">The Prism Engine</h2>
+      </div>
+
+      <div id="bento-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4" style="grid-auto-rows: auto;">
+
+
+        <!-- CARD 1 - Knowledge Graph (2x2) -->
+        <div class="bento-card md:col-span-2 md:row-span-2" id="card-graph"
+             style="min-height: 536px;" onmousemove="trackGlow(event,this)">
+          <div class="relative z-10 flex flex-col h-full">
+            <!-- Header -->
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <p class="text-green-400 overline mb-2">Neo4j Engine</p>
+                <h3 class="text-xl font-bold text-white leading-tight">The Living<br/>Knowledge Graph</h3>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1 rounded-full"
+                   style="background:rgba(139,92,246,0.12); border:1px solid rgba(26, 122, 225, 0.2);">
+                <div class="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></div>
+                <span class="text-[10px] font-semibold text-yellow-400">Live</span>
+              </div>
+            </div>
+
+            <!-- SVG Graph -->
+            <div class="flex-1 relative min-h-0">
+              <svg id="knowledge-graph" class="w-full h-full" viewBox="0 0 500 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+                <defs>
+                  <radialGradient id="nodeGrad1" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#6366f1" stop-opacity="0.7"/>
+                  </radialGradient>
+                  <radialGradient id="nodeGrad2" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#0891b2" stop-opacity="0.7"/>
+                  </radialGradient>
+                  <radialGradient id="nodeGrad3" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#059669" stop-opacity="0.7"/>
+                  </radialGradient>
+                  <radialGradient id="nodeGrad4" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#d97706" stop-opacity="0.7"/>
+                  </radialGradient>
+                  <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                  <filter id="edgeGlow" x="-20%" y="-50%" width="140%" height="200%">
+                    <feGaussianBlur stdDeviation="2" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                  <!-- Data flow particle marker -->
+                  <marker id="arrowCyan" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                    <circle cx="3" cy="3" r="2" fill="#06b6d4" opacity="0.8"/>
+                  </marker>
+                  <marker id="arrowViolet" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                    <circle cx="3" cy="3" r="2" fill="#8b5cf6" opacity="0.8"/>
+                  </marker>
+                </defs>
+
+                <!-- Background minor nodes (decorative) -->
+                <circle cx="420" cy="50" r="3" fill="#27272a" opacity="0.6"/>
+                <circle cx="380" cy="280" r="2.5" fill="#27272a" opacity="0.5"/>
+                <circle cx="60" cy="270" r="3" fill="#27272a" opacity="0.5"/>
+                <circle cx="90" cy="40" r="2" fill="#27272a" opacity="0.4"/>
+                <circle cx="460" cy="160" r="2" fill="#27272a" opacity="0.4"/>
+
+                <!-- Minor connecting lines -->
+                <line x1="420" y1="50" x2="370" y2="100" stroke="#27272a" stroke-width="0.5" opacity="0.3"/>
+                <line x1="380" y1="280" x2="340" y2="230" stroke="#27272a" stroke-width="0.5" opacity="0.3"/>
+                <line x1="60" y1="270" x2="140" y2="230" stroke="#27272a" stroke-width="0.5" opacity="0.3"/>
+
+                <!-- Main edges between hub nodes -->
+                <!-- Code ↔ Docs -->
+                <line class="graph-edge" x1="140" y1="100" x2="250" y2="80"
+                      stroke="url(#nodeGrad1)" stroke-width="1" opacity="0.3" filter="url(#edgeGlow)"/>
+                <!-- Code ↔ People -->
+                <line class="graph-edge" x1="140" y1="100" x2="140" y2="230"
+                      stroke="#8b5cf6" stroke-width="1" opacity="0.25" filter="url(#edgeGlow)" style="animation-delay:-0.8s;"/>
+                <!-- Docs ↔ Discussions -->
+                <line class="graph-edge" x1="250" y1="80" x2="370" y2="100"
+                      stroke="#06b6d4" stroke-width="1" opacity="0.25" filter="url(#edgeGlow)" style="animation-delay:-1.6s;"/>
+                <!-- People ↔ Discussions -->
+                <line class="graph-edge" x1="140" y1="230" x2="370" y2="100"
+                      stroke="#10b981" stroke-width="1" opacity="0.2" filter="url(#edgeGlow)" style="animation-delay:-2.4s;"/>
+                <!-- Docs ↔ People -->
+                <line class="graph-edge" x1="250" y1="80" x2="140" y2="230"
+                      stroke="#6366f1" stroke-width="1" opacity="0.2" filter="url(#edgeGlow)" style="animation-delay:-1.2s;"/>
+                <!-- Code ↔ Discussions -->
+                <line class="graph-edge" x1="140" y1="100" x2="370" y2="100"
+                      stroke="#f59e0b" stroke-width="0.75" opacity="0.15" filter="url(#edgeGlow)" style="animation-delay:-0.4s;"/>
+                <!-- Hub center connection (subtle) -->
+                <line class="graph-edge" x1="250" y1="80" x2="250" y2="230"
+                      stroke="#ffffff" stroke-width="0.5" opacity="0.08"/>
+
+                <!-- Animated data flow paths -->
+                <path class="data-flow" d="M 140 100 Q 195 90 250 80"
+                      stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6" fill="none"
+                      marker-end="url(#arrowViolet)" filter="url(#edgeGlow)"/>
+                <path class="data-flow" d="M 250 80 Q 310 90 370 100"
+                      stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6" fill="none"
+                      marker-end="url(#arrowCyan)" filter="url(#edgeGlow)" style="animation-delay:1s;"/>
+                <path class="data-flow" d="M 140 230 Q 255 200 370 100"
+                      stroke="#10b981" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5" fill="none"
+                      marker-end="url(#arrowCyan)" filter="url(#edgeGlow)" style="animation-delay:2s;"/>
+
+                <!-- Node: Code (violet) -->
+                <g class="node-group" filter="url(#nodeGlow)">
+                  <circle cx="140" cy="100" r="28" fill="url(#nodeGrad1)" opacity="0.15"/>
+                  <circle cx="140" cy="100" r="20" fill="url(#nodeGrad1)" opacity="0.9"/>
+                  <circle cx="140" cy="100" r="20" fill="none" stroke="#a78bfa" stroke-width="1" opacity="0.6"/>
+                  <!-- Code icon -->
+                  <text x="140" y="96" text-anchor="middle" font-size="10" fill="white" font-family="JetBrains Mono, monospace" font-weight="600">&lt;/&gt;</text>
+                  <text x="140" y="132" text-anchor="middle" font-size="10" fill="#c4b5fd" font-family="Inter, sans-serif" font-weight="600">Code</text>
+                </g>
+
+                <!-- Node: Docs (cyan) -->
+                <g class="node-group" filter="url(#nodeGlow)" style="animation-delay:-1.5s;">
+                  <circle cx="250" cy="80" r="24" fill="url(#nodeGrad2)" opacity="0.12"/>
+                  <circle cx="250" cy="80" r="17" fill="url(#nodeGrad2)" opacity="0.9"/>
+                  <circle cx="250" cy="80" r="17" fill="none" stroke="#67e8f9" stroke-width="1" opacity="0.6"/>
+                  <!-- Doc icon -->
+                  <rect x="243" y="70" width="14" height="16" rx="2" fill="none" stroke="white" stroke-width="1.5" opacity="0.9"/>
+                  <line x1="246" y1="75" x2="254" y2="75" stroke="white" stroke-width="1" opacity="0.7"/>
+                  <line x1="246" y1="78" x2="254" y2="78" stroke="white" stroke-width="1" opacity="0.5"/>
+                  <line x1="246" y1="81" x2="251" y2="81" stroke="white" stroke-width="1" opacity="0.4"/>
+                  <text x="250" y="110" text-anchor="middle" font-size="10" fill="#a5f3fc" font-family="Inter, sans-serif" font-weight="600">Docs</text>
+                </g>
+
+                <!-- Node: People (emerald) -->
+                <g class="node-group" filter="url(#nodeGlow)" style="animation-delay:-3s;">
+                  <circle cx="140" cy="230" r="24" fill="url(#nodeGrad3)" opacity="0.12"/>
+                  <circle cx="140" cy="230" r="17" fill="url(#nodeGrad3)" opacity="0.9"/>
+                  <circle cx="140" cy="230" r="17" fill="none" stroke="#6ee7b7" stroke-width="1" opacity="0.6"/>
+                  <!-- Person icon -->
+                  <circle cx="140" cy="224" r="4" fill="none" stroke="white" stroke-width="1.5" opacity="0.9"/>
+                  <path d="M130 237 Q140 233 150 237" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+                  <text x="140" y="258" text-anchor="middle" font-size="10" fill="#6ee7b7" font-family="Inter, sans-serif" font-weight="600">People</text>
+                </g>
+
+                <!-- Node: Discussions (amber) -->
+                <g class="node-group" filter="url(#nodeGlow)" style="animation-delay:-4.5s;">
+                  <circle cx="370" cy="100" r="26" fill="url(#nodeGrad4)" opacity="0.12"/>
+                  <circle cx="370" cy="100" r="19" fill="url(#nodeGrad4)" opacity="0.9"/>
+                  <circle cx="370" cy="100" r="19" fill="none" stroke="#fcd34d" stroke-width="1" opacity="0.6"/>
+                  <!-- Chat icon -->
+                  <rect x="361" y="91" width="18" height="13" rx="3" fill="none" stroke="white" stroke-width="1.5" opacity="0.9"/>
+                  <line x1="365" y1="104" x2="362" y2="108" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                  <text x="370" y="134" text-anchor="middle" font-size="9.5" fill="#fde68a" font-family="Inter, sans-serif" font-weight="600">Discussions</text>
+                </g>
+
+                <!-- Center hub node -->
+                <g filter="url(#nodeGlow)">
+                  <circle cx="255" cy="180" r="10" fill="rgba(139,92,246,0.3)" opacity="0.4"/>
+                  <circle cx="255" cy="180" r="5" fill="#8b5cf6" opacity="0.8"/>
+                  <text x="255" y="200" text-anchor="middle" font-size="8.5" fill="#a1a1aa" font-family="Inter, sans-serif">knowledge</text>
+                  <!-- Spoke lines to hub -->
+                  <line x1="155" y1="108" x2="250" y2="174" stroke="#8b5cf6" stroke-width="0.5" opacity="0.15" stroke-dasharray="3 3"/>
+                  <line x1="255" y1="97" x2="255" y2="170" stroke="#8b5cf6" stroke-width="0.5" opacity="0.15" stroke-dasharray="3 3"/>
+                  <line x1="149" y1="213" x2="250" y2="186" stroke="#8b5cf6" stroke-width="0.5" opacity="0.15" stroke-dasharray="3 3"/>
+                  <line x1="351" y1="108" x2="260" y2="175" stroke="#8b5cf6" stroke-width="0.5" opacity="0.15" stroke-dasharray="3 3"/>
+                </g>
+
+              </svg>
+            </div>
+
+            <!-- Footer tags -->
+            <div class="flex flex-wrap gap-2 mt-3">
+              <span class="text-[10px] font-semibold px-2.5 py-1 rounded-md" style="background:rgba(139,92,246,0.12); color:#c4b5fd; border:1px solid rgba(139,92,246,0.2);">Neo4j Graph DB</span>
+              <span class="text-[10px] font-semibold px-2.5 py-1 rounded-md" style="background:rgba(6,182,212,0.1); color:#67e8f9; border:1px solid rgba(6,182,212,0.2);">AST Parser</span>
+              <span class="text-[10px] font-semibold px-2.5 py-1 rounded-md" style="background:rgba(99,102,241,0.1); color:#a5b4fc; border:1px solid rgba(99,102,241,0.2);">Slack Ingester</span>
+              <span class="text-[10px] font-semibold px-2.5 py-1 rounded-md" style="background:rgba(16,185,129,0.1); color:#6ee7b7; border:1px solid rgba(16,185,129,0.2);">Real-time Sync</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- CARD 2 - AI Agent Streamer (1x2) -->
+        <div class="bento-card md:row-span-1" id="card-streamer" style="min-height:120px;" onmousemove="trackGlow(event,this)">
+          <div class="relative z-10 flex flex-col h-full">
+            <!-- Header -->
+            <div class="mb-4"> 
+              <p class="overline mb-1" style="color: orange">LangChain + GPT-4</p>
+              <h3 class="text-lg font-bold text-white leading-tight">AI Agent<br/>Citation Streamer</h3>
+            </div>
+
+            <!-- Chat mockup -->
+            <div class="flex-1 flex flex-col min-h-0 rounded-xl overflow-hidden"
+                 style="background:#0a0a0a; border:1px solid #1f1f23;">
+
+              <!-- Chat header -->
+              <div class="flex items-center gap-2 px-4 py-2.5" style="border-bottom:1px solid #18181b;">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                <span class="text-[11px] font-mono text-zinc-400">prism-agent · connected</span>
+              </div>
+
+              <!-- Question bubble -->
+              <div class="px-4 pt-4 pb-2">
+                <div class="flex items-start gap-2.5 mb-3">
+                  <div class="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center text-[9px] font-bold text-white"
+                       style="background:linear-gradient(135deg,#8b5cf6,#6366f1);">U</div>
+                  <div class="rounded-xl rounded-tl-sm px-3 py-2 text-[11px] text-zinc-200 leading-relaxed"
+                       style="background:#18181b; max-width:85%;">
+                    Where is the authentication middleware defined and who owns it?
+                  </div>
+                </div>
+
+                <!-- AI streaming response -->
+                <div class="flex items-start gap-2.5">
+                  <div class="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center"
+                       style="background:linear-gradient(135deg, #fefe00, #ffca00, #ff8800);">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-[11px] font-semibold text-cyan-400 mb-1.5 font-mono">Prism ▸</div>
+                    <div class="space-y-1 text-[10.5px] leading-relaxed text-zinc-300">
+                      <div class="stream-line">Found in <code class="text-cyan-300 font-mono">src/middleware/auth.ts</code></div>
+                      <div class="stream-line">Registered at line <code class="text-violet-300 font-mono">L:42</code> of <code class="text-violet-300 font-mono">server.ts</code></div>
+                      <div class="stream-line text-zinc-400">Last modified by <strong class="text-white">@priya.dev</strong> · 3d ago</div>
+                      <div class="stream-line">
+                        <!-- Citation block -->
+                        <div class="cite-block mt-2 rounded-lg p-2.5 cursor-pointer"
+                             style="background:rgba(6,182,212,0.05); border:1px solid rgba(6,182,212,0.15);">
+                          <div class="flex items-center gap-1.5 mb-1">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-cyan-500">Vector Match · ChromaDB</span>
+                          </div>
+                          <code class="text-[10px] text-cyan-200 font-mono block">verifyJWT(req, res, next)</code>
+                          <div class="text-[9px] text-zinc-500 mt-0.5">similarity: 0.97 · auth.ts:L58</div>
+                        </div>
+                      </div>
+                      <div class="stream-line">
+                        <div class="cite-block mt-1.5 rounded-lg p-2.5 cursor-pointer"
+                             style="background:rgba(139,92,246,0.05); border:1px solid rgba(139,92,246,0.15);">
+                          <div class="flex items-center gap-1.5 mb-1">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-violet-400">Related Commit</span>
+                          </div>
+                          <code class="text-[10px] text-violet-200 font-mono block">feat: add token refresh logic</code>
+                          <div class="text-[9px] text-zinc-500 mt-0.5">@priya.dev · 3 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Blinking cursor -->
+                    <span class="inline-block w-1.5 h-3.5 bg-cyan-400 ml-0.5 animate-[cursorBlink_1s_step-end_infinite] rounded-sm align-middle mt-1"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex items-center gap-2 mt-3">
+              <span class="text-[9px] font-semibold px-2 py-0.5 rounded" style="background:rgba(6,182,212,0.1); color:#67e8f9; border:1px solid rgba(6,182,212,0.15);">ChromaDB</span>
+              <span class="text-[9px] font-semibold px-2 py-0.5 rounded" style="background:rgba(139,92,246,0.1); color:#c4b5fd; border:1px solid rgba(139,92,246,0.15);">Vector Search</span>
+              <span class="text-[9px] font-semibold px-2 py-0.5 rounded" style="background:rgba(99,102,241,0.1); color:#a5b4fc; border:1px solid rgba(99,102,241,0.15);">GPT-4 Turbo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Dial + Pipeline side by side -->
+        <div class="md:col-span-3 flex flex-col md:flex-row gap-4">
+          <!-- CARD 3 — Acceleration Dial (1×1) -->
+          <div class="bento-card  flex-1" id="card-dial" onmousemove="trackGlow(event,this)">
+          <div class="relative z-10 flex flex-col">
+            <p class="overline mb-1">Velocity Shift</p>
+            <h3 class="text-base font-bold text-white mb-3 leading-tight">Onboarding<br/>Acceleration Dial</h3>
+
+            <div class="flex items-center gap-4">
+              <!-- SVG Dial -->
+              <svg viewBox="0 0 140 120" class="w-36 h-28 flex-shrink-0">
+                <defs>
+                  <linearGradient id="dialGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#6366f1"/>
+                    <stop offset="100%" stop-color="#06b6d4"/>
+                  </linearGradient>
+                </defs>
+                <!-- Background arc (faded, broken = old way) -->
+                <path d="M 20 100 A 50 50 0 0 1 120 100" fill="none"
+                      stroke="#3f3f46" stroke-width="6" stroke-linecap="round"
+                      stroke-dasharray="8 5" opacity="0.5"/>
+                <!-- Label: slow -->
+                <text x="12" y="114" font-size="8" fill="#52525b" font-family="Inter,sans-serif" font-weight="600">3-4w</text>
+                <!-- Acceleration arc (vibrant) -->
+                <path class="dial-arc" d="M 20 100 A 50 50 0 0 1 120 100" fill="none"
+                      stroke="url(#dialGrad)" stroke-width="7" stroke-linecap="round"/>
+                <!-- Glow arc -->
+                <path class="dial-arc" d="M 20 100 A 50 50 0 0 1 120 100" fill="none"
+                      stroke="url(#dialGrad)" stroke-width="12" stroke-linecap="round"
+                      opacity="0.2" style="animation-delay:0.5s;"/>
+                <!-- Label: fast -->
+                <text x="109" y="114" font-size="8" fill="#06b6d4" font-family="Inter,sans-serif" font-weight="700">3-5d</text>
+                <!-- Needle -->
+                <g style="transform-origin:70px 100px; transform:rotate(70deg);" class="speed-label" style="animation-delay:2.5s;">
+                  <line x1="70" y1="100" x2="70" y2="55" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                  <circle cx="70" cy="100" r="5" fill="#fff" opacity="0.9"/>
+                  <circle cx="70" cy="100" r="2.5" fill="#000"/>
+                </g>
+                <!-- Center label -->
+                <text x="70" y="88" text-anchor="middle" font-size="9" fill="#a1a1aa" font-family="Inter,sans-serif">speed</text>
+              </svg>
+
+              <!-- Side metrics -->
+              <div class="flex flex-col gap-2 flex-1">
+                <div class="speed-label">
+                  <div class="text-[9px] font-semibold uppercase tracking-wider text-zinc-600 mb-0.5">Before</div>
+                  <div class="text-base font-bold text-zinc-500 line-through">3–4 Weeks</div>
+                </div>
+                <div class="w-full h-px" style="background:linear-gradient(90deg, #27272a, transparent);"></div>
+                <div class="speed-label">
+                  <div class="text-[9px] font-semibold uppercase tracking-wider text-cyan-600 mb-0.5">After</div>
+                  <div class="text-base font-bold" style="background:linear-gradient(90deg,#6366f1,#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">3–5 Days</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4 - AST Ingestion Pipeline -->
+        <div class="bento-card flex-1" id="card-pipeline" onmousemove="trackGlow(event,this)">
+          <p class="overline mb-2" style="color: lime">Continuous Ingestion</p>
+          <h3 class="text-base font-bold text-white mb-3 leading-tight">Real-Time AST<br/>Pipeline</h3>
+
+          <div class="flex items-start gap-4">
+            <!-- Vertical beam track -->
+            <div class="relative flex-shrink-0" style="width:3px; height:100%; min-height:80px;">
+              <!-- Track line -->
+              <div class="absolute inset-0 rounded-full" style="background:linear-gradient(180deg, #27272a 0%, #18181b 100%);"></div>
+              <!-- Animated beam particle -->
+              <div class="ast-beam"></div>
+              <!-- Glow halo around track -->
+              <div class="absolute inset-0 rounded-full"
+                   style="box-shadow:0 0 12px rgba(6,182,212,0.15); background:transparent;"></div>
+            </div>
+
+            <!-- Pipeline steps -->
+            <div class="flex flex-col gap-3 flex-1">
+              <!-- Step 1: GitHub -->
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+                     style="background:rgba(255,255,255,0.06); border:1px solid #27272a;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#a1a1aa"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                </div>
+                <div>
+                  <div class="text-[10px] font-semibold text-white">GitHub Repos</div>
+                  <div class="text-[9px] text-zinc-600">AST parse · diff watch</div>
+                </div>
+                <div class="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></div>
+              </div> 
+
+              <!-- Step 2: Slack -->
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+                     style="background:rgba(74,21,75,0.3); border:1px solid rgba(74,21,75,0.4);">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="#9b59b6"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>
+                </div>
+                <div>
+                  <div class="text-[10px] font-semibold text-white">Slack Workspace</div>
+                  <div class="text-[9px] text-zinc-600">Threads · channels</div>
+                </div>
+                <div class="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse flex-shrink-0" style="animation-delay:0.5s;"></div>
+              </div>
+
+              <!-- Step 3: Docs -->
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+                     style="background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.2);">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <div>
+                  <div class="text-[10px] font-semibold text-white">Doc Silos</div>
+                  <div class="text-[9px] text-zinc-600">Notion · Confluence</div>
+                </div>
+                <div class="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" style="animation-delay:1s;"></div>
+              </div>
+
+              <!-- Neo4j output -->
+              <div class="mt-auto pt-1 flex items-center gap-2 text-[9px] font-mono"
+                   style="border-top:1px solid #18181b; padding-top:8px;">
+                <span class="text-zinc-600">→</span>
+                <span class="text-violet-400">Neo4j</span>
+                <span class="text-zinc-600">·</span>
+                <span class="text-cyan-400">ChromaDB</span>
+                <span class="text-zinc-600">·</span>
+                <span class="text-emerald-400">Redis</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /top row -->
+
+      <!-- CARD 5 - Intelligence Layer (full width bottom) -->
+      <div class="bento-card md:col-span-3" id="card-intelligence" onmousemove="trackGlow(event,this)">
+        <!-- Header row -->
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <p class="overline mb-1">Not Just Search</p>
+            <h3 class="text-base font-bold text-white leading-tight">Intelligence Layer</h3>
+          </div>
+          <!-- Live indicator -->
+          <div class="flex items-center gap-1.5 px-3 py-1 rounded-full"
+               style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2);">
+            <div class="warn-dot w-1.5 h-1.5 rounded-full bg-red-400"></div>
+            <span class="text-[9px] font-semibold text-red-400 uppercase tracking-wider">Alerts Active</span>
+          </div>
+        </div>
+
+        <!-- Alert cards row -->
+        <div class="flex flex-wrap gap-2.5 mb-3">
+          <!-- Alert 1: Deprecation Risk -->
+          <div class="flex-1 min-w-[140px] rounded-xl p-3"
+               style="background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.15);">
+            <div class="flex items-center gap-1.5 mb-2">
+              <div class="warn-dot w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0"></div>
+              <span class="text-[9px] font-bold uppercase tracking-wider text-red-400">Deprecation Risk</span>
+            </div>
+            <div class="text-[10px] font-semibold text-white mb-0.5">axios v0.21.1</div>
+            <div class="text-[9px] text-zinc-500">Used in 14 files · security patch available</div>
+          </div>
+
+          <!-- Alert 2: Tribal Knowledge -->
+          <div class="flex-1 min-w-[140px] rounded-xl p-3"
+               style="background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.15);">
+            <div class="flex items-center gap-1.5 mb-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0 animate-pulse" style="animation-delay:0.5s;"></div>
+              <span class="text-[9px] font-bold uppercase tracking-wider text-amber-400">Tribal Knowledge Gap</span>
+            </div>
+            <div class="text-[10px] font-semibold text-white mb-0.5">Payment flow logic</div>
+            <div class="text-[9px] text-zinc-500">Only @james knows this — no docs found</div>
+          </div>
+
+          <!-- Alert 3: System Expert -->
+          <div class="flex-1 min-w-[140px] rounded-xl p-3"
+               style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.15);">
+            <div class="flex items-center gap-1.5 mb-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0"></div>
+              <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-400">System Expert ID</span>
+            </div>
+            <div class="text-[10px] font-semibold text-white mb-0.5">@priya.dev</div>
+            <div class="text-[9px] text-zinc-500">Auth module · 87% ownership score</div>
+          </div>
+        </div>
+
+        <!-- Tech stack marquee -->
+        <div class="relative overflow-hidden rounded-lg mt-auto" style="background:#0a0a0a; border:1px solid #1f1f23; height:32px;">
+          <!-- Fade masks -->
+          <div class="absolute left-0 top-0 bottom-0 w-10 z-10 pointer-events-none"
+               style="background:linear-gradient(to right, #0a0a0a, transparent);"></div>
+          <div class="absolute right-0 top-0 bottom-0 w-10 z-10 pointer-events-none"
+               style="background:linear-gradient(to left, #0a0a0a, transparent);"></div>
+          <!-- Scrolling tokens -->
+          <div class="marquee-inner flex items-center gap-6 h-full" style="white-space:nowrap; width:max-content;">
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#61dafb; background:rgba(97,218,251,0.08);">React</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#00d9d9; background:rgba(0,217,217,0.08);">FastAPI</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#1e90ff; background:rgba(30,144,255,0.08);">Neo4j</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#06b6d4; background:rgba(6,182,212,0.08);">ChromaDB</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#dc382d; background:rgba(220,56,45,0.08);">Redis</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#a78bfa; background:rgba(167,139,250,0.08);">LangChain</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#10b981; background:rgba(16,185,129,0.08);">GPT-4</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#f9a825; background:rgba(249,168,37,0.08);">Next.js</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#61dafb; background:rgba(97,218,251,0.08);">React</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#00d9d9; background:rgba(0,217,217,0.08);">FastAPI</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#1e90ff; background:rgba(30,144,255,0.08);">Neo4j</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#06b6d4; background:rgba(6,182,212,0.08);">ChromaDB</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#dc382d; background:rgba(220,56,45,0.08);">Redis</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#a78bfa; background:rgba(167,139,250,0.08);">LangChain</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#10b981; background:rgba(16,185,129,0.08);">GPT-4</span>
+            <span class="text-zinc-700 text-sm">•</span>
+            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded" style="color:#f9a825; background:rgba(249,168,37,0.08);">Next.js</span>
+          </div>
+        </div>
+      </div>
+      </div><!-- /bento-grid -->
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section class="px-6 pb-24 md:px-12 lg:px-20 max-w-7xl mx-auto">
+      <div class="mb-12 text-center">
+        <p class="overline mb-2">Architecture</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight">How Prism Works</h2>
+        <p class="text-zinc-400 text-base mt-3 max-w-xl mx-auto">A three-layer pipeline that turns tribal knowledge into structured, queryable intelligence.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Step 1 -->
+        <div class="bento-card text-center" onmousemove="trackGlow(event,this)">
+          <div class="relative z-10">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
+                 style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(99,102,241,0.1)); border:1px solid rgba(139,92,246,0.25);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+            </div>
+            <div class="text-[10px] font-bold text-violet-400 uppercase tracking-wider mb-2">Step 01</div>
+            <h3 class="text-base font-bold text-white mb-2">Connect & Ingest</h3>
+            <p class="text-sm text-zinc-500 leading-relaxed">OAuth into GitHub, Slack, and docs. Prism runs a continuous AST parser and diff watcher across your entire codebase in minutes.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bento-card text-center" onmousemove="trackGlow(event,this)">
+          <div class="relative z-10">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
+                 style="background:linear-gradient(135deg,rgba(6,182,212,0.15),rgba(99,102,241,0.1)); border:1px solid rgba(6,182,212,0.2);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <div class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider mb-2">Step 02</div>
+            <h3 class="text-base font-bold text-white mb-2">Build the Graph</h3>
+            <p class="text-sm text-zinc-500 leading-relaxed">Neo4j maps every function, module, author, and thread into a living knowledge graph that tracks relationships, deprecations, and ownership.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bento-card text-center" onmousemove="trackGlow(event,this)">
+          <div class="relative z-10">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
+                 style="background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(6,182,212,0.1)); border:1px solid rgba(16,185,129,0.2);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-2">Step 03</div>
+            <h3 class="text-base font-bold text-white mb-2">Ask Anything</h3>
+            <p class="text-sm text-zinc-500 leading-relaxed">GPT-4 + LangChain agents answer codebase questions with precise citations — linking code, commits, Slack threads, and document sources instantly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA FOOTER ── -->
+    <section class="px-6 pb-24 md:px-12 lg:px-20 max-w-3xl mx-auto text-center">
+      <div class="bento-card" style="border-color:rgba(255, 187, 0, 0.2);" onmousemove="trackGlow(event,this)">
+        <div class="relative z-10 py-6">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5 spectral-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="lime" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span class="text-[11px] font-semibold tracking-wider uppercase text-lime-300">In Active Development</span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight mb-4">
+            Be First to <span style="background:linear-gradient(135deg, #fefe00, #ffca00, #ff8800); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Onboard Faster.</span>
+          </h2>
+          <p class="text-zinc-400 text-base leading-relaxed mb-8 max-w-lg mx-auto">
+            Prism is being built by Qbit Labs. Join the waitlist to get early access and help shape the onboarding platform of the future.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button class="cta-primary px-8 py-3.5 text-[15px]">Join the Waitlist</button>
+            <a href="https://github.com/maryu0/prism.git" target="_blank" rel="noopener"
+               class="cta-ghost px-6 py-3.5 text-[15px] flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+              Follow on GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="px-6 py-8 md:px-12" style="border-top:1px solid #18181b;">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-6 h-6 rounded flex items-center justify-center" style="background:linear-gradient(135deg, #fefe00, #ffca00, #ff8800);">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="black" stroke="black" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <span class="text-sm font-semibold text-white" style="color:#fefefe;">Prism</span>
+          <span class="text-zinc-700">&middot;</span>
+          <span class="text-md text-zinc-600 font-bold">by Qbit Labs</span>
+        </div>
+        <div class="text-[11px] text-zinc-700">&copy; 2026 Qbit Labs. All rights reserved.</div>
+        <a href="index.html" class="text-[12px] text-green-400 hover:text-zinc-400 transition-colors flex items-center gap-1.5">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#00ff00" stroke="#00ff00" stroke-width="2.5"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          Back to Qbit Labs
+        </a>
+      </div>
+    </footer>
+
+  </div><!-- /main wrapper -->
+
+  <!-- SVG Screen Circumference Tracing Overlay -->
+  <svg class="fixed inset-0 w-full h-full pointer-events-none z-50" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="traceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#001144" />
+        <stop offset="50%" stop-color="#0044BB" />
+        <stop offset="100%" stop-color="#0088FF" />
+
+      </linearGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Background track -->
+    <path d="M 2 2 L 98 2 L 98 98 L 2 98 Z" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="2" vector-effect="non-scaling-stroke" />
+    <!-- Glowing active trace path -->
+    <path id="screen-trace-path" d="M 2 2 L 98 2 L 98 98 L 2 98 Z" fill="none" stroke="url(#traceGrad)" stroke-width="3" filter="url(#glow)" vector-effect="non-scaling-stroke" stroke-linecap="round" />
+  </svg>
+
+  <script>
+    // ── Cursor glow tracking for bento cards ──────────────────────────────
+    function trackGlow(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%';
+      const y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
+      card.style.setProperty('--mx', x);
+      card.style.setProperty('--my', y);
+    }
+
+    // ── AI Streamer restart loop ──────────────────────────────────────────
+    function restartStreamer() {
+      const lines = document.querySelectorAll('.stream-line');
+      lines.forEach(line => {
+        line.style.animation = 'none';
+        line.offsetHeight; // reflow
+        line.style.animation = '';
+      });
+    }
+    // Re-trigger the stream animation every 8 seconds
+    setInterval(restartStreamer, 8000);
+
+    // ── Bento grid height synchronization ────────────────────────────────
+    // The auto-rows on the grid handles this, but we ensure min heights are respected
+    function syncBentoHeights() {
+      const grid = document.getElementById('bento-grid');
+      if (!grid) return;
+      const isMobile = window.innerWidth < 768;
+      // Reset inline min-heights first
+      document.querySelectorAll('.bento-card').forEach(c => {
+        c.style.minHeight = '';
+      });
+      if (isMobile) {
+        // On mobile, let cards flow naturally (but preserve large cards)
+        document.querySelectorAll('.bento-card').forEach(c => {
+          if (!['card-graph', 'card-streamer'].includes(c.id)) {
+            c.style.minHeight = 'auto';
+          }
+        });
+        document.getElementById('card-graph').style.minHeight = '400px';
+        document.getElementById('card-streamer').style.minHeight = '400px';
+      } else {
+        document.getElementById('card-graph').style.minHeight = '536px';
+        document.getElementById('card-streamer').style.minHeight = '400px';
+        // document.getElementById('card-intelligence').style.minHeight = '260px';
+      }
+    }
+
+    syncBentoHeights();
+    window.addEventListener('resize', syncBentoHeights);
+
+    // ── CTA button glow effect ────────────────────────────────────────────
+    document.querySelectorAll('.cta-primary').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        btn.style.setProperty('--bx', x + 'px');
+        btn.style.setProperty('--by', y + 'px');
+      });
+    });
+
+    // ── Smooth entrance animation ─────────────────────────────────────────
+    const cards = document.querySelectorAll('.bento-card');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    cards.forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+      observer.observe(card);
+    });
+
+    // ── Screen Circumference SVG Scroll Trace ─────────────────────────────────
+    const tracePath = document.getElementById('screen-trace-path');
+    let pathLength = 0;
+
+    function initTracePath() {
+      if (!tracePath) return;
+      pathLength = tracePath.getTotalLength();
+      tracePath.style.strokeDasharray = pathLength;
+      tracePath.style.strokeDashoffset = pathLength;
+    }
+
+    function updateTracePath() {
+      if (!tracePath || !pathLength) return;
+
+      const bentoSection = document.getElementById('bento-grid');
+      if (!bentoSection) return;
+
+      const rect = bentoSection.getBoundingClientRect();
+      const elementHeight = rect.height;
+      const viewportHeight = window.innerHeight;
+
+      // Distance from top of grid entering viewport bottom to bottom leaving viewport top
+      const totalDistance = elementHeight + viewportHeight;
+      const currentDistance = viewportHeight - rect.top;
+
+      let progress = currentDistance / totalDistance;
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Calculate stroke dashoffset based on scroll progress
+      tracePath.style.strokeDashoffset = pathLength - (progress * pathLength);
+    }
+
+    initTracePath();
+    updateTracePath();
+    window.addEventListener('scroll', updateTracePath);
+    window.addEventListener('resize', () => {
+      initTracePath();
+      updateTracePath();
+    });
+  </script>
+</body>
+</html>

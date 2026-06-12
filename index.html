@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -2528,19 +2528,6 @@
     // Selected Work 3D Stack
     const projects = [
       {
-        id: "prism",
-        title: "Prism",
-        category: "DEVELOPING PLATFORM",
-        subCategory: "• AI Knowledge Graph",
-        outcomeMetric: "🚨 In Development",
-        description: "Prism automatically builds a living knowledge graph from your team's GitHub repositories, Slack conversations, and documentation, breaking down complex codebases into clear, connected, and understandable knowledge.",
-        problem: "New devs waste 2–4 weeks onboarding.",
-        built: "GitHub parser, Slack ingester, Neo4j knowledge graph, semantic search.",
-        stack: "Next.js, Node.js, Python, Neo4j, OpenAI.",
-        scoring: "In active development",
-        repo: "https://github.com/maryu0/prism.git"
-      },
-      {
         id: "fair-council",
         title: "FairCouncil",
         category: "FEATURED PROJECT",
@@ -2552,6 +2539,19 @@
         stack: "FastAPI, React, Gemini, Groq, LLaMA.",
         scoring: "Perf score − λ × Bias score",
         repo: "https://github.com/maryu0/fair-llm-council.git"
+      },
+      {
+        id: "prism",
+        title: "Prism",
+        category: "DEVELOPING PLATFORM",
+        subCategory: "• AI Knowledge Graph",
+        outcomeMetric: "🚨 In Development",
+        description: "Prism automatically builds a living knowledge graph from your team's GitHub repositories, Slack conversations, and documentation, breaking down complex codebases into clear, connected, and understandable knowledge.",
+        problem: "New devs waste 2–4 weeks onboarding.",
+        built: "GitHub parser, Slack ingester, Neo4j knowledge graph, semantic search.",
+        stack: "Next.js, Node.js, Python, Neo4j, OpenAI.",
+        scoring: "In active development",
+        repo: "https://github.com/maryu0/prism.git"
       },
       {
         id: "lexirisk",
@@ -2600,7 +2600,7 @@
       };
     }
 
-    let projActiveIndex = Math.floor(projects.length / 2);
+    let projActiveIndex = 1; // Start with Prism (index 1)
     let projIsDragging = false;
     let projStartX = 0;
     let projDragOffset = 0;
@@ -2735,10 +2735,14 @@
               ${detailsHtml}
               <div class="w-full flex items-center justify-between border-t border-border/50 pt-3 pointer-events-auto">
                 <a href="${item.repo}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 rounded-full bg-obsidian text-white text-[11px] font-semibold hover:bg-obsidian/85 transition-colors pointer-events-auto">Repo</a>
-                <a href="#contact" class="px-4 py-1.5 rounded-full bg-[#333333] text-white text-[11px] font-semibold hover:bg-[#333333]/90 transition-colors pointer-events-auto flex items-center gap-1">
+                ${item.id === 'prism' ? `<a href="prism.html" class="px-4 py-1.5 rounded-full text-[11px] font-semibold transition-colors pointer-events-auto flex items-center gap-1" style="background:linear-gradient(135deg, rgba(59, 130, 246, 0.25));color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  <span style="color: red;">Explore Prism</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>` : `<a href="#contact" class="px-4 py-1.5 rounded-full bg-[#333333] text-white text-[11px] font-semibold hover:bg-[#333333]/90 transition-colors pointer-events-auto flex items-center gap-1">
                   <span>Hire us to build this</span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                </a>
+                </a>`}
               </div>
             </div>
           </div>`;
@@ -2750,6 +2754,14 @@
             link.addEventListener("mousedown", e => e.stopPropagation());
             link.addEventListener("touchstart", e => e.stopPropagation(), { passive: true });
           });
+          // Navigate to Prism case study page on click (but not during drag)
+          if (item.id === 'prism') {
+            cardEl.addEventListener("click", () => {
+              if (Math.abs(projDragOffset) < 5) {
+                window.location.href = 'prism.html';
+              }
+            });
+          }
         } else {
           cardEl.addEventListener("click", () => { projActiveIndex = i; renderProjects(); });
         }
