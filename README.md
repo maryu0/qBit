@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/qbit.jpeg" alt="Qbit Labs Logo" width="120" height="120" style="border-radius: 12px;" />
+  <img src="images/qbit.png" alt="Qbit Labs Logo" width="120" height="120" style="border-radius: 12px;" />
 </p>
 
 # <div align="center">Qbit Labs</div>
@@ -92,7 +92,7 @@ We specialize in shortening the path from concept to launched product — delive
 
 ## <img src="https://cdn-icons-png.flaticon.com/512/4622/4622666.png" width="24" height="24" align="center" /> Contact
 
-📧 **Email:** [qbitlabs.studio@gmail.com](mailto:qbitlabs.studio@gmail.com)  
+📧 **Email:** [team@qbitlabs.tech](mailto:team@qbitlabs.tech)  
 🔗 **Twitter / X:** [@buildqBit](https://x.com/buildqBit)  
 📸 **Instagram:** [@buildqbit](https://instagram.com/buildqbit)
 
